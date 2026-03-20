@@ -1,0 +1,27 @@
+@using HRMS.Services
+@inject LanguageService Lang
+@inject IResourceService Res
+
+<div class="language-toggle">
+    <UiSelect Value="@Lang.CurrentLanguage"
+              ValueChanged="OnLanguageChangedInternal"
+              CssClass="language-select mb-0"
+              AriaLabel="@Res.GetString("Language_English")">
+        <option value="en-US">🇺🇸 English</option>
+        <option value="ar-AE">🇦🇪 العربية</option>
+    </UiSelect>
+</div>
+
+@code {
+    private void OnLanguageChangedInternal(string val)
+    {
+        OnLanguageChanged(new ChangeEventArgs { Value = val });
+    }
+
+    private void OnLanguageChanged(ChangeEventArgs e)
+    {
+        var value = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(value))
+            Lang.SetLanguage(value);
+    }
+}

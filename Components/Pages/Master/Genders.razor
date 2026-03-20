@@ -1,0 +1,41 @@
+@page "/genders"
+@rendermode InteractiveServer
+@inherits BaseMasterPage<Gender>
+
+<PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
+
+<div class="mb-4 d-flex align-items-end justify-content-between">
+    <div>
+        <h1 class="header-title">@Res.GetString("Gender_Title")</h1>
+        <div class="header-subtitle mt-1">
+            <i class="bi bi-info-circle me-1"></i> @Res.GetString("Gender_Description")
+        </div>
+    </div>
+    <AppButton Icon="bi-plus-lg" OnClick="PrepareNew">
+        @Res.GetString("Gender_Add")
+    </AppButton>
+</div>
+
+<Grid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns">
+</Grid>
+
+@code {
+    private List<GridColumn<Gender>> columns => new()
+    {
+        new() { Title = Res.GetString("Id"), FieldName = "GenderId" },
+        new() { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
+        new() { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
+        new() { Title = Res.GetString("Actions"), Template = RenderActions }
+    };
+
+    private RenderFragment RenderActions(Gender item) => __builder => {
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary" @onclick="() => Edit(item)"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-outline-danger" @onclick="() => Delete(item)"><i class="bi bi-trash"></i></button>
+        </div>
+    };
+
+    private void PrepareNew() { }
+    private void Edit(Gender item) { }
+    private void Delete(Gender item) { }
+}

@@ -1,0 +1,65 @@
+@using HRMS.Services
+@using HRMS.Models
+@inject LanguageService Lang
+@inject IUserService UserService
+@implements IDisposable
+
+<div class="top-row px-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">
+        <i class="bi bi-shield-lock-fill me-2"></i> HRMS
+    </a>
+</div>
+
+<div class="nav-scrollable mt-3">
+    <nav class="nav flex-column">
+        @foreach (var item in RootMenus)
+        {
+            var children = GetChildren(item.MenuCode).ToList();
+            var displayName = Lang.IsRtl ? item.MenuNameAr : item.MenuNameEn;
+            var href = string.IsNullOrEmpty(item.Href) || item.Href == "#" ? null : "/" + item.Href.TrimStart('/');
+
+            @if (children.Count == 0)
+            {
+                var isHome = string.IsNullOrEmpty(href) || href == "/";
+                <NavLink class="nav-link" href="@(href ?? "/")" Match="@(isHome ? NavLinkMatch.All : NavLinkMatch.Prefix)">
+                    <i class="bi @item.Icon"></i>
+                    <span>@displayName</span>
+                </NavLink>
+            }
+            else
+            {
+                <div class="px-3 mt-4 mb-2 text-uppercase fw-bold text-muted opacity-50" style="font-size: 0.65rem; letter-spacing: 0.1em;">
+                    @displayName
+                </div>
+                @foreach (var child in children)
+                {
+                    var childName = Lang.IsRtl ? child.MenuNameAr : child.MenuNameEn;
+                    var childHref = "/" + child.Href.TrimStart('/');
+                    <NavLink class="nav-link" href="@childHref">
+                        <i class="bi @child.Icon"></i>
+                        <span>@childName</span>
+                    </NavLink>
+                }
+            }
+        }
+    </nav>
+</div>
+
+@code {
+    private IEnumerable<Menu> RootMenus => UserService.Menus.Where(m => string.IsNullOrEmpty(m.ParentMenuCode));
+
+    private IEnumerable<Menu> GetChildren(string parentCode) =>
+        UserService.Menus.Where(m => m.ParentMenuCode == parentCode);
+
+    protected override void OnInitialized()
+    {
+        Lang.OnLanguageChanged += StateHasChanged;
+        UserService.OnRoleChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        Lang.OnLanguageChanged -= StateHasChanged;
+        UserService.OnRoleChanged -= StateHasChanged;
+    }
+}
