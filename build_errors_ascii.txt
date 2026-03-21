@@ -1,0 +1,21 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\MyFiles\Applications\Web\HRMS\HRMS\Services\DatabaseService\DatabaseService.cs(16,33): warning CS8601: Possible null reference assignment. [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Services\DatabaseService\DatabaseService.cs(14,16): warning CS8618: Non-nullable field '_connectionString' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Services\DataService\DataService.cs(38,20): warning CS8603: Possible null reference return. [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Components\Shared\Grid.razor(76,67): error CS0103: The name 'GoToPage' does not exist in the current context [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Components\Shared\Grid.razor(81,67): error CS0103: The name 'GoToPage' does not exist in the current context [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+
+Build FAILED.
+
+C:\MyFiles\Applications\Web\HRMS\HRMS\Services\DatabaseService\DatabaseService.cs(16,33): warning CS8601: Possible null reference assignment. [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Services\DatabaseService\DatabaseService.cs(14,16): warning CS8618: Non-nullable field '_connectionString' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the field as nullable. [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Services\DataService\DataService.cs(38,20): warning CS8603: Possible null reference return. [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Components\Shared\Grid.razor(76,67): error CS0103: The name 'GoToPage' does not exist in the current context [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+C:\MyFiles\Applications\Web\HRMS\HRMS\Components\Shared\Grid.razor(81,67): error CS0103: The name 'GoToPage' does not exist in the current context [C:\MyFiles\Applications\Web\HRMS\HRMS\HRMS.csproj]
+    3 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:01.59
+
+Workload updates are available. Run `dotnet workload list` for more information.

@@ -1,29 +1,31 @@
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Forms
 
 <div class="mb-3 position-relative">
     @if (!string.IsNullOrEmpty(Label))
     {
         <label class="small-label mb-1 d-block">@Label</label>
     }
-    <div class="position-relative">
+    <div class="input-icon-wrapper position-relative w-100">
         @if (!string.IsNullOrEmpty(Icon))
         {
-            <i class="bi @Icon position-absolute top-50 translate-middle-y text-muted small" 
-               style="inset-inline-start: 12px;"></i>
+            <UiIcon Name="@Icon" CssClass="position-absolute top-50 translate-middle-y text-muted small" 
+                    style="@(IsRtl ? "right: 1rem;" : "left: 1rem;")" />
         }
-        <input type="@Type" 
-               class="input-hrms w-100 @(string.IsNullOrEmpty(Icon) ? "" : "ps-5") @DirectionClass @CssClass" 
-               style="@(string.IsNullOrEmpty(Icon) ? "" : "padding-inline-start: 36px;")"
-               placeholder="@Placeholder" 
+        <input id="@Id" 
+               type="@Type"
+               class="form-control hrms-input @(IsRtl ? "text-end" : "text-start") @(string.IsNullOrEmpty(Icon) ? "" : (IsRtl ? "pe-5" : "ps-5")) @CssClass" 
                value="@Value" 
                @oninput="OnInput"
                @onchange="OnChange"
+               placeholder="@Placeholder"
                disabled="@Disabled"
                aria-label="@AriaLabel" />
     </div>
 </div>
 
 @code {
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString();
     [Parameter] public string Value { get; set; } = "";
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
     [Parameter] public string Label { get; set; } = "";

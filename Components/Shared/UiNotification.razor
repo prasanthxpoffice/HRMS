@@ -6,9 +6,9 @@
     @foreach (var note in _messages)
     {
         <div class="notification-toast @GetToastClass(note.Type)">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi @GetIcon(note.Type)"></i>
-                <span>@note.Message</span>
+            <div class="toast-body d-flex align-items-center">
+                <UiIcon Name="@GetIcon(note.Type)" CssClass="me-2" />
+                @note.Message
             </div>
             <button type="button" class="btn-close btn-close-white ms-auto small" @onclick="() => Remove(note)"></button>
         </div>
@@ -88,11 +88,11 @@
 
     private string GetIcon(NotificationType type) => type switch
     {
-        NotificationType.Success => "bi-check-circle-fill",
-        NotificationType.Error => "bi-x-circle-fill",
-        NotificationType.Info => "bi-info-circle-fill",
-        NotificationType.Warning => "bi-exclamation-triangle-fill",
-        _ => "bi-info-circle-fill"
+        NotificationType.Success => "check-circle-fill",
+        NotificationType.Error => "exclamation-triangle-fill",
+        NotificationType.Warning => "exclamation-circle-fill",
+        NotificationType.Info => "info-circle-fill",
+        _ => "info-circle"
     };
 
     public void Dispose()

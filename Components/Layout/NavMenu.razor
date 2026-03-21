@@ -22,7 +22,7 @@
             {
                 var isHome = string.IsNullOrEmpty(href) || href == "/";
                 <NavLink class="nav-link" href="@(href ?? "/")" Match="@(isHome ? NavLinkMatch.All : NavLinkMatch.Prefix)">
-                    <i class="bi @item.Icon"></i>
+                    <UiIcon Name="@item.Icon" />
                     <span>@displayName</span>
                 </NavLink>
             }
@@ -36,7 +36,7 @@
                     var childName = Lang.IsRtl ? child.MenuNameAr : child.MenuNameEn;
                     var childHref = "/" + child.Href.TrimStart('/');
                     <NavLink class="nav-link" href="@childHref">
-                        <i class="bi @child.Icon"></i>
+                        <UiIcon Name="@child.Icon" />
                         <span>@childName</span>
                     </NavLink>
                 }

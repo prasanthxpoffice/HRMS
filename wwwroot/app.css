@@ -7,6 +7,14 @@
     font-style: normal;
 }
 
+.bi-icon {
+    display: inline-block;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+}
+
 :root {
     /* Enterprise Color Palette - Slate & Indigo accents */
     --primary: #4f46e5;

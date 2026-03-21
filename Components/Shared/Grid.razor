@@ -73,10 +73,10 @@
             <div class="col-auto">
                 <div class="d-flex gap-1">
                     <button class="btn btn-sm btn-light border @(CurrentPage == 1 ? "disabled" : "")" @onclick="PrevPage">
-                        <i class="bi bi-chevron-left small"></i>
+                        <UiIcon Name="chevron-left" CssClass="small" />
                     </button>
                     <button class="btn btn-sm btn-light border @(CurrentPage == TotalPages ? "disabled" : "")" @onclick="NextPage">
-                        <i class="bi bi-chevron-right small"></i>
+                        <UiIcon Name="chevron-right" CssClass="small" />
                     </button>
                 </div>
             </div>
