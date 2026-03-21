@@ -10,7 +10,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
-builder.Services.AddSingleton<INotificationService, NotificationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDataService, DataService>();
 
