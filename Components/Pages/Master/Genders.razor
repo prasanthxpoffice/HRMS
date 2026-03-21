@@ -3,39 +3,33 @@
 @rendermode InteractiveServer
 @inject IDataService DataService
 
-<PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
-
-<UiPageHeader Title="@Res.GetString("Gender_Title")" 
-              Description="@Res.GetString("Gender_Description")" 
-              Icon="bi-gender-ambiguous" />
 
 <UiGrid TItem="Gender" 
-        Title="@Res.GetString("Gender_Title")" 
+        Title="@Res.Gender_Title" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.GetString("Gender_Add")" 
+        AddButtonText="@Res.Gender_Add" 
         OnAddClick="() => Prepare()" />
 
-<UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.GetString("Gender_Add") : Res.GetString("Edit"))" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="genderForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
-            <UiInput Label="@Res.GetString("NameEn")" @bind-Value="CurrentItem.GenderNameEn" Placeholder="@Res.GetString("NameEn")" />
+            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.GenderNameEn" Placeholder="@Res.NameEn" />
             <ValidationMessage For="@(() => CurrentItem.GenderNameEn)" />
 
-            <UiInput Label="@Res.GetString("NameAr")" @bind-Value="CurrentItem.GenderNameAr" Placeholder="@Res.GetString("NameAr")" IsRtl="true" />
+            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.GenderNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
             <ValidationMessage For="@(() => CurrentItem.GenderNameAr)" />
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal">@Res.GetString("Cancel")</UiButton>
-        <UiButton IsSubmit="true" form="genderForm">@Res.GetString("Save")</UiButton>
+        <UiButton Type="light" OnClick="CloseModal">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="genderForm">@Res.Save</UiButton>
     </Footer>
 </UiModal>
 
 @code {
-    /* ... code remains same ... */
     private List<Gender> Items = new();
     private Gender CurrentItem = new();
     private bool ShowModal = false;
@@ -54,14 +48,14 @@
     
     private List<UiGridColumn<Gender>> columns => new()
     {
-        new UiGridColumn<Gender> { Title = Res.GetString("Id"), FieldName = "GenderId" },
-        new UiGridColumn<Gender> { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
-        new UiGridColumn<Gender> { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<Gender> { Title = Res.GetString("CreatedDate"), FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<Gender> { Title = Res.GetString("Actions"), Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<Gender> { Title = Res.Id, FieldName = "GenderId" },
+        new UiGridColumn<Gender> { Title = Res.NameEn, FieldName = "GenderNameEn" },
+        new UiGridColumn<Gender> { Title = Res.NameAr, FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<Gender> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<Gender> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                           OnDelete="() => Delete(item)" 
-                                                                                          EditTitle="@Res.GetString("Edit")" 
-                                                                                          DeleteTitle="@Res.GetString("Delete")" /> }
+                                                                                          EditTitle="@Res.Edit" 
+                                                                                          DeleteTitle="@Res.Delete" /> }
     };
 
 

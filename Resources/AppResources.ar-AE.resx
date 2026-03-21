@@ -76,4 +76,18 @@
   <data name="Category" xml:space="preserve"><value>الفئة</value></data>
   <data name="CreatedDate" xml:space="preserve"><value>تاريخ الإنشاء</value></data>
   <data name="All" xml:space="preserve"><value>الكل</value></data>
+  <data name="Add" xml:space="preserve"><value>إضافة</value></data>
+  <data name="Edit" xml:space="preserve"><value>تعديل</value></data>
+  <data name="Delete" xml:space="preserve"><value>حذف</value></data>
+  <data name="Save" xml:space="preserve"><value>حفظ</value></data>
+  <data name="Cancel" xml:space="preserve"><value>إلغاء</value></data>
+  <data name="AdminDashboard" xml:space="preserve"><value>لوحة التحكم</value></data>
+  <data name="WelcomeBack" xml:space="preserve"><value>مرحباً بك مجدداً</value></data>
+  <data name="SystemStatus" xml:space="preserve"><value>حالة النظام</value></data>
+  <data name="DatabaseConnected" xml:space="preserve"><value>قاعدة البيانات متصلة</value></data>
+  <data name="AuthenticationActive" xml:space="preserve"><value>نظام المصادقة نشط</value></data>
+  <data name="ManageGenders" xml:space="preserve"><value>إدارة الأجناس</value></data>
+  <data name="Settings" xml:space="preserve"><value>الإعدادات</value></data>
+  <data name="SystemDashboard" xml:space="preserve"><value>لوحة تحكم نظام الموارد البشرية</value></data>
+  <data name="DashboardDescription" xml:space="preserve"><value>الوصول إلى جميع أدوات إدارة الموظفين، سمات الهوية، والوحدات التنظيمية من منصة مركزية واحدة.</value></data>
 </root>

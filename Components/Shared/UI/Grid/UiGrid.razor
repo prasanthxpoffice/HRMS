@@ -25,7 +25,7 @@
                         @if (ShowAddButton)
                         {
                             <UiButton Icon="bi-plus-lg" OnClick="OnAddClick" CssClass="btn-sm">
-                                @(string.IsNullOrEmpty(AddButtonText) ? Res.GetString("Add") : AddButtonText)
+                                @(string.IsNullOrEmpty(AddButtonText) ? Res.Add : AddButtonText)
                             </UiButton>
                         }
                         @HeaderContent
@@ -56,7 +56,7 @@
                                         <select class="input-hrms py-1 small" 
                                                 value="@GetFilterValue(col.FieldName)" 
                                                 @onchange="(e) => SetFilterValue(col.FieldName, e.Value?.ToString())">
-                                            <option value="">@Res.GetString("All")</option>
+                                            <option value="">@Res.All</option>
                                             @foreach (var val in GetDistinctValues(col.FieldName))
                                             {
                                                 <option value="@val">@val</option>
@@ -70,7 +70,7 @@
                                         break;
                                     default:
                                         <input type="text" class="input-hrms py-1 small" 
-                                               placeholder="@Res.GetString("Search")..." 
+                                               placeholder="@Res.Search..." 
                                                value="@GetFilterValue(col.FieldName)" 
                                                @oninput="(e) => SetFilterValue(col.FieldName, e.Value?.ToString())" />
                                         break;
@@ -114,7 +114,7 @@
                 {
                     <tr>
                         <td colspan="@Columns.Count" class="text-center py-5">
-                            <span class="text-muted small">@Res.GetString("NoRecordsFound")</span>
+                            <span class="text-muted small">@Res.NoRecordsFound</span>
                         </td>
                     </tr>
                 }

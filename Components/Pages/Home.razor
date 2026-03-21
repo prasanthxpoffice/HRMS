@@ -1,21 +1,22 @@
 @page "/"
+@inherits UiBase
 
 <div class="row g-4">
     <div class="col-12 col-xl-8">
         <div class="card-hrms p-5 bg-white border-0" style="background: linear-gradient(to right, #ffffff, #f8fafc);">
-            <div class="small-label text-primary mb-2">Welcome Back</div>
-            <h1 class="header-title mb-3" style="font-size: 2rem;">HRMS System Dashboard</h1>
+            <div class="small-label text-primary mb-2">@Res.WelcomeBack</div>
+            <h1 class="header-title mb-3" style="font-size: 2rem;">@Res.SystemDashboard</h1>
             <p class="text-muted mb-4" style="max-width: 500px;">
-                Access all your employee management tools, identity attributes, and organizational units from one centralized platform.
+                @Res.DashboardDescription
             </p>
             <div class="d-flex gap-2">
                 <a href="genders" class="btn-hrms btn-hrms-primary px-4">
                     <UiIcon Name="people" />
-                    Manage Genders
+                    @Res.ManageGenders
                 </a>
                 <button class="btn btn-sm btn-light border px-4">
                     <UiIcon Name="gear" />
-                    Settings
+                    @Res.Settings
                 </button>
             </div>
         </div>
@@ -23,14 +24,14 @@
     
     <div class="col-12 col-xl-4">
         <div class="card-hrms p-4 h-100">
-            <div class="small-label mb-3">System Status</div>
+            <div class="small-label mb-3">@Res.SystemStatus</div>
             <div class="d-flex align-items-center mb-3">
                 <div class="rounded-circle bg-success me-2" style="width: 8px; height: 8px;"></div>
-                <div class="small fw-medium">Database Connected</div>
+                <div class="small fw-medium">@Res.DatabaseConnected</div>
             </div>
             <div class="d-flex align-items-center mb-3">
                 <div class="rounded-circle bg-success me-2" style="width: 8px; height: 8px;"></div>
-                <div class="small fw-medium">Authentication Active</div>
+                <div class="small fw-medium">@Res.AuthenticationActive</div>
             </div>
         </div>
     </div>
