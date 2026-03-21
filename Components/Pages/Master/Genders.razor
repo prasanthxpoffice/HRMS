@@ -7,15 +7,17 @@
 
 <UiPageHeader Title="@Res.GetString("Gender_Title")" 
               Description="@Res.GetString("Gender_Subtitle")" 
-              Icon="bi-gender-ambiguous"
-              ButtonText="@Res.GetString("AddGender")" 
-              OnButtonClick="() => Prepare()" />
+              Icon="bi-gender-ambiguous">
+    <ButtonContent>
+        <UiButton Icon="bi-plus-lg" OnClick="() => Prepare()">@Res.GetString("AddGender")</UiButton>
+    </ButtonContent>
+</UiPageHeader>
 
 <UiGrid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.GetString("Gender_Add") : Res.GetString("Edit"))" OnClose="CloseModal">
     <Body>
-        <EditForm id="genderForm" Model="CurrentItem" OnValidSubmit="HandleSave">
+        <EditForm id="genderForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
             <UiInput Label="@Res.GetString("NameEn")" @bind-Value="CurrentItem.GenderNameEn" Placeholder="@Res.GetString("NameEn")" />
             <ValidationMessage For="@(() => CurrentItem.GenderNameEn)" />
@@ -72,7 +74,7 @@
         ShowModal = true;
     }  
 
-    private async Task HandleSave()
+    private async Task Save()
     {
         var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
         if (res.Success)
