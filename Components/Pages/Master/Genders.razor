@@ -1,19 +1,21 @@
 @page "/genders"
+@inherits UiBase
 @rendermode InteractiveServer
 @inject IDataService DataService
-@inject IResourceService Res
 
 <PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
 
 <UiPageHeader Title="@Res.GetString("Gender_Title")" 
-              Description="@Res.GetString("Gender_Subtitle")" 
-              Icon="bi-gender-ambiguous">
-    <ButtonContent>
-        <UiButton Icon="bi-plus-lg" OnClick="() => Prepare()">@Res.GetString("AddGender")</UiButton>
-    </ButtonContent>
-</UiPageHeader>
+              Description="@Res.GetString("Gender_Description")" 
+              Icon="bi-gender-ambiguous" />
 
-<UiGrid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns" />
+<UiGrid TItem="Gender" 
+        Title="@Res.GetString("Gender_Title")" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="true" 
+        AddButtonText="@Res.GetString("Gender_Add")" 
+        OnAddClick="() => Prepare()" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.GetString("Gender_Add") : Res.GetString("Edit"))" OnClose="CloseModal">
     <Body>
@@ -33,6 +35,7 @@
 </UiModal>
 
 @code {
+    /* ... code remains same ... */
     private List<Gender> Items = new();
     private Gender CurrentItem = new();
     private bool ShowModal = false;
@@ -40,6 +43,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        base.OnInitialized();
         await LoadData();
     }
 
@@ -52,11 +56,12 @@
     {
         new UiGridColumn<Gender> { Title = Res.GetString("Id"), FieldName = "GenderId" },
         new UiGridColumn<Gender> { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
-        new UiGridColumn<Gender> { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
+        new UiGridColumn<Gender> { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<Gender> { Title = Res.GetString("CreatedDate"), FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
         new UiGridColumn<Gender> { Title = Res.GetString("Actions"), Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
-                                                                                        OnDelete="() => Delete(item)" 
-                                                                                        EditTitle="@Res.GetString("Edit")" 
-                                                                                        DeleteTitle="@Res.GetString("Delete")" /> }
+                                                                                          OnDelete="() => Delete(item)" 
+                                                                                          EditTitle="@Res.GetString("Edit")" 
+                                                                                          DeleteTitle="@Res.GetString("Delete")" /> }
     };
 
 

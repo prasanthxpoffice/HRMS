@@ -72,5 +72,8 @@
   <data name="Gender_GridTitle" xml:space="preserve"><value>سمات الهوية</value></data>
   <data name="Gender_Add" xml:space="preserve"><value>إضافة جنس</value></data>
   <data name="PageTitle_Home" xml:space="preserve"><value>الرئيسية</value></data>
-  <data name="PageTitle_Genders" xml:space="preserve"><value>الجنس</value></data>
+  <data name="PageTitle_Genders" xml:space="preserve"><value>الأجناس</value></data>
+  <data name="Category" xml:space="preserve"><value>الفئة</value></data>
+  <data name="CreatedDate" xml:space="preserve"><value>تاريخ الإنشاء</value></data>
+  <data name="All" xml:space="preserve"><value>الكل</value></data>
 </root>

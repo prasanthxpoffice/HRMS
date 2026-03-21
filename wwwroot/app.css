@@ -287,3 +287,13 @@ main {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
+
+/* Grid Filter Row Styles */
+.filter-row td {
+    background: rgba(0,0,0,0.02) !important;
+    padding: 0.5rem !important;
+}
+.filter-row .input-hrms {
+    font-size: 0.75rem !important;
+    height: auto !important;
+}

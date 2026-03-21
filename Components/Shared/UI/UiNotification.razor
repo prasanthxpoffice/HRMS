@@ -1,25 +1,27 @@
-@implements IDisposable
-@inject INotificationService NotificationService
+@using HRMS.Components.Shared.UI
+@inherits UiBase
 
 <div class="notification-container">
     @foreach (var note in _messages)
     {
         <div class="notification-toast @GetToastClass(note.Type)">
-            <div class="toast-body d-flex align-items-center">
+            <div class="toast-body d-flex align-items-center px-3 py-2">
                 <UiIcon Name="@GetIcon(note.Type)" CssClass="me-2" />
-                @note.Message
+                <span class="small">@note.Message</span>
             </div>
-            <button type="button" class="btn-close btn-close-white ms-auto small" @onclick="() => Remove(note)"></button>
+            <button type="button" class="btn-close btn-close-white ms-auto small p-2" @onclick="() => Remove(note)"></button>
         </div>
     }
 </div>
 
 
 @code {
+    [Inject] private INotificationService NotificationService { get; set; } = default!;
     private List<NotificationMessage> _messages = new();
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         NotificationService.OnMessage += HandleMessage;
     }
 
@@ -65,8 +67,9 @@
         _ => "info-circle"
     };
 
-    public void Dispose()
+    public override void Dispose()
     {
+        base.Dispose();
         NotificationService.OnMessage -= HandleMessage;
     }
 }

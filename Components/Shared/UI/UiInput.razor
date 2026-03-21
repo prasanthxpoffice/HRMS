@@ -1,3 +1,6 @@
+@using HRMS.Components.Shared.UI
+@inherits UiBase
+
 <div class="mb-3 position-relative">
     @if (!string.IsNullOrEmpty(Label))
     {
@@ -7,11 +10,11 @@
         @if (!string.IsNullOrEmpty(Icon))
         {
             <UiIcon Name="@Icon" CssClass="position-absolute top-50 translate-middle-y text-muted small" 
-                    style="@(IsRtl ? "right: 1rem;" : "left: 1rem;")" />
+                    style="@(Lang.IsRtl ? "right: 1rem;" : "left: 1rem;")" />
         }
         <input id="@Id" 
                type="@Type"
-               class="form-control hrms-input @(IsRtl ? "text-end" : "text-start") @(string.IsNullOrEmpty(Icon) ? "" : (IsRtl ? "pe-5" : "ps-5")) @CssClass" 
+               class="form-control hrms-input @(Lang.IsRtl ? "text-end" : "text-start") @(string.IsNullOrEmpty(Icon) ? "" : (Lang.IsRtl ? "pe-5" : "ps-5")) @CssClass" 
                value="@Value" 
                @oninput="OnInput"
                placeholder="@Placeholder"
@@ -31,9 +34,7 @@
     [Parameter] public string CssClass { get; set; } = "";
     [Parameter] public string AriaLabel { get; set; } = "";
     [Parameter] public bool Disabled { get; set; } = false;
-    [Parameter] public bool IsRtl { get; set; } = false;
-
-    private string DirectionClass => IsRtl ? "text-end" : "";
+    [Parameter] public bool IsRtl { get; set; } = false; // Kept for overrides but Lang.IsRtl used by default
 
     private async Task OnInput(ChangeEventArgs e)
     {

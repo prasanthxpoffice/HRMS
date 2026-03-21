@@ -1,29 +1,38 @@
+@using HRMS.Components.Shared.UI
+@inherits UiBase
 
-<div class="page-header d-flex align-items-end justify-content-between mb-4">
-    <div>
-        <h1 class="header-title mb-0">@Title</h1>
-        @if (!string.IsNullOrEmpty(Description))
-        {
-            <div class="header-subtitle mt-1 text-muted small">
+<div class="page-header mb-4">
+    <div class="row align-items-center g-3">
+        <div class="col">
+            <div class="d-flex align-items-center gap-3">
                 @if (!string.IsNullOrEmpty(Icon))
                 {
-                    <UiIcon Name="@Icon" CssClass="me-1" />
+                    <div class="header-icon-wrapper rounded-3 shadow-sm d-flex align-items-center justify-content-center bg-primary bg-gradient" 
+                         style="width: 48px; height: 48px;">
+                        <UiIcon Name="@Icon" CssClass="text-white fs-4" />
+                    </div>
                 }
-                @Description
+                <div>
+                    <h1 class="h4 fw-bold mb-1 text-dark">@Title</h1>
+                    @if (!string.IsNullOrEmpty(Description))
+                    {
+                        <p class="text-muted small mb-0 opacity-75">@Description</p>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (ButtonContent != null)
+        {
+            <div class="col-auto">
+                @ButtonContent
             </div>
         }
     </div>
-@if (ButtonContent != null)
-    {
-        <div class="page-header-actions">
-            @ButtonContent
-        </div>
-    }
 </div>
 
 @code {
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public string Description { get; set; } = "";
-    [Parameter] public string Icon { get; set; } = "bi-info-circle";
+    [Parameter] public string Icon { get; set; } = "";
     [Parameter] public RenderFragment? ButtonContent { get; set; }
 }
