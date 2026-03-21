@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace HRMS.Data
+namespace HRMS.Components.Shared.UI.Models
 {
     public class UiGridColumn<TItem>
     {
