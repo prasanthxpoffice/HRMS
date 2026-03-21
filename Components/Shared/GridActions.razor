@@ -1,0 +1,17 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="d-flex gap-2">
+    <button class="btn btn-sm btn-outline-primary border-0" @onclick="OnEdit" title="@EditTitle">
+        <i class="bi bi-pencil small"></i>
+    </button>
+    <button class="btn btn-sm btn-outline-danger border-0" @onclick="OnDelete" title="@DeleteTitle">
+        <i class="bi bi-trash small"></i>
+    </button>
+</div>
+
+@code {
+    [Parameter] public EventCallback OnEdit { get; set; }
+    [Parameter] public EventCallback OnDelete { get; set; }
+    [Parameter] public string EditTitle { get; set; } = "Edit";
+    [Parameter] public string DeleteTitle { get; set; } = "Delete";
+}

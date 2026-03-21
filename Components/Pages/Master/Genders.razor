@@ -2,28 +2,42 @@
 @rendermode InteractiveServer
 @using HRMS.Models.Master
 @using HRMS.Services
+@using Microsoft.AspNetCore.Components.Forms
 @inject IDataService DataService
 @inject IResourceService Res
 
 <PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
 
-<div class="mb-4 d-flex align-items-end justify-content-between">
-    <div>
-        <h1 class="header-title">@Res.GetString("Gender_Title")</h1>
-        <div class="header-subtitle mt-1">
-            <i class="bi bi-info-circle me-1"></i> @Res.GetString("Gender_Description")
-        </div>
-    </div>
-    <AppButton Icon="bi-plus-lg" OnClick="PrepareNew">
-        @Res.GetString("Gender_Add")
-    </AppButton>
-</div>
+<PageHeader Title="@Res.GetString("Gender_Title")" 
+            Description="@Res.GetString("Gender_Description")">
+    <ButtonContent>
+        <AppButton Icon="bi-plus-lg" OnClick="PrepareNew">@Res.GetString("Gender_Add")</AppButton>
+    </ButtonContent>
+</PageHeader>
 
-<Grid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns">
-</Grid>
+<Grid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns" />
+
+<UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.GetString("Gender_Add") : Res.GetString("Edit"))" OnClose="CloseModal">
+    <Body>
+        <EditForm id="genderForm" Model="CurrentItem" OnValidSubmit="HandleSave">
+            <DataAnnotationsValidator />
+            <UiInput Label="@Res.GetString("NameEn")" @bind-Value="CurrentItem.GenderNameEn" Placeholder="@Res.GetString("NameEn")" />
+            <ValidationMessage For="@(() => CurrentItem.GenderNameEn)" />
+
+            <UiInput Label="@Res.GetString("NameAr")" @bind-Value="CurrentItem.GenderNameAr" Placeholder="@Res.GetString("NameAr")" IsRtl="true" />
+            <ValidationMessage For="@(() => CurrentItem.GenderNameAr)" />
+        </EditForm>
+    </Body>
+    <Footer>
+        <AppButton Type="light" OnClick="CloseModal">@Res.GetString("Cancel")</AppButton>
+        <AppButton IsSubmit="true" form="genderForm">@Res.GetString("Save")</AppButton>
+    </Footer>
+</UiModal>
 
 @code {
     private List<Gender> Items = new();
+    private Gender CurrentItem = new();
+    private bool ShowModal = false;
 
     private List<GridColumn<Gender>> columns => new()
     {
@@ -40,22 +54,47 @@
 
     private async Task LoadData()
     {
-        // Simple and direct: specify SP name and payload
         Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
     }
 
     private RenderFragment RenderActions(Gender item) => __builder => {
-        <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline-primary" @onclick="() => Edit(item)"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-sm btn-outline-danger" @onclick="() => Delete(item)"><i class="bi bi-trash"></i></button>
-        </div>
+        <GridActions OnEdit="() => Edit(item)" 
+                     OnDelete="() => Delete(item)" 
+                     EditTitle="@Res.GetString("Edit")" 
+                     DeleteTitle="@Res.GetString("Delete")" />
     };
 
-    private void PrepareNew() { }
-    private void Edit(Gender item) { }
-    private async Task Delete(Gender item) 
+    private void PrepareNew()
     {
-        // Simple and direct: specify SP name and payload (ID inside the json object)
+        CurrentItem = new Gender { GenderId = 0 };
+        ShowModal = true;
+    }
+
+    private async Task Edit(Gender item)
+    {
+        // Fetch single record using the standardized JSON service
+        var result = await DataService.GetListAsync<Gender>("master.spGenderGet", new { GenderId = item.GenderId });
+        if (result != null && result.Any())
+        {
+            CurrentItem = result.First();
+            ShowModal = true;
+        }
+    }
+
+    private void CloseModal() => ShowModal = false;
+
+    private async Task HandleSave()
+    {
+        var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
+        if (res.Success)
+        {
+            ShowModal = false;
+            await LoadData();
+        }
+    }
+
+    private async Task Delete(Gender item)
+    {
         var res = await DataService.PostDataAsync("master.spGenderDelete", new { GenderId = item.GenderId });
         if (res.Success) await LoadData();
     }

@@ -226,3 +226,11 @@ main {
 /* Utilities */
 .text-muted { color: var(--text-muted) !important; }
 .small-label { font-size: var(--font-size-sm); font-weight: 600; text-transform: uppercase; color: var(--slate-600); }
+
+/* Validation Support */
+.validation-message {
+    color: #dc3545 !important;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+}

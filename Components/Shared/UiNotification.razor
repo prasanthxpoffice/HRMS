@@ -1,0 +1,102 @@
+@using HRMS.Services
+@implements IDisposable
+@inject INotificationService NotificationService
+
+<div class="notification-container">
+    @foreach (var note in _messages)
+    {
+        <div class="notification-toast @GetToastClass(note.Type)">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi @GetIcon(note.Type)"></i>
+                <span>@note.Message</span>
+            </div>
+            <button type="button" class="btn-close btn-close-white ms-auto small" @onclick="() => Remove(note)"></button>
+        </div>
+    }
+</div>
+
+<style>
+    .notification-container {
+        position: fixed;
+        top: 20px;
+        inset-inline-end: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+    }
+
+    .notification-toast {
+        min-width: 300px;
+        max-width: 450px;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        color: white;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: slideIn 0.3s ease-out;
+        pointer-events: auto;
+    }
+
+    .toast-success { background: #10b981; border-left: 4px solid #065f46; }
+    .toast-error { background: #ef4444; border-left: 4px solid #991b1b; }
+    .toast-info { background: #3b82f6; border-left: 4px solid #1e40af; }
+    .toast-warning { background: #f59e0b; border-left: 4px solid #92400e; }
+
+    @@keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+</style>
+
+@code {
+    private List<NotificationMessage> _messages = new();
+
+    protected override void OnInitialized()
+    {
+        NotificationService.OnMessage += HandleMessage;
+    }
+
+    private void HandleMessage(NotificationMessage message)
+    {
+        _messages.Add(message);
+        StateHasChanged();
+
+        // Auto-remove after 4 seconds
+        Task.Delay(4000).ContinueWith(_ => {
+            Remove(message);
+        });
+    }
+
+    private void Remove(NotificationMessage message)
+    {
+        _messages.Remove(message);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private string GetToastClass(NotificationType type) => type switch
+    {
+        NotificationType.Success => "toast-success",
+        NotificationType.Error => "toast-error",
+        NotificationType.Info => "toast-info",
+        NotificationType.Warning => "toast-warning",
+        _ => "toast-info"
+    };
+
+    private string GetIcon(NotificationType type) => type switch
+    {
+        NotificationType.Success => "bi-check-circle-fill",
+        NotificationType.Error => "bi-x-circle-fill",
+        NotificationType.Info => "bi-info-circle-fill",
+        NotificationType.Warning => "bi-exclamation-triangle-fill",
+        _ => "bi-info-circle-fill"
+    };
+
+    public void Dispose()
+    {
+        NotificationService.OnMessage -= HandleMessage;
+    }
+}

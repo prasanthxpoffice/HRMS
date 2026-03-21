@@ -17,11 +17,11 @@ namespace HRMS.Services
             _languageService = languageService;
         }
 
-        public async Task<ApiResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int employeeId = 1, string? language = null)
+        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int employeeId = 1, string? language = null)
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
-                return new ApiResponse<T> { Success = false, Message = "Connection string not configured." };
+                return new DbResponse<T> { Success = false, Message = "Connection string not configured." };
             }
 
             try
@@ -37,15 +37,15 @@ namespace HRMS.Services
 
                 if (string.IsNullOrEmpty(jsonResult))
                 {
-                    return new ApiResponse<T> { Success = false, Message = "No response from database." };
+                    return new DbResponse<T> { Success = false, Message = "No response from database." };
                 }
 
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                return JsonSerializer.Deserialize<ApiResponse<T>>(jsonResult, options) ?? new ApiResponse<T> { Success = false };
+                return JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = false };
             }
             catch (Exception ex)
             {
-                return new ApiResponse<T> { Success = false, Message = ex.Message };
+                return new DbResponse<T> { Success = false, Message = ex.Message };
             }
         }
     }

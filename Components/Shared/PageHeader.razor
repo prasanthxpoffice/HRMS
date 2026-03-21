@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="page-header d-flex align-items-end justify-content-between mb-4">
+    <div>
+        <h1 class="header-title mb-0">@Title</h1>
+        @if (!string.IsNullOrEmpty(Description))
+        {
+            <div class="header-subtitle mt-1 text-muted small">
+                @if (!string.IsNullOrEmpty(Icon))
+                {
+                    <i class="bi @Icon me-1"></i>
+                }
+                @Description
+            </div>
+        }
+    </div>
+    @if (ButtonContent != null)
+    {
+        <div class="page-header-actions">
+            @ButtonContent
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Description { get; set; } = "";
+    [Parameter] public string Icon { get; set; } = "bi-info-circle";
+    [Parameter] public RenderFragment? ButtonContent { get; set; }
+}
