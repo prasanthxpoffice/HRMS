@@ -9,11 +9,10 @@
 <PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
 
 <PageHeader Title="@Res.GetString("Gender_Title")" 
-            Description="@Res.GetString("Gender_Description")">
-    <ButtonContent>
-        <AppButton Icon="bi-plus-lg" OnClick="PrepareNew">@Res.GetString("Gender_Add")</AppButton>
-    </ButtonContent>
-</PageHeader>
+            Description="@Res.GetString("Gender_Description")" 
+            Icon="bi-gender-ambiguous"
+            ButtonText="@Res.GetString("Gender_Add")"
+            OnButtonClick="() => Prepare()" />
 
 <Grid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns" />
 
@@ -38,14 +37,7 @@
     private List<Gender> Items = new();
     private Gender CurrentItem = new();
     private bool ShowModal = false;
-
-    private List<GridColumn<Gender>> columns => new()
-    {
-        new() { Title = Res.GetString("Id"), FieldName = "GenderId" },
-        new() { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
-        new() { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
-        new() { Title = Res.GetString("Actions"), Template = RenderActions }
-    };
+    private void CloseModal() => ShowModal = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -56,32 +48,36 @@
     {
         Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
     }
+    
+    private List<GridColumn<Gender>> columns => new()
+    {
+        new() { Title = Res.GetString("Id"), FieldName = "GenderId" },
+        new() { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
+        new() { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
+        new() { Title = Res.GetString("Actions"), Template = RenderActions }
+    };
 
     private RenderFragment RenderActions(Gender item) => __builder => {
-        <GridActions OnEdit="() => Edit(item)" 
+        <GridActions OnEdit="() => Prepare(item)" 
                      OnDelete="() => Delete(item)" 
                      EditTitle="@Res.GetString("Edit")" 
                      DeleteTitle="@Res.GetString("Delete")" />
     };
 
-    private void PrepareNew()
-    {
-        CurrentItem = new Gender { GenderId = 0 };
-        ShowModal = true;
-    }
 
-    private async Task Edit(Gender item)
+    private async Task Prepare(Gender? item = null)
     {
-        // Fetch single record using the standardized JSON service
-        var result = await DataService.GetListAsync<Gender>("master.spGenderGet", new { GenderId = item.GenderId });
-        if (result != null && result.Any())
+        if (item == null)
         {
-            CurrentItem = result.First();
-            ShowModal = true;
+            CurrentItem = new Gender { GenderId = 0 };
         }
-    }
-
-    private void CloseModal() => ShowModal = false;
+        else
+        {
+            var result = await DataService.GetListAsync<Gender>("master.spGenderGet", new { GenderId = item.GenderId });
+            CurrentItem = result?.FirstOrDefault() ?? new Gender();
+        }
+        ShowModal = true;
+    }  
 
     private async Task HandleSave()
     {

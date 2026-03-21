@@ -20,11 +20,19 @@
             @ButtonContent
         </div>
     }
+    else if (!string.IsNullOrEmpty(ButtonText))
+    {
+        <div class="page-header-actions">
+            <AppButton Icon="bi-plus-lg" OnClick="OnButtonClick">@ButtonText</AppButton>
+        </div>
+    }
 </div>
 
 @code {
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public string Description { get; set; } = "";
     [Parameter] public string Icon { get; set; } = "bi-info-circle";
+    [Parameter] public string? ButtonText { get; set; }
+    [Parameter] public EventCallback OnButtonClick { get; set; }
     [Parameter] public RenderFragment? ButtonContent { get; set; }
 }
