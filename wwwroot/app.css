@@ -1,3 +1,12 @@
+/* Local Fonts - Inter */
+@font-face {
+    font-family: 'Inter';
+    src: url('css/fonts/Inter-Variable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+}
+
 :root {
     /* Enterprise Color Palette - Slate & Indigo accents */
     --primary: #4f46e5;
