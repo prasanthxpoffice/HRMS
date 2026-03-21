@@ -15,5 +15,6 @@ namespace HRMS.Components.Shared.UI.Grid.Models
         public string? FieldName { get; set; }
         public RenderFragment<TItem>? Template { get; set; }
         public UiGridFilterType FilterType { get; set; } = UiGridFilterType.Text;
+        public bool Sortable { get; set; } = true;
     }
 }

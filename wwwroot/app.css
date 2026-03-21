@@ -36,10 +36,10 @@
     --text-muted: var(--slate-600);
 
     /* Typography - Enterprise Standard */
-    --font-size-base: 0.875rem; /* 14px */
-    --font-size-sm: 0.75rem;    /* 12px */
-    --font-size-lg: 1rem;       /* 16px */
-    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.5rem;     /* 24px */
 
     /* Spacing & Borders */
     --radius-md: 6px;
@@ -69,7 +69,7 @@ html, body {
 
 /* Sidebar - Professional & Narrow */
 .sidebar {
-    width: 240px;
+    width: 260px;
     background-color: var(--sidebar-bg);
     color: #fff;
     display: flex;
@@ -102,7 +102,7 @@ html, body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 0.6rem 0.75rem !important;
+    padding: 0.7rem 1rem !important;
     border-radius: var(--radius-md);
     color: var(--slate-300) !important;
     font-weight: 500;
@@ -135,7 +135,7 @@ main {
 }
 
 .top-bar {
-    height: 60px;
+    height: 64px;
     background: #fff;
     border-bottom: 1px solid var(--border-color);
     display: flex;
@@ -164,7 +164,7 @@ main {
 
 .table-hrms thead th {
     background: var(--slate-50);
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1rem;
     text-align: inherit;
     font-weight: 600;
     font-size: var(--font-size-sm);
@@ -175,13 +175,17 @@ main {
 }
 
 .table-hrms tbody td {
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1rem;
     border-bottom: 1px solid var(--slate-100);
     color: var(--slate-700);
 }
 
+.table-hrms tbody tr:nth-child(even) td {
+    background-color: #fcfdfe;
+}
+
 .table-hrms tbody tr:hover td {
-    background-color: #fafbfc;
+    background-color: #f5f8ff !important;
 }
 
 /* Page Headers */

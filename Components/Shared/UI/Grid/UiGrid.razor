@@ -16,7 +16,7 @@
                         }
                         @if (!string.IsNullOrEmpty(Title))
                         {
-                            <div class="small-label opacity-75 fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.05em;">@Title</div>
+                            <div class="small-label opacity-75 fw-bold text-uppercase" style="letter-spacing: 0.05em;">@Title</div>
                         }
                     </div>
                 </div>
@@ -41,7 +41,19 @@
                 <tr>
                     @foreach (var col in Columns)
                     {
-                        <th>@col.Title</th>
+                        <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "cursor-pointer user-select-none" : "")" 
+                            @onclick="() => HandleSort(col)">
+                            <div class="d-flex align-items-center gap-1">
+                                <span>@col.Title</span>
+                                @if (col.Sortable && !string.IsNullOrEmpty(col.FieldName))
+                                {
+                                    <div class="d-flex flex-column lh-1 opacity-50" style="font-size: 0.6rem;">
+                                        <i class="bi bi-caret-up-fill @(_sortField == col.FieldName && !_sortDescending ? "text-primary opacity-100" : "")"></i>
+                                        <i class="bi bi-caret-down-fill @(_sortField == col.FieldName && _sortDescending ? "text-primary opacity-100" : "")" style="margin-top: -3px;"></i>
+                                    </div>
+                                }
+                            </div>
+                        </th>
                     }
                 </tr>
                 <tr class="filter-row">
@@ -122,24 +134,66 @@
         </table>
     </div>
 
-    <div class="p-3 border-top">
-        <div class="row align-items-center">
-            <div class="col text-muted small">
+    <div class="px-3 py-2 border-top bg-light bg-opacity-10">
+        <div class="row align-items-center g-3">
+            <div class="col-12 col-md text-muted small text-center text-md-start">
                 @Res.GetString("ShowingXToYOfZ", (CurrentPage - 1) * PageSize + 1, Math.Min(CurrentPage * PageSize, TotalItems), TotalItems)
             </div>
-            <div class="col-auto">
-                <div class="d-flex gap-1">
-                    <button class="btn btn-sm btn-light border @(CurrentPage == 1 ? "disabled" : "")" @onclick="PrevPage">
-                        <UiIcon Name="chevron-left" CssClass="small" />
-                    </button>
-                    <button class="btn btn-sm btn-light border @(CurrentPage == (TotalPages == 0 ? 1 : TotalPages) ? "disabled" : "")" @onclick="NextPage">
-                        <UiIcon Name="chevron-right" CssClass="small" />
-                    </button>
+            
+            <div class="col-12 col-md-auto">
+                <div class="d-flex align-items-center justify-content-center gap-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="small text-muted">Rows:</span>
+                        <select class="form-select form-select-sm border-0 bg-white shadow-sm" style="width: 70px;" 
+                                value="@PageSize" @onchange="OnPageSizeChanged">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm mb-0 gap-1">
+                            <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                                <button class="page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(CurrentPage - 1)">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                            </li>
+                            
+                            @foreach (var p in GetPageNumbers())
+                            {
+                                if (p == -1)
+                                {
+                                    <li class="page-item disabled"><span class="page-link border-0 bg-transparent">...</span></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item @(CurrentPage == p ? "active" : "")">
+                                        <button class="page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(p)">@p</button>
+                                    </li>
+                                }
+                            }
+
+                            <li class="page-item @(CurrentPage == (TotalPages == 0 ? 1 : TotalPages) ? "disabled" : "")">
+                                <button class="page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(CurrentPage + 1)">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .cursor-pointer { cursor: pointer; }
+    .page-link { color: var(--slate-600); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+    .page-item.active .page-link { background-color: var(--primary) !important; color: white !important; }
+    .page-link:hover:not(.active) { background-color: var(--slate-100); }
+</style>
 
 @code {
     [Parameter] public string Title { get; set; } = "";
@@ -156,6 +210,8 @@
 
     private Dictionary<string, string> _columnFilters = new();
     private int CurrentPage { get; set; } = 1;
+    private string? _sortField;
+    private bool _sortDescending;
 
     private IEnumerable<TItem> FilteredItems
     {
@@ -203,6 +259,18 @@
                 }
             }
 
+            // Sorting
+            if (!string.IsNullOrEmpty(_sortField))
+            {
+                var col = Columns.FirstOrDefault(c => c.FieldName == _sortField);
+                if (col != null)
+                {
+                    data = _sortDescending 
+                        ? data.OrderByDescending(i => GetPropertyValue(i, _sortField))
+                        : data.OrderBy(i => GetPropertyValue(i, _sortField));
+                }
+            }
+
             return data;
         }
     }
@@ -214,8 +282,55 @@
         .Skip((CurrentPage - 1) * PageSize)
         .Take(PageSize);
 
-    private void NextPage() => CurrentPage = Math.Min(CurrentPage + 1, TotalPages);
-    private void PrevPage() => CurrentPage = Math.Max(CurrentPage - 1, 1);
+    private void GoToPage(int page) => CurrentPage = Math.Clamp(page, 1, TotalPages == 0 ? 1 : TotalPages);
+
+    private void HandleSort(UiGridColumn<TItem> col)
+    {
+        if (!col.Sortable || string.IsNullOrEmpty(col.FieldName)) return;
+
+        if (_sortField == col.FieldName)
+        {
+            if (!_sortDescending) _sortDescending = true;
+            else _sortField = null; // Reset sort
+        }
+        else
+        {
+            _sortField = col.FieldName;
+            _sortDescending = false;
+        }
+        StateHasChanged();
+    }
+
+    private void OnPageSizeChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var size))
+        {
+            PageSize = size;
+            CurrentPage = 1;
+        }
+    }
+
+    private List<int> GetPageNumbers()
+    {
+        var numbers = new List<int>();
+        if (TotalPages <= 7)
+        {
+            for (int i = 1; i <= TotalPages; i++) numbers.Add(i);
+        }
+        else
+        {
+            numbers.Add(1);
+            if (CurrentPage > 4) numbers.Add(-1);
+            
+            var start = Math.Max(2, CurrentPage - 2);
+            var end = Math.Min(TotalPages - 1, CurrentPage + 2);
+            for (int i = start; i <= end; i++) numbers.Add(i);
+
+            if (CurrentPage < TotalPages - 3) numbers.Add(-1);
+            numbers.Add(TotalPages);
+        }
+        return numbers;
+    }
 
     private string GetFilterValue(string field) => _columnFilters.TryGetValue(field, out var val) ? val : "";
 
@@ -239,10 +354,5 @@
     {
         if (string.IsNullOrEmpty(fieldName)) return null;
         return item?.GetType().GetProperty(fieldName)?.GetValue(item);
-    }
-
-    private string GetItemString(TItem item)
-    {
-        return string.Join(" ", item?.GetType().GetProperties().Select(p => p.GetValue(item)?.ToString() ?? "") ?? Array.Empty<string>());
     }
 }
