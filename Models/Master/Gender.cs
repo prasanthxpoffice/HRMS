@@ -1,8 +1,4 @@
-using HRMS.Models;
-
 namespace HRMS.Models.Master;
-
-[StoredProcedure(Get = "master.spGenderGet", Save = "master.spGenderSave")]
 public class Gender
 {
     public int GenderId { get; set; }

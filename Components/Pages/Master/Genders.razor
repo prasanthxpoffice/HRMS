@@ -1,6 +1,9 @@
 @page "/genders"
 @rendermode InteractiveServer
-@inherits BaseMasterPage<Gender>
+@using HRMS.Models.Master
+@using HRMS.Services
+@inject IDataService DataService
+@inject IResourceService Res
 
 <PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
 
@@ -20,6 +23,8 @@
 </Grid>
 
 @code {
+    private List<Gender> Items = new();
+
     private List<GridColumn<Gender>> columns => new()
     {
         new() { Title = Res.GetString("Id"), FieldName = "GenderId" },
@@ -27,6 +32,17 @@
         new() { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
         new() { Title = Res.GetString("Actions"), Template = RenderActions }
     };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        // Simple and direct: specify SP name and payload
+        Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
+    }
 
     private RenderFragment RenderActions(Gender item) => __builder => {
         <div class="d-flex gap-2">
@@ -37,5 +53,10 @@
 
     private void PrepareNew() { }
     private void Edit(Gender item) { }
-    private void Delete(Gender item) { }
+    private async Task Delete(Gender item) 
+    {
+        // Simple and direct: specify SP name and payload (ID inside the json object)
+        var res = await DataService.PostDataAsync("master.spGenderDelete", new { GenderId = item.GenderId });
+        if (res.Success) await LoadData();
+    }
 }
