@@ -8,13 +8,13 @@
 
 <PageTitle>@Res.GetString("PageTitle_Genders")</PageTitle>
 
-<PageHeader Title="@Res.GetString("Gender_Title")" 
-            Description="@Res.GetString("Gender_Description")" 
-            Icon="bi-gender-ambiguous"
-            ButtonText="@Res.GetString("Gender_Add")"
-            OnButtonClick="() => Prepare()" />
+<UiPageHeader Title="@Res.GetString("Gender_Title")" 
+              Description="@Res.GetString("Gender_Subtitle")" 
+              Icon="bi-gender-ambiguous"
+              ButtonText="@Res.GetString("AddGender")" 
+              OnButtonClick="() => Prepare()" />
 
-<Grid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns" />
+<UiGrid TItem="Gender" Title="@Res.GetString("Gender_GridTitle")" Items="Items" Columns="columns" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.GetString("Gender_Add") : Res.GetString("Edit"))" OnClose="CloseModal">
     <Body>
@@ -28,8 +28,8 @@
         </EditForm>
     </Body>
     <Footer>
-        <AppButton Type="light" OnClick="CloseModal">@Res.GetString("Cancel")</AppButton>
-        <AppButton IsSubmit="true" form="genderForm">@Res.GetString("Save")</AppButton>
+        <UiButton Type="light" OnClick="CloseModal">@Res.GetString("Cancel")</UiButton>
+        <UiButton IsSubmit="true" form="genderForm">@Res.GetString("Save")</UiButton>
     </Footer>
 </UiModal>
 
@@ -49,19 +49,15 @@
         Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
     }
     
-    private List<GridColumn<Gender>> columns => new()
+    private List<UiGridColumn<Gender>> columns => new()
     {
-        new() { Title = Res.GetString("Id"), FieldName = "GenderId" },
-        new() { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
-        new() { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
-        new() { Title = Res.GetString("Actions"), Template = RenderActions }
-    };
-
-    private RenderFragment RenderActions(Gender item) => __builder => {
-        <GridActions OnEdit="() => Prepare(item)" 
-                     OnDelete="() => Delete(item)" 
-                     EditTitle="@Res.GetString("Edit")" 
-                     DeleteTitle="@Res.GetString("Delete")" />
+        new UiGridColumn<Gender> { Title = Res.GetString("Id"), FieldName = "GenderId" },
+        new UiGridColumn<Gender> { Title = Res.GetString("NameEn"), FieldName = "GenderNameEn" },
+        new UiGridColumn<Gender> { Title = Res.GetString("NameAr"), FieldName = "GenderNameAr" },
+        new UiGridColumn<Gender> { Title = Res.GetString("Actions"), Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+                                                                                        OnDelete="() => Delete(item)" 
+                                                                                        EditTitle="@Res.GetString("Edit")" 
+                                                                                        DeleteTitle="@Res.GetString("Delete")" /> }
     };
 
 

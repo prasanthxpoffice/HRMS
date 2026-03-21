@@ -87,7 +87,7 @@
 @code {
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public List<TItem> Items { get; set; } = new();
-    [Parameter] public List<GridColumn<TItem>> Columns { get; set; } = new();
+    [Parameter] public List<UiGridColumn<TItem>> Columns { get; set; } = new();
     [Parameter] public RenderFragment? HeaderContent { get; set; }
     [Parameter] public int PageSize { get; set; } = 10;
 
