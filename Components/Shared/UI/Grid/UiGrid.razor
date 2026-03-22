@@ -42,14 +42,15 @@
                     @foreach (var col in Columns)
                     {
                         <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "cursor-pointer user-select-none" : "")" 
+                            style="@(_sortField == col.FieldName ? "background-color: #f0f7ff;" : "")"
                             @onclick="() => HandleSort(col)">
                             <div class="d-flex align-items-center gap-1">
                                 <span>@col.Title</span>
                                 @if (col.Sortable && !string.IsNullOrEmpty(col.FieldName))
                                 {
-                                    <div class="d-flex flex-column lh-1 opacity-50" style="font-size: 0.6rem;">
-                                        <i class="bi bi-caret-up-fill @(_sortField == col.FieldName && !_sortDescending ? "text-primary opacity-100" : "")"></i>
-                                        <i class="bi bi-caret-down-fill @(_sortField == col.FieldName && _sortDescending ? "text-primary opacity-100" : "")" style="margin-top: -3px;"></i>
+                                    <div class="d-flex flex-column lh-1" style="font-size: 0.6rem;">
+                                        <i class="bi bi-caret-up-fill @(_sortField == col.FieldName && !_sortDescending ? "text-primary" : "text-muted opacity-50")"></i>
+                                        <i class="bi bi-caret-down-fill @(_sortField == col.FieldName && _sortDescending ? "text-primary" : "text-muted opacity-50")" style="margin-top: -3px;"></i>
                                     </div>
                                 }
                             </div>

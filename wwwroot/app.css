@@ -163,21 +163,33 @@ main {
 }
 
 .table-hrms thead th {
-    background: var(--slate-50);
-    padding: 0.85rem 1rem;
+    background: #f8fafc;
+    padding: 0.5rem 1rem;
     text-align: inherit;
-    font-weight: 600;
+    font-weight: 700;
     font-size: var(--font-size-sm);
     color: var(--slate-600);
     text-transform: uppercase;
-    letter-spacing: 0.025em;
+    letter-spacing: 0.05em;
+    border-top: 3px solid var(--primary);
     border-bottom: 1px solid var(--border-color);
+    border-inline-end: 1px solid var(--slate-100);
+    transition: background-color 0.2s;
+}
+
+.table-hrms thead th:last-child {
+    border-inline-end: none;
 }
 
 .table-hrms tbody td {
-    padding: 0.85rem 1rem;
+    padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--slate-100);
+    border-inline-end: 1px solid var(--slate-100);
     color: var(--slate-700);
+}
+
+.table-hrms tbody td:last-child {
+    border-inline-end: none;
 }
 
 .table-hrms tbody tr:nth-child(even) td {
