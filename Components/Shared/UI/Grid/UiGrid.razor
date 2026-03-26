@@ -2,6 +2,8 @@
 @typeparam TItem
 @using System.Reflection
 @using System.Globalization
+@inject IDataService DataService
+@inject INotificationService NotificationService
 
 <div class="card-hrms overflow-hidden">
     @if (ShowHeader)
@@ -22,6 +24,12 @@
                 </div>
                 <div class="col-auto">
                     <div class="d-flex gap-2 align-items-center">
+                        @if (ShowDeleteButton && SelectedItems.Any())
+                        {
+                            <UiButton Type="danger" Icon="bi-trash3" OnClick="HandleDeleteSelected" CssClass="btn-sm">
+                                @Res.DeleteSelected (@SelectedItems.Count)
+                            </UiButton>
+                        }
                         @if (ShowAddButton)
                         {
                             <UiButton Icon="bi-plus-lg" OnClick="OnAddClick" CssClass="btn-sm">
@@ -39,6 +47,14 @@
         <table class="table-hrms">
             <thead>
                 <tr>
+                    @if (ShowSelection)
+                    {
+                        <th style="width: 40px; text-align: center;">
+                            <input type="checkbox" class="form-check-input" 
+                                   checked="@IsAllSelected" 
+                                   @onchange="ToggleSelectAll" />
+                        </th>
+                    }
                     @foreach (var col in Columns)
                     {
                         <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "cursor-pointer user-select-none" : "")" 
@@ -58,6 +74,10 @@
                     }
                 </tr>
                 <tr class="filter-row">
+                    @if (ShowSelection)
+                    {
+                        <td></td>
+                    }
                     @foreach (var col in Columns)
                     {
                         <td>
@@ -98,7 +118,15 @@
                 {
                     @foreach (var item in PagedItems)
                     {
-                        <tr>
+                        <tr class="@(SelectedItems.Contains(item) ? "table-active-selection" : "")">
+                            @if (ShowSelection)
+                            {
+                                <td style="text-align: center;">
+                                    <input type="checkbox" class="form-check-input" 
+                                           checked="@SelectedItems.Contains(item)" 
+                                           @onchange="() => ToggleSelection(item)" />
+                                </td>
+                            }
                             @foreach (var col in Columns)
                             {
                                 <td>
@@ -126,7 +154,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="@Columns.Count" class="text-center py-5">
+                        <td colspan="@(Columns.Count + (ShowSelection ? 1 : 0))" class="text-center py-5">
                             <span class="text-muted small">@Res.NoRecordsFound</span>
                         </td>
                     </tr>
@@ -194,6 +222,14 @@
     .page-link { color: var(--slate-600); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
     .page-item.active .page-link { background-color: var(--primary) !important; color: white !important; }
     .page-link:hover:not(.active) { background-color: var(--slate-100); }
+    
+    /* Selection Highlight */
+    .table-active-selection {
+        background-color: #f8fafc !important; /* Soft Slate */
+    }
+    .table-active-selection td {
+        background-color: #f8fafc !important;
+    }
 </style>
 
 @code {
@@ -208,6 +244,16 @@
     [Parameter] public bool ShowAddButton { get; set; } = false;
     [Parameter] public string? AddButtonText { get; set; }
     [Parameter] public EventCallback OnAddClick { get; set; }
+
+    [Parameter] public bool ShowSelection { get; set; } = false;
+    [Parameter] public bool ShowDeleteButton { get; set; } = false;
+    [Parameter] public HashSet<TItem> SelectedItems { get; set; } = new();
+    [Parameter] public EventCallback<HashSet<TItem>> SelectedItemsChanged { get; set; }
+    [Parameter] public EventCallback<HashSet<TItem>> OnDeleteSelected { get; set; }
+    
+    [Parameter] public string? DeleteSpName { get; set; }
+    [Parameter] public string? IdFieldName { get; set; }
+    [Parameter] public EventCallback OnDataChanged { get; set; }
 
     private Dictionary<string, string> _columnFilters = new();
     private int CurrentPage { get; set; } = 1;
@@ -302,6 +348,26 @@
         StateHasChanged();
     }
 
+    private bool IsAllSelected => PagedItems.Any() && PagedItems.All(i => SelectedItems.Contains(i));
+
+    private async Task ToggleSelectAll(ChangeEventArgs e)
+    {
+        bool isChecked = (bool)(e.Value ?? false);
+        foreach (var item in PagedItems)
+        {
+            if (isChecked) SelectedItems.Add(item);
+            else SelectedItems.Remove(item);
+        }
+        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+    }
+
+    private async Task ToggleSelection(TItem item)
+    {
+        if (SelectedItems.Contains(item)) SelectedItems.Remove(item);
+        else SelectedItems.Add(item);
+        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+    }
+
     private void OnPageSizeChanged(ChangeEventArgs e)
     {
         if (int.TryParse(e.Value?.ToString(), out var size))
@@ -355,5 +421,38 @@
     {
         if (string.IsNullOrEmpty(fieldName)) return null;
         return item?.GetType().GetProperty(fieldName)?.GetValue(item);
+    }
+
+    private async Task HandleDeleteSelected()
+    {
+        if (string.IsNullOrEmpty(DeleteSpName) || string.IsNullOrEmpty(IdFieldName))
+        {
+            await OnDeleteSelected.InvokeAsync(SelectedItems);
+            return;
+        }
+
+        if (SelectedItems == null || !SelectedItems.Any()) return;
+
+        int successCount = 0;
+        int errorCount = 0;
+
+        foreach (var item in SelectedItems.ToList())
+        {
+            var idVal = GetPropertyValue(item, IdFieldName);
+            if (idVal == null) continue;
+
+            var param = new Dictionary<string, object> { { IdFieldName, idVal } };
+            var res = await DataService.PostDataAsync(DeleteSpName, param, showNotification: false);
+            
+            if (res.Success) successCount++;
+            else errorCount++;
+        }
+
+        if (successCount > 0) NotificationService.Notify(Res.GetString("BulkDeleteSuccess", successCount), NotificationType.Success);
+        if (errorCount > 0) NotificationService.Notify(Res.GetString("BulkDeleteError", errorCount), NotificationType.Error);
+
+        SelectedItems.Clear();
+        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+        await OnDataChanged.InvokeAsync();
     }
 }

@@ -37,4 +37,8 @@ public interface IResourceService
     string Settings => GetString("Settings");
     string SystemDashboard => GetString("SystemDashboard");
     string DashboardDescription => GetString("DashboardDescription");
+    
+    string BulkDeleteSuccess => GetString("BulkDeleteSuccess");
+    string BulkDeleteError => GetString("BulkDeleteError");
+    string DeleteSelected => GetString("DeleteSelected");
 }

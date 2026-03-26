@@ -3,14 +3,18 @@
 @rendermode InteractiveServer
 @inject IDataService DataService
 
-
 <UiGrid TItem="Gender" 
         Title="@Res.Gender_Title" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
         AddButtonText="@Res.Gender_Add" 
-        OnAddClick="() => Prepare()" />
+        OnAddClick="() => Prepare()"
+        ShowSelection="true"
+        ShowDeleteButton="true"
+        DeleteSpName="master.spGenderDelete"
+        IdFieldName="GenderId"
+        OnDataChanged="LoadData" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
     <Body>
@@ -53,9 +57,9 @@
         new UiGridColumn<Gender> { Title = Res.NameAr, FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<Gender> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
         new UiGridColumn<Gender> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
-                                                                                          OnDelete="() => Delete(item)" 
-                                                                                          EditTitle="@Res.Edit" 
-                                                                                          DeleteTitle="@Res.Delete" /> }
+                                                                                           OnDelete="() => Delete(item)" 
+                                                                                           EditTitle="@Res.Edit" 
+                                                                                           DeleteTitle="@Res.Delete" /> }
     };
 
 

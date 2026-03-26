@@ -23,11 +23,11 @@ namespace HRMS.Services
             return response?.Data ?? new();
         }
 
-        public async Task<DbResponse<object>> PostDataAsync(string spName, object json)
+        public async Task<DbResponse<object>> PostDataAsync(string spName, object json, bool showNotification = true)
         {
             var res = await _db.ExecuteQueryAsync<object>(spName, json, CurrentEmployeeId);
             
-            if (res != null)
+            if (res != null && showNotification)
             {
                 if (!string.IsNullOrEmpty(res.Message))
                 {
