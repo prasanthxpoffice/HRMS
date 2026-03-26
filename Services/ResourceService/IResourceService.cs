@@ -41,4 +41,8 @@ public interface IResourceService
     string BulkDeleteSuccess => GetString("BulkDeleteSuccess");
     string BulkDeleteError => GetString("BulkDeleteError");
     string DeleteSelected => GetString("DeleteSelected");
+    
+    string DeleteConfirmTitle => GetString("DeleteConfirmTitle");
+    string DeleteConfirmMessage => GetString("DeleteConfirmMessage");
+    string BulkDeleteConfirmMessage => GetString("BulkDeleteConfirmMessage");
 }

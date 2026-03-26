@@ -114,7 +114,18 @@
                 </tr>
             </thead>
             <tbody>
-                @if (PagedItems != null && PagedItems.Any())
+                @if (Loading)
+                {
+                    <tr>
+                        <td colspan="@(Columns.Count + (ShowSelection ? 1 : 0))" class="text-center py-5">
+                            <div class="spinner-border text-primary opacity-50" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="mt-2 text-muted small">@Res.Search...</div>
+                        </td>
+                    </tr>
+                }
+                else if (PagedItems != null && PagedItems.Any())
                 {
                     @foreach (var item in PagedItems)
                     {
@@ -240,6 +251,7 @@
     [Parameter] public RenderFragment? HeaderContent { get; set; }
     [Parameter] public int PageSize { get; set; } = 10;
     [Parameter] public bool ShowHeader { get; set; } = true;
+    [Parameter] public bool Loading { get; set; } = false;
     
     [Parameter] public bool ShowAddButton { get; set; } = false;
     [Parameter] public string? AddButtonText { get; set; }
@@ -425,13 +437,54 @@
 
     private async Task HandleDeleteSelected()
     {
+        if (SelectedItems == null || !SelectedItems.Any()) return;
+        
+        _itemPendingDelete = default;
+        _showConfirmModal = true;
+    }
+
+    private bool _showConfirmModal = false;
+    private TItem? _itemPendingDelete;
+
+    private async Task ConfirmDelete()
+    {
+        _showConfirmModal = false;
+
+        if (_itemPendingDelete != null)
+        {
+            await ProcessSingleDelete(_itemPendingDelete);
+        }
+        else
+        {
+            await ProcessBulkDelete();
+        }
+    }
+
+    private async Task ProcessSingleDelete(TItem item)
+    {
+        if (string.IsNullOrEmpty(DeleteSpName) || string.IsNullOrEmpty(IdFieldName)) return;
+
+        var idVal = GetPropertyValue(item, IdFieldName);
+        if (idVal == null) return;
+
+        var param = new Dictionary<string, object> { { IdFieldName, idVal } };
+        var res = await DataService.PostDataAsync(DeleteSpName, param);
+        
+        if (res.Success)
+        {
+            SelectedItems.Remove(item);
+            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+            await OnDataChanged.InvokeAsync();
+        }
+    }
+
+    private async Task ProcessBulkDelete()
+    {
         if (string.IsNullOrEmpty(DeleteSpName) || string.IsNullOrEmpty(IdFieldName))
         {
             await OnDeleteSelected.InvokeAsync(SelectedItems);
             return;
         }
-
-        if (SelectedItems == null || !SelectedItems.Any()) return;
 
         int successCount = 0;
         int errorCount = 0;
@@ -455,4 +508,36 @@
         await SelectedItemsChanged.InvokeAsync(SelectedItems);
         await OnDataChanged.InvokeAsync();
     }
+
+    // Public method for external components (like UiGridActions) to request a confirmable delete
+    public void RequestDelete(TItem item)
+    {
+        _itemPendingDelete = item;
+        _showConfirmModal = true;
+        StateHasChanged();
+    }
 }
+
+<UiModal Show="_showConfirmModal" Title="@Res.DeleteConfirmTitle" OnClose="() => _showConfirmModal = false">
+    <Body>
+        <div class="text-center py-3">
+            <div class="mb-3">
+                <UiIcon Name="bi-exclamation-triangle" CssClass="text-warning display-4" />
+            </div>
+            <p class="mb-0">
+                @if (_itemPendingDelete != null)
+                {
+                    @Res.DeleteConfirmMessage
+                }
+                else
+                {
+                    @Res.GetString("BulkDeleteConfirmMessage", SelectedItems.Count)
+                }
+            </p>
+        </div>
+    </Body>
+    <Footer>
+        <UiButton Type="light" OnClick="() => _showConfirmModal = false">@Res.Cancel</UiButton>
+        <UiButton Type="danger" OnClick="ConfirmDelete">@Res.Delete</UiButton>
+    </Footer>
+</UiModal>

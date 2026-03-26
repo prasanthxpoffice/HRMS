@@ -3,7 +3,8 @@
 @rendermode InteractiveServer
 @inject IDataService DataService
 
-<UiGrid TItem="Gender" 
+<UiGrid @ref="grid"
+        TItem="Gender" 
         Title="@Res.Gender_Title" 
         Items="Items" 
         Columns="columns" 
@@ -14,7 +15,8 @@
         ShowDeleteButton="true"
         DeleteSpName="master.spGenderDelete"
         IdFieldName="GenderId"
-        OnDataChanged="LoadData" />
+        OnDataChanged="LoadData"
+        Loading="_isLoading" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
     <Body>
@@ -28,8 +30,8 @@
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="genderForm">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="_isSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="genderForm" Loading="_isSaving">@Res.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -37,7 +39,10 @@
     private List<Gender> Items = new();
     private Gender CurrentItem = new();
     private bool ShowModal = false;
+    private bool _isLoading = false;
+    private bool _isSaving = false;
     private void CloseModal() => ShowModal = false;
+    private UiGrid<Gender> grid = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -47,7 +52,15 @@
 
     private async Task LoadData()
     {
-        Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
+        try 
+        {
+            _isLoading = true;
+            Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
     
     private List<UiGridColumn<Gender>> columns => new()
@@ -57,9 +70,7 @@
         new UiGridColumn<Gender> { Title = Res.NameAr, FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<Gender> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
         new UiGridColumn<Gender> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
-                                                                                           OnDelete="() => Delete(item)" 
-                                                                                           EditTitle="@Res.Edit" 
-                                                                                           DeleteTitle="@Res.Delete" /> }
+                                                                                           OnDelete="() => grid.RequestDelete(item)" /> }
     };
 
 
@@ -79,17 +90,19 @@
 
     private async Task Save()
     {
-        var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
-        if (res.Success)
+        try
         {
-            ShowModal = false;
-            await LoadData();
+            _isSaving = true;
+            var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
+            if (res.Success)
+            {
+                ShowModal = false;
+                await LoadData();
+            }
         }
-    }
-
-    private async Task Delete(Gender item)
-    {
-        var res = await DataService.PostDataAsync("master.spGenderDelete", new { GenderId = item.GenderId });
-        if (res.Success) await LoadData();
+        finally
+        {
+            _isSaving = false;
+        }
     }
 }
