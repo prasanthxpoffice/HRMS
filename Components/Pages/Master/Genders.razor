@@ -16,7 +16,7 @@
         DeleteSpName="master.spGenderDelete"
         IdFieldName="GenderId"
         OnDataChanged="LoadData"
-        Loading="_isLoading" />
+        Loading="IsLoading" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
     <Body>
@@ -30,8 +30,8 @@
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="_isSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="genderForm" Loading="_isSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="genderForm" Loading="IsSaving">@Res.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -39,8 +39,6 @@
     private List<Gender> Items = new();
     private Gender CurrentItem = new();
     private bool ShowModal = false;
-    private bool _isLoading = false;
-    private bool _isSaving = false;
     private void CloseModal() => ShowModal = false;
     private UiGrid<Gender> grid = default!;
 
@@ -50,18 +48,10 @@
         await LoadData();
     }
 
-    private async Task LoadData()
+    private Task LoadData() => LoadAsync(async () => 
     {
-        try 
-        {
-            _isLoading = true;
-            Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-    }
+        Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
+    });
     
     private List<UiGridColumn<Gender>> columns => new()
     {
@@ -72,7 +62,6 @@
         new UiGridColumn<Gender> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                            OnDelete="() => grid.RequestDelete(item)" /> }
     };
-
 
     private async Task Prepare(Gender? item = null)
     {
@@ -88,21 +77,13 @@
         ShowModal = true;
     }  
 
-    private async Task Save()
+    private Task Save() => SaveAsync(async () => 
     {
-        try
+        var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
+        if (res.Success)
         {
-            _isSaving = true;
-            var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
-            if (res.Success)
-            {
-                ShowModal = false;
-                await LoadData();
-            }
+            ShowModal = false;
+            await LoadData();
         }
-        finally
-        {
-            _isSaving = false;
-        }
-    }
+    });
 }
