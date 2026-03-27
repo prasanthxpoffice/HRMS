@@ -403,3 +403,38 @@ main {
 [dir="rtl"] .modal-footer > * {
     margin: 0.25rem !important;
 }
+
+/* --- Generic UI Grid Global Styles --- */
+.ui-grid-cursor-pointer { 
+    cursor: pointer; 
+}
+
+.ui-grid-page-link { 
+    color: var(--slate-600) !important; 
+    width: 32px !important; 
+    height: 32px !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important; 
+    transition: all 0.2s ease;
+}
+
+.page-item.active .ui-grid-page-link { 
+    background-color: var(--primary) !important; 
+    color: white !important; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.ui-grid-page-link:hover:not(.active) { 
+    background-color: var(--slate-100) !important; 
+    color: var(--primary) !important;
+}
+
+/* Selection Highlight */
+.ui-grid-table-selection {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+.ui-grid-table-selection td {
+    background-color: transparent !important;
+}

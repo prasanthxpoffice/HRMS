@@ -56,7 +56,7 @@
                     }
                     @foreach (var col in Columns)
                     {
-                        <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "cursor-pointer user-select-none" : "")" 
+                        <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "ui-grid-cursor-pointer user-select-none" : "")" 
                             style="@(_sortField == col.FieldName ? "background-color: #f0f7ff;" : "")"
                             @onclick="() => HandleSort(col)">
                             <div class="d-flex align-items-center gap-1">
@@ -128,7 +128,7 @@
                 {
                     @foreach (var item in PagedItems)
                     {
-                        <tr class="@(SelectedItems.Contains(item) ? "table-active-selection" : "")">
+                        <tr class="@(SelectedItems.Contains(item) ? "ui-grid-table-selection" : "")">
                             @if (ShowSelection)
                             {
                                 <td style="text-align: center;">
@@ -195,7 +195,7 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination pagination-sm mb-0 gap-1">
                             <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
-                                <button class="page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(CurrentPage - 1)" 
+                                <button class="page-link ui-grid-page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(CurrentPage - 1)" 
                                         aria-label="@Res.Previous">
                                     <i class="bi @(Lang.IsRtl ? "bi-chevron-right" : "bi-chevron-left")"></i>
                                 </button>
@@ -205,18 +205,18 @@
                             {
                                 if (p == -1)
                                 {
-                                    <li class="page-item disabled"><span class="page-link border-0 bg-transparent">...</span></li>
+                                    <li class="page-item disabled"><span class="page-link ui-grid-page-link border-0 bg-transparent">...</span></li>
                                 }
                                 else
                                 {
                                     <li class="page-item @(CurrentPage == p ? "active" : "")">
-                                        <button class="page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(p)">@p</button>
+                                        <button class="page-link ui-grid-page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(p)">@p</button>
                                     </li>
                                 }
                             }
 
                             <li class="page-item @(CurrentPage == (TotalPages == 0 ? 1 : TotalPages) ? "disabled" : "")">
-                                <button class="page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(CurrentPage + 1)"
+                                <button class="page-link ui-grid-page-link border-0 rounded shadow-sm" @onclick="() => GoToPage(CurrentPage + 1)"
                                         aria-label="@Res.Next">
                                     <i class="bi @(Lang.IsRtl ? "bi-chevron-left" : "bi-chevron-right")"></i>
                                 </button>
@@ -253,17 +253,4 @@
     </Footer>
 </UiModal>
 
-<style>
-    .cursor-pointer { cursor: pointer; }
-    .page-link { color: var(--slate-600); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
-    .page-item.active .page-link { background-color: var(--primary) !important; color: white !important; }
-    .page-link:hover:not(.active) { background-color: var(--slate-100); }
-    
-    /* Selection Highlight */
-    .table-active-selection {
-        background-color: #f8fafc !important; /* Soft Slate */
-    }
-    .table-active-selection td {
-        background-color: #f8fafc !important;
-    }
-</style>
+
