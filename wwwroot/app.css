@@ -60,6 +60,37 @@ html, body {
     line-height: 1.5;
     height: 100%;
     margin: 0;
+    height: 100%;
+}
+
+/* --- Premium Scrollbar Customization --- */
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 2px solid transparent; /* Padding effect */
+    background-clip: content-box;
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
+    background-clip: content-box;
 }
 
 .page {
@@ -309,11 +340,11 @@ main {
 /* Notification System */
 .notification-container {
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     inset-inline-end: 20px;
     z-index: 9999;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* Newest on top if stacking at bottom */
     gap: 10px;
     pointer-events: none;
 }
@@ -328,7 +359,7 @@ main {
     display: flex;
     align-items: center;
     gap: 12px;
-    animation: slideIn 0.3s ease-out;
+    animation: slideUp 0.3s ease-out;
     pointer-events: auto;
 }
 
@@ -337,9 +368,9 @@ main {
 .toast-info { background: #3b82f6; border-left: 4px solid #1e40af; }
 .toast-warning { background: #f59e0b; border-left: 4px solid #92400e; }
 
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+@keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* Grid Filter Row Styles */
