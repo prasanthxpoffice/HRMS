@@ -357,3 +357,24 @@ main {
     font-size: 0.75rem !important;
     height: auto !important;
 }
+
+/* RTL Specific Overrides for standard Bootstrap components */
+[dir="rtl"] .modal-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    flex-direction: row !important;
+}
+
+[dir="rtl"] .modal-header .btn-close {
+    margin-left: -0.5rem !important; 
+    margin-right: auto !important;
+}
+
+[dir="rtl"] .modal-footer {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+[dir="rtl"] .modal-footer > * {
+    margin: 0.25rem !important;
+}

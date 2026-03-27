@@ -4,7 +4,7 @@
 @if (Show)
 {
     <div class="modal-backdrop fade show"></div>
-    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" dir="@(Lang.IsRtl ? "rtl" : "ltr")">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content card-hrms border-0 shadow-lg">
                 <div class="modal-header border-bottom p-3">

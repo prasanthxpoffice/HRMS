@@ -5,7 +5,7 @@
 
 <UiGrid @ref="grid"
         TItem="Gender" 
-        Title="@Res.Gender_Title" 
+        Title="@Res.Gender_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
@@ -60,7 +60,7 @@
         new UiGridColumn<Gender> { Title = Res.NameAr, FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<Gender> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
         new UiGridColumn<Gender> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
-                                                                                           OnDelete="() => grid.RequestDelete(item)" /> }
+                                                                                            OnDelete="() => grid.RequestDelete(item)" /> }
     };
 
     private async Task Prepare(Gender? item = null)

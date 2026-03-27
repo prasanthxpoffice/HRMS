@@ -69,7 +69,7 @@
   <data name="NameAr" xml:space="preserve"><value>الاسم (AR)</value></data>
   <data name="Gender_Title" xml:space="preserve"><value>إدارة الجنس</value></data>
   <data name="Gender_Description" xml:space="preserve"><value>تعريف سمات الهوية الشخصية لسجلات الموظفين.</value></data>
-  <data name="Gender_GridTitle" xml:space="preserve"><value>سمات الهوية</value></data>
+  <data name="Gender_GridTitle" xml:space="preserve"><value>الجنس</value></data>
   <data name="Gender_Add" xml:space="preserve"><value>إضافة جنس</value></data>
   <data name="PageTitle_Home" xml:space="preserve"><value>الرئيسية</value></data>
   <data name="PageTitle_Genders" xml:space="preserve"><value>الأجناس</value></data>
@@ -89,5 +89,25 @@
   <data name="ManageGenders" xml:space="preserve"><value>إدارة الأجناس</value></data>
   <data name="Settings" xml:space="preserve"><value>الإعدادات</value></data>
   <data name="SystemDashboard" xml:space="preserve"><value>لوحة تحكم نظام الموارد البشرية</value></data>
-  <data name="DashboardDescription" xml:space="preserve"><value>الوصول إلى جميع أدوات إدارة الموظفين، سمات الهوية، والوحدات التنظيمية من منصة مركزية واحدة.</value></data>
+  <data name="DashboardDescription" xml:space="preserve">
+    <value>الوصول إلى جميع أدوات إدارة الموظفين، سمات الهوية، والوحدات التنظيمية من منصة مركزية واحدة.</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>حذف المحدد</value>
+  </data>
+  <data name="DeleteConfirmTitle" xml:space="preserve">
+    <value>تأكيد الحذف</value>
+  </data>
+  <data name="DeleteConfirmMessage" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف هذا السجل؟</value>
+  </data>
+  <data name="BulkDeleteConfirmMessage" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف {0} من السجلات المختارة؟</value>
+  </data>
+  <data name="BulkDeleteSuccess" xml:space="preserve">
+    <value>تم حذف {0} من السجلات بنجاح.</value>
+  </data>
+  <data name="BulkDeleteError" xml:space="preserve">
+    <value>فشل حذف {0} من السجلات.</value>
+  </data>
 </root>
