@@ -39,7 +39,7 @@ public class UserService : IUserService
 
     private void LoadHardcodedData()
     {
-        _currentUser = new User { UserId = 1, EmployeeId = 1001, UserName = "DOMAIN\\admin" };
+        _currentUser = new User { UserId = 1, EmployeeId = 1001, UserName = "Admin" };
 
         _roles = new List<Role>
         {

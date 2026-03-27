@@ -10,14 +10,16 @@ namespace HRMS.Services
     {
         private readonly string _connectionString;
         private readonly LanguageService _languageService;
+        private readonly IUserService _userService;
 
-        public DatabaseService(IConfiguration configuration, LanguageService languageService)
+        public DatabaseService(IConfiguration configuration, LanguageService languageService, IUserService userService)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
             _languageService = languageService;
+            _userService = userService;
         }
 
-        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int employeeId = 1, string? language = null)
+        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null)
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -29,10 +31,11 @@ namespace HRMS.Services
                 using IDbConnection db = new SqlConnection(_connectionString);
                 
                 var lang = language ?? _languageService.CurrentLanguage;
+                var finalEmployeeId = employeeId ?? _userService.CurrentUser?.EmployeeId ?? 1;
                 var jsonInput = jsonParams != null ? JsonSerializer.Serialize(jsonParams) : "{}";
 
                 var jsonResult = await db.QueryFirstOrDefaultAsync<string>(procedureName, 
-                    new { EmployeeId = employeeId, Json = jsonInput, Language = lang }, 
+                    new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang }, 
                     commandType: CommandType.StoredProcedure);
 
                 if (string.IsNullOrEmpty(jsonResult))
