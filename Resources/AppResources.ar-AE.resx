@@ -110,10 +110,11 @@
   <data name="Error_TooLong" xml:space="preserve"><value>{0} طويل جداً</value></data>
   <data name="Gender_NameEn_Required" xml:space="preserve"><value>الاسم (EN) مطلوب</value></data>
   <data name="Gender_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
-  <data name="BulkDeleteSuccess" xml:space="preserve">
-    <value>تم حذف {0} من السجلات بنجاح.</value>
-  </data>
-  <data name="BulkDeleteError" xml:space="preserve">
-    <value>فشل حذف {0} من السجلات.</value>
-  </data>
+  <data name="SystemError" xml:space="preserve"><value>خطأ في النظام</value></data>
+  <data name="ViewDetails" xml:space="preserve"><value>عرض التفاصيل الفنية</value></data>
+  <data name="HideDetails" xml:space="preserve"><value>إخفاء التفاصيل</value></data>
+  <data name="UnexpectedError" xml:space="preserve"><value>حدث خطأ غير متوقع</value></data>
+  <data name="UnexpectedErrorDesc" xml:space="preserve"><value>الرجاء تحديث الصفحة أو المحاولة مرة أخرى لاحقاً.</value></data>
+  <data name="Reload" xml:space="preserve"><value>تحديث</value></data>
+  <data name="DatabaseError" xml:space="preserve"><value>حدث خطأ في قاعدة البيانات</value></data>
 </root>

@@ -55,12 +55,20 @@
         </div>
 
         <div class="content">
-            @Body
+            <ErrorBoundary>
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <UiErrorContent Exception="ex" />
+                </ErrorContent>
+            </ErrorBoundary>
         </div>
     </main>
 </div>
 
 <UiNotification />
+<UiErrorModal />
 
 @code {
     protected override async Task OnInitializedAsync()

@@ -56,7 +56,7 @@ public partial class UiGrid<TItem> : UiBase
     {
         get
         {
-            var data = Items.AsEnumerable();
+            var data = (Items ?? new List<TItem>()).AsEnumerable();
 
             // Column filters
             foreach (var filter in _columnFilters)
@@ -249,7 +249,7 @@ public partial class UiGrid<TItem> : UiBase
         var param = new Dictionary<string, object> { { IdFieldName, idVal } };
         var res = await DataService.PostDataAsync(DeleteSpName, param);
         
-        if (res.Success)
+        if (res.Success == 1)
         {
             SelectedItems.Remove(item);
             await SelectedItemsChanged.InvokeAsync(SelectedItems);
@@ -276,7 +276,7 @@ public partial class UiGrid<TItem> : UiBase
             var param = new Dictionary<string, object> { { IdFieldName, idVal } };
             var res = await DataService.PostDataAsync(DeleteSpName, param, showNotification: false);
             
-            if (res.Success) successCount++;
+            if (res.Success == 1) successCount++;
             else errorCount++;
         }
 

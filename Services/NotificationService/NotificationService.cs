@@ -8,4 +8,14 @@ public class NotificationService : INotificationService
     {
         OnMessage?.Invoke(new NotificationMessage { Message = message, Type = type });
     }
+
+    public void NotifyError(string message, string? details = null)
+    {
+        OnMessage?.Invoke(new NotificationMessage 
+        { 
+            Message = message, 
+            Details = details, 
+            Type = NotificationType.SystemError 
+        });
+    }
 }

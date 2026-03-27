@@ -23,7 +23,7 @@ namespace HRMS.Services
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
-                return new DbResponse<T> { Success = false, Message = "Connection string not configured." };
+                return new DbResponse<T> { Success = -1, Message = "Connection string not configured." };
             }
 
             try
@@ -41,15 +41,15 @@ namespace HRMS.Services
 
                 if (string.IsNullOrEmpty(jsonResult))
                 {
-                    return new DbResponse<T> { Success = false, Message = "No response from database." };
+                    return new DbResponse<T> { Success = -1, Message = "No response from database." };
                 }
 
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                return JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = false };
+                return JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = -1 };
             }
             catch (Exception ex)
             {
-                return new DbResponse<T> { Success = false, Message = ex.Message };
+                return new DbResponse<T> { Success = -1, Message = ex.Message };
             }
         }
     }

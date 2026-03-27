@@ -77,13 +77,13 @@
         ShowModal = true;
     }  
 
-    private Task Save() => SaveAsync(async () => 
+    private async Task Save()
     {
         var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
-        if (res.Success)
+        if (res.Success == 1)
         {
             ShowModal = false;
             await LoadData();
         }
-    });
+    }
 }

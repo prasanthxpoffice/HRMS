@@ -48,4 +48,12 @@ public interface IResourceService
     string DeleteConfirmTitle => GetString("DeleteConfirmTitle");
     string DeleteConfirmMessage => GetString("DeleteConfirmMessage");
     string BulkDeleteConfirmMessage => GetString("BulkDeleteConfirmMessage");
+
+    string SystemError => GetString("SystemError");
+    string ViewDetails => GetString("ViewDetails");
+    string HideDetails => GetString("HideDetails");
+    string UnexpectedError => GetString("UnexpectedError");
+    string UnexpectedErrorDesc => GetString("UnexpectedErrorDesc");
+    string Reload => GetString("Reload");
+    string DatabaseError => GetString("DatabaseError");
 }

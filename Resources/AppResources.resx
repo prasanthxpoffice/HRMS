@@ -112,4 +112,11 @@
   <data name="Error_TooLong" xml:space="preserve"><value>{0} is too long</value></data>
   <data name="Gender_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
   <data name="Gender_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
+  <data name="SystemError" xml:space="preserve"><value>System Error</value></data>
+  <data name="ViewDetails" xml:space="preserve"><value>View Technical Details</value></data>
+  <data name="HideDetails" xml:space="preserve"><value>Hide Details</value></data>
+  <data name="UnexpectedError" xml:space="preserve"><value>An unexpected error occurred</value></data>
+  <data name="UnexpectedErrorDesc" xml:space="preserve"><value>Please refresh the page or try again later.</value></data>
+  <data name="Reload" xml:space="preserve"><value>Reload</value></data>
+  <data name="DatabaseError" xml:space="preserve"><value>Database error occurred</value></data>
 </root>

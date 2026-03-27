@@ -1,0 +1,92 @@
+@inherits UiBase
+@using HRMS.Services
+@implements IDisposable
+@inject INotificationService NotificationService
+
+@if (_show)
+{
+    <div class="modal-backdrop fade show" style="z-index: 1055;"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" style="z-index: 1060;" dir="@(Lang.IsRtl ? "rtl" : "ltr")">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+                <!-- Header with Alert Icon -->
+                <div class="modal-header bg-danger text-white p-3 border-0">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                        <h5 class="modal-title h6 fw-bold mb-0">@Res.SystemError</h5>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white small" @onclick="Close"></button>
+                </div>
+
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3 text-danger">
+                        <i class="bi bi-bug fs-1"></i>
+                    </div>
+                    <p class="mb-3 fw-medium">@_message</p>
+
+                    @if (!string.IsNullOrEmpty(_details))
+                    {
+                        <div class="mt-3">
+                            <button class="btn btn-outline-secondary btn-sm border-0" @onclick="ToggleDetails">
+                                @(_showDetails ? Res.HideDetails : Res.ViewDetails)
+                                <i class="bi @(_showDetails ? "bi-chevron-up" : "bi-chevron-down") ms-1"></i>
+                            </button>
+
+                            @if (_showDetails)
+                            {
+                                <div class="mt-2 p-3 bg-light rounded text-start" style="max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.8rem;">
+                                    <pre class="mb-0 text-wrap text-danger">@_details</pre>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="modal-footer p-2 bg-light border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary px-4 btn-sm" style="border-radius: 8px;" @onclick="Close">
+                        @Res.Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool _show = false;
+    private bool _showDetails = false;
+    private string _message = "";
+    private string? _details = "";
+
+    protected override void OnInitialized()
+    {
+        NotificationService.OnMessage += HandleNotification;
+    }
+
+    private void HandleNotification(NotificationMessage notification)
+    {
+        if (notification.Type == NotificationType.SystemError)
+        {
+            _message = notification.Message;
+            _details = notification.Details;
+            _show = true;
+            _showDetails = false;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void Close()
+    {
+        _show = false;
+        _message = "";
+        _details = "";
+        StateHasChanged();
+    }
+
+    private void ToggleDetails() => _showDetails = !_showDetails;
+
+    public void Dispose()
+    {
+        NotificationService.OnMessage -= HandleNotification;
+    }
+}
