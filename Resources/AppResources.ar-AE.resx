@@ -61,8 +61,7 @@
   <data name="Actions" xml:space="preserve"><value>إجراءات</value></data>
   <data name="Search" xml:space="preserve"><value>بحث...</value></data>
   <data name="NoRecordsFound" xml:space="preserve"><value>لا توجد سجلات.</value></data>
-  <data name="Previous" xml:space="preserve"><value>السابق</value></data>
-  <data name="Next" xml:space="preserve"><value>التالي</value></data>
+
   <data name="ShowingXToYOfZ" xml:space="preserve"><value>عرض {0} إلى {1} من {2} إدخال</value></data>
   <data name="Id" xml:space="preserve"><value>المعرف</value></data>
   <data name="NameEn" xml:space="preserve"><value>الاسم (EN)</value></data>

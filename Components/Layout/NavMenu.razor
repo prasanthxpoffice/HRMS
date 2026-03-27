@@ -53,13 +53,11 @@
 
     protected override void OnInitialized()
     {
-        Lang.OnLanguageChanged += StateHasChanged;
         UserService.OnRoleChanged += StateHasChanged;
     }
 
     public void Dispose()
     {
-        Lang.OnLanguageChanged -= StateHasChanged;
         UserService.OnRoleChanged -= StateHasChanged;
     }
 }

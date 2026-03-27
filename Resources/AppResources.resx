@@ -61,8 +61,7 @@
   <data name="Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Search" xml:space="preserve"><value>Search</value></data>
   <data name="NoRecordsFound" xml:space="preserve"><value>No records found.</value></data>
-  <data name="Previous" xml:space="preserve"><value>Previous</value></data>
-  <data name="Next" xml:space="preserve"><value>Next</value></data>
+
   <data name="ShowingXToYOfZ" xml:space="preserve"><value>Showing {0} to {1} of {2} entries</value></data>
   <data name="Id" xml:space="preserve"><value>ID</value></data>
   <data name="NameEn" xml:space="preserve"><value>Name (EN)</value></data>

@@ -294,12 +294,6 @@ main {
     outline: none;
 }
 
-/* Layout Utilities */
-.flex-1 { flex: 1; }
-.d-flex { display: flex; }
-.align-items-center { align-items: center; }
-.justify-content-between { justify-content: space-between; }
-
 /* Utilities */
 .text-muted { color: var(--text-muted) !important; }
 .small-label { font-size: var(--font-size-sm); font-weight: 600; text-transform: uppercase; color: var(--slate-600); }
@@ -378,34 +372,3 @@ main {
 [dir="rtl"] .modal-footer > * {
     margin: 0.25rem !important;
 }
-
-/* Global RTL Utility Overrides for standard Bootstrap 5 */
-.rtl .me-1, .rtl .me-2, .rtl .me-3, .rtl .me-4, .rtl .me-5 { margin-right: 0 !important; }
-.rtl .me-1 { margin-left: 0.25rem !important; }
-.rtl .me-2 { margin-left: 0.5rem !important; }
-.rtl .me-3 { margin-left: 1rem !important; }
-.rtl .me-4 { margin-left: 1.5rem !important; }
-.rtl .me-5 { margin-left: 3rem !important; }
-
-.rtl .ms-1, .rtl .ms-2, .rtl .ms-3, .rtl .ms-4, .rtl .ms-5 { margin-left: 0 !important; }
-.rtl .ms-1 { margin-right: 0.25rem !important; }
-.rtl .ms-2 { margin-right: 0.5rem !important; }
-.rtl .ms-3 { margin-right: 1rem !important; }
-.rtl .ms-4 { margin-right: 1.5rem !important; }
-.rtl .ms-5 { margin-right: 3rem !important; }
-
-.rtl .pe-1, .rtl .pe-2, .rtl .pe-3 { padding-right: 0 !important; }
-.rtl .pe-1 { padding-left: 0.25rem !important; }
-.rtl .pe-2 { padding-left: 0.5rem !important; }
-.rtl .pe-3 { padding-left: 1rem !important; }
-
-.rtl .ps-1, .rtl .ps-2, .rtl .ps-3 { padding-left: 0 !important; }
-.rtl .ps-1 { padding-right: 0.25rem !important; }
-.rtl .ps-2 { padding-right: 0.5rem !important; }
-.rtl .ps-3 { padding-right: 1rem !important; }
-
-.rtl .border-end { border-right: none !important; border-left: 1px solid var(--border-color) !important; }
-.rtl .border-start { border-left: none !important; border-right: 1px solid var(--border-color) !important; }
-
-.rtl .text-end { text-align: left !important; }
-.rtl .text-start { text-align: right !important; }

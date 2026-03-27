@@ -66,13 +66,11 @@
     protected override async Task OnInitializedAsync()
     {
         await UserService.LoadUserAsync();
-        Lang.OnLanguageChanged += StateHasChanged;
         UserService.OnRoleChanged += StateHasChanged;
     }
 
     public void Dispose()
     {
-        Lang.OnLanguageChanged -= StateHasChanged;
         UserService.OnRoleChanged -= StateHasChanged;
     }
 

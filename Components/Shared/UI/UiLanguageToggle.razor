@@ -1,6 +1,8 @@
 @using HRMS.Services
 @inject LanguageService Lang
 @inject IResourceService Res
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Nav
 
 <div class="language-toggle">
     <UiSelect Value="@Lang.CurrentLanguage"
@@ -13,15 +15,23 @@
 </div>
 
 @code {
-    private void OnLanguageChangedInternal(string val)
+    private async Task OnLanguageChangedInternal(string val)
     {
-        OnLanguageChanged(new ChangeEventArgs { Value = val });
+        await OnLanguageChanged(new ChangeEventArgs { Value = val });
     }
 
-    private void OnLanguageChanged(ChangeEventArgs e)
+    private async Task OnLanguageChanged(ChangeEventArgs e)
     {
         var value = e.Value?.ToString();
         if (!string.IsNullOrEmpty(value))
-            Lang.SetLanguage(value);
+        {
+            // Set the .AspNetCore.Culture cookie for the server to pick up on reload
+            // Format: c=en-US|uic=en-US
+            var cookieValue = $"c={value}|uic={value}";
+            await JSRuntime.InvokeVoidAsync("cultureHelper.setCookie", ".AspNetCore.Culture", cookieValue, 365);
+            
+            // Force a page reload to switch between bootstrap.min.css and bootstrap.rtl.min.css
+            Nav.NavigateTo(Nav.Uri, forceLoad: true);
+        }
     }
 }
