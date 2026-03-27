@@ -104,6 +104,10 @@
   <data name="BulkDeleteConfirmMessage" xml:space="preserve">
     <value>هل أنت متأكد أنك تريد حذف {0} من السجلات المختارة؟</value>
   </data>
+  <data name="Error_Required" xml:space="preserve"><value>{0} مطلوب</value></data>
+  <data name="Error_TooLong" xml:space="preserve"><value>{0} طويل جداً</value></data>
+  <data name="Gender_NameEn_Required" xml:space="preserve"><value>الاسم (EN) مطلوب</value></data>
+  <data name="Gender_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
   <data name="BulkDeleteSuccess" xml:space="preserve">
     <value>تم حذف {0} من السجلات بنجاح.</value>
   </data>
