@@ -19,7 +19,7 @@ namespace HRMS.Services
             _userService = userService;
         }
 
-        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null, int? roleId = null)
+        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -28,24 +28,47 @@ namespace HRMS.Services
 
             try
             {
-                using IDbConnection db = new SqlConnection(_connectionString);
-                
+                using var db = new SqlConnection(_connectionString);
+                await db.OpenAsync();
+
                 var lang = language ?? _languageService.CurrentLanguage;
                 var finalEmployeeId = employeeId ?? _userService.CurrentUser?.EmployeeId ?? 1;
                 var finalRoleId = roleId ?? _userService.CurrentRole?.RoleId ?? 0;
                 var jsonInput = jsonParams != null ? JsonSerializer.Serialize(jsonParams) : "{}";
 
-                var jsonResult = await db.QueryFirstOrDefaultAsync<string>(procedureName, 
-                    new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang, RoleID = finalRoleId }, 
-                    commandType: CommandType.StoredProcedure);
-
-                if (string.IsNullOrEmpty(jsonResult))
+                SqlTransaction? transaction = useTransaction ? (SqlTransaction)db.BeginTransaction() : null;
+                
+                try
                 {
-                    return new DbResponse<T> { Success = -1, Message = "No response from database." };
-                }
+                    var jsonResult = await db.QueryFirstOrDefaultAsync<string>(procedureName, 
+                        new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang, RoleID = finalRoleId }, 
+                        transaction: transaction,
+                        commandType: CommandType.StoredProcedure);
 
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                return JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = -1 };
+                    if (string.IsNullOrEmpty(jsonResult))
+                    {
+                        transaction?.Rollback();
+                        return new DbResponse<T> { Success = -1, Message = "No response from database." };
+                    }
+
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var result = JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = -1 };
+
+                    // Commit only if Success is 1 (Success) or 0 (Validation Error)
+                    // Rollback if Success is -1 (System Error)
+                    if (useTransaction && transaction != null)
+                    {
+                        if (result.Success >= 0) transaction.Commit();
+                        else transaction.Rollback();
+                    }
+
+                    return result;
+                }
+                catch
+                {
+                    transaction?.Rollback();
+                    throw;
+                }
             }
             catch (Exception ex)
             {
