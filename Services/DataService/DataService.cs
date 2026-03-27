@@ -15,15 +15,15 @@ namespace HRMS.Services
             _notification = notification;
         }
 
-        public async Task<List<T>> GetListAsync<T>(string spName, object json, int? employeeId = null, string? language = null)
+        public async Task<List<T>> GetListAsync<T>(string spName, object json, int? employeeId = null, string? language = null, int? roleId = null)
         {
-            var response = await _db.ExecuteQueryAsync<List<T>>(spName, json, employeeId, language);
+            var response = await _db.ExecuteQueryAsync<List<T>>(spName, json, employeeId, language, roleId);
             return response?.Data ?? new();
         }
 
-        public async Task<DbResponse<object>> PostDataAsync(string spName, object json, bool showNotification = true, int? employeeId = null, string? language = null)
+        public async Task<DbResponse<object>> PostDataAsync(string spName, object json, bool showNotification = true, int? employeeId = null, string? language = null, int? roleId = null)
         {
-            var res = await _db.ExecuteQueryAsync<object>(spName, json, employeeId, language);
+            var res = await _db.ExecuteQueryAsync<object>(spName, json, employeeId, language, roleId);
             
             if (res != null && showNotification)
             {

@@ -19,7 +19,7 @@ namespace HRMS.Services
             _userService = userService;
         }
 
-        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null)
+        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null, int? roleId = null)
         {
             if (string.IsNullOrEmpty(_connectionString))
             {
@@ -32,10 +32,11 @@ namespace HRMS.Services
                 
                 var lang = language ?? _languageService.CurrentLanguage;
                 var finalEmployeeId = employeeId ?? _userService.CurrentUser?.EmployeeId ?? 1;
+                var finalRoleId = roleId ?? _userService.CurrentRole?.RoleId ?? 0;
                 var jsonInput = jsonParams != null ? JsonSerializer.Serialize(jsonParams) : "{}";
 
                 var jsonResult = await db.QueryFirstOrDefaultAsync<string>(procedureName, 
-                    new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang }, 
+                    new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang, RoleID = finalRoleId }, 
                     commandType: CommandType.StoredProcedure);
 
                 if (string.IsNullOrEmpty(jsonResult))
