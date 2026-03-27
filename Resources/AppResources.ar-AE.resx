@@ -58,6 +58,9 @@
   </resheader>
   <data name="Language_English" xml:space="preserve"><value>English</value></data>
   <data name="Language_Arabic" xml:space="preserve"><value>العربية</value></data>
+  <data name="Previous" xml:space="preserve"><value>السابق</value></data>
+  <data name="Next" xml:space="preserve"><value>التالي</value></data>
+  <data name="Rows" xml:space="preserve"><value>الصفوف:</value></data>
   <data name="Actions" xml:space="preserve"><value>إجراءات</value></data>
   <data name="Search" xml:space="preserve"><value>بحث...</value></data>
   <data name="NoRecordsFound" xml:space="preserve"><value>لا توجد سجلات.</value></data>

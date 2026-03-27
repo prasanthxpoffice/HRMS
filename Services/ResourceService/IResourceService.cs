@@ -18,6 +18,7 @@ public interface IResourceService
     string Actions => GetString("Actions");
     
     string Search => GetString("Search");
+    string Rows => GetString("Rows");
     string All => GetString("All");
     string Add => GetString("Add");
     string Edit => GetString("Edit");
@@ -27,6 +28,8 @@ public interface IResourceService
     
     string PageTitle_Genders => GetString("PageTitle_Genders");
     string NoRecordsFound => GetString("NoRecordsFound");
+    string Previous => GetString("Previous");
+    string Next => GetString("Next");
     
     string AdminDashboard => GetString("AdminDashboard");
     string WelcomeBack => GetString("WelcomeBack");

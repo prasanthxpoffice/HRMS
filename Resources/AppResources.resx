@@ -58,6 +58,9 @@
   </resheader>
   <data name="Language_English" xml:space="preserve"><value>English</value></data>
   <data name="Language_Arabic" xml:space="preserve"><value>العربية</value></data>
+  <data name="Previous" xml:space="preserve"><value>Previous</value></data>
+  <data name="Next" xml:space="preserve"><value>Next</value></data>
+  <data name="Rows" xml:space="preserve"><value>Rows:</value></data>
   <data name="Actions" xml:space="preserve"><value>Actions</value></data>
   <data name="Search" xml:space="preserve"><value>Search</value></data>
   <data name="NoRecordsFound" xml:space="preserve"><value>No records found.</value></data>
