@@ -6,12 +6,19 @@ using System.Globalization;
 using HRMS.Components.Shared.UI;
 using HRMS.Components.Shared.UI.Grid.Models;
 
+using HRMS.Models.Export;
+using HRMS.Services.ExportService;
+using Microsoft.JSInterop;
+using HRMS.Services.WorkflowService;
+
 namespace HRMS.Components.Shared.UI.Grid;
 
 public partial class UiGrid<TItem> : UiBase
 {
     [Inject] protected IDataService DataService { get; set; } = default!;
-    [Inject] protected HRMS.Services.WorkflowService.IWorkflowService WorkflowService { get; set; } = default!;
+    [Inject] public IWorkflowService WorkflowService { get; set; } = default!;
+    [Inject] public IExportService ExportService { get; set; } = default!;
+    [Inject] public IJSRuntime JS { get; set; } = default!;
 
     #region Parameters - Configuration
     [Parameter] public string Title { get; set; } = "";
@@ -43,8 +50,11 @@ public partial class UiGrid<TItem> : UiBase
     
     [Parameter] public bool ShowWorkflow { get; set; } = false;
     [Parameter] public string? WorkflowTitle { get; set; }
+    [Parameter] public bool ShowExport { get; set; } = true;
+    [Parameter] public string? ExportSpName { get; set; }
+    [Parameter] public string? ExportName { get; set; }
     [Parameter] public EventCallback<IEnumerable<TItem>> OnWorkflowClick { get; set; }
-    #endregion
+#endregion
 
     #region Internal State
     private Dictionary<string, string> _columnFilters = new();
@@ -311,15 +321,90 @@ public partial class UiGrid<TItem> : UiBase
         else
         {
             var response = await WorkflowService.StartProcessAsync(SelectedItems);
+            if (response != null)
+            {
+                if (!string.IsNullOrEmpty(response.Message))
+                {
+                    NotificationService.Notify(response.Message, NotificationType.Info);
+                }
+
+                if (!string.IsNullOrEmpty(response.TransactionId))
+                {
+                    WorkflowService.OpenViewer(response.TransactionId, WorkflowTitle ?? Res.Workflow);
+                }
+            }
+        }
+    }
+
+    private async Task HandleExport(ExportFormat format)
+    {
+        try
+        {
+            IsLoading = true;
+            IEnumerable<object> exportData;
+
+            if (!string.IsNullOrEmpty(ExportSpName))
+            {
+                // Priority 1: Stored Procedure (Raw, no filters)
+                exportData = await DataService.GetListAsync<dynamic>(ExportSpName, null);
+            }
+            else if (SelectedItems.Any())
+            {
+                // Priority 2: Selection
+                exportData = SelectedItems.Cast<object>();
+            }
+            else
+            {
+                // Priority 3: Current Filtered Grid Items
+                exportData = FilteredItems.Cast<object>();
+            }
+
+            if (exportData == null || !exportData.Any())
+            {
+                NotificationService.Notify(Res.NoRecordsFound, NotificationType.Warning);
+                return;
+            }
+
+            // Prepare columns and localized headers
+            var exportColumns = new Dictionary<string, string>();
+            foreach (var col in Columns)
+            {
+                if (string.IsNullOrEmpty(col.FieldName)) continue;
+
+                // Try to translate using FieldName as key (e.g., "GenderNameEn")
+                string localizedHeader = Res.GetString(col.FieldName);
+                
+                // Fallback to col.Title if no resource found for FieldName
+                if (string.IsNullOrEmpty(localizedHeader) || localizedHeader == col.FieldName)
+                {
+                    localizedHeader = col.Title ?? col.FieldName;
+                }
+
+                exportColumns.Add(col.FieldName, localizedHeader);
+            }
+
+            var fileName = $"{(string.IsNullOrEmpty(ExportName) ? "Data" : ExportName)}_{DateTime.Now:yyyyMMddHHmmss}";
+            var (extension, contentType) = format switch
+            {
+                ExportFormat.Xlsx => ("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+                ExportFormat.Csv => ("csv", "text/csv"),
+                ExportFormat.Pdf => ("pdf", "application/pdf"),
+                _ => ("bin", "application/octet-stream")
+            };
+
+            var bytes = await ExportService.ExportAsync(exportData, exportColumns, format, Title ?? Res.AdminDashboard);
+            await JS.InvokeVoidAsync("downloadFileFromStream", $"{fileName}.{extension}", bytes, contentType);
             
-            if (!string.IsNullOrEmpty(response.Message))
-            {
-                NotificationService.Notify(response.Message, response.Success ? NotificationType.Success : NotificationType.Error);
-            }
-            else if (!string.IsNullOrEmpty(response.TransactionId))
-            {
-                WorkflowService.OpenViewer(response.TransactionId, WorkflowTitle ?? Res.Workflow);
-            }
+            string successMsg = Res.GetString("ExportSuccess") ?? (Lang.IsRtl ? "تم تصدير {0} سجلات بنجاح." : "Successfully exported {0} records.");
+            NotificationService.Notify(successMsg.Replace("{0}", exportData.Count().ToString()), NotificationType.Success); 
+        }
+        catch (Exception ex)
+        {
+            NotificationService.Notify($"{Res.SystemError}: {ex.Message}", NotificationType.Error);
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
     #endregion

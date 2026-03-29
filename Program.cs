@@ -15,7 +15,8 @@ builder.Services.AddScoped<IResourceService, ResourceService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDataService, DataService>();
-builder.Services.AddScoped<IWorkflowService, HRMS.Services.WorkflowService.WorkflowService>();
+builder.Services.AddScoped<HRMS.Services.WorkflowService.IWorkflowService, HRMS.Services.WorkflowService.WorkflowService>();
+builder.Services.AddScoped<HRMS.Services.ExportService.IExportService, HRMS.Services.ExportService.ExportService>();
 
 var app = builder.Build();
 

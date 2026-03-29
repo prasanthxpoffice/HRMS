@@ -17,6 +17,9 @@
         IdFieldName="GenderId"
         OnDataChanged="LoadData"
         ShowWorkflow="true"
+        ShowExport="true"
+        ExportSpName="master.spGenderGet"
+        ExportName="Gender"
         Loading="IsLoading" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
