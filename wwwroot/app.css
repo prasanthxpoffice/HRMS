@@ -306,12 +306,12 @@ main {
 }
 
 .btn-hrms-workflow {
-    background-color: #6366f1; /* Indigo-500 */
+    background-color: #0d9488; /* Teal-600 */
     color: #fff;
     border: none;
 }
 .btn-hrms-workflow:hover {
-    background-color: #4f46e5; /* Indigo-600 */
+    background-color: #0f766e; /* Teal-700 */
     color: #fff;
 }
 
