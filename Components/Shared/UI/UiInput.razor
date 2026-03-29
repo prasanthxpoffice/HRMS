@@ -14,7 +14,7 @@
         }
         <input id="@Id" 
                type="@Type"
-               class="form-control hrms-input @(Lang.IsRtl ? "text-end" : "text-start") @(string.IsNullOrEmpty(Icon) ? "" : (Lang.IsRtl ? "pe-5" : "ps-5")) @CssClass" 
+               class="form-control input-ui @(Lang.IsRtl ? "text-end" : "text-start") @(string.IsNullOrEmpty(Icon) ? "" : (Lang.IsRtl ? "pe-5" : "ps-5")) @CssClass" 
                value="@Value" 
                @oninput="OnInput"
                placeholder="@Placeholder"

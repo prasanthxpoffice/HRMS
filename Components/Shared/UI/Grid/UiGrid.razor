@@ -5,7 +5,7 @@
 @using System.Globalization
 @using HRMS.Models.Export
 
-<div class="card-hrms">
+<div class="card-ui">
     @if (ShowHeader)
     {
         <div class="px-3 py-2 border-bottom bg-light bg-opacity-10">
@@ -39,7 +39,7 @@
                         @if (ShowExport)
                         {
                             <div class="dropdown">
-                                <button class="btn-hrms btn-hrms-primary btn-sm dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn-ui btn-success btn-sm dropdown-toggle h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-download me-1"></i> @(Lang.IsRtl ? "تصدير" : "Export")
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
@@ -64,7 +64,7 @@
     }
     
     <div class="table-responsive">
-        <table class="table-hrms">
+        <table class="table-ui">
             <thead>
                 <tr>
                     @if (ShowSelection)
@@ -106,7 +106,7 @@
                                 @switch (col.FilterType)
                                 {
                                     case UiGridFilterType.Dropdown:
-                                        <select class="input-hrms py-1 small" 
+                                        <select class="input-ui py-1 small" 
                                                 value="@GetFilterValue(col.FieldName)" 
                                                 @onchange="(e) => SetFilterValue(col.FieldName, e.Value?.ToString())">
                                             <option value="">@Res.All</option>
@@ -117,12 +117,12 @@
                                         </select>
                                         break;
                                     case UiGridFilterType.Date:
-                                        <input type="date" class="input-hrms py-1 small" 
+                                        <input type="date" class="input-ui py-1 small" 
                                                value="@GetFilterValue(col.FieldName)" 
                                                @onchange="(e) => SetFilterValue(col.FieldName, e.Value?.ToString())" />
                                         break;
                                     default:
-                                        <input type="text" class="input-hrms py-1 small" 
+                                        <input type="text" class="input-ui py-1 small" 
                                                placeholder="@Res.Search..." 
                                                value="@GetFilterValue(col.FieldName)" 
                                                @oninput="(e) => SetFilterValue(col.FieldName, e.Value?.ToString())" />

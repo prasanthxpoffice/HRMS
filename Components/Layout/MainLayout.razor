@@ -27,7 +27,8 @@
                         <div class="me-3">
                             <UiSelect Value="@(UserService.CurrentRole?.RoleId.ToString())"
                                       ValueChanged="@(v => OnRoleChanged(new ChangeEventArgs { Value = v }))"
-                                      CssClass="bg-light border-0 mb-0"
+                                      CssClass="bg-light border-0"
+                                      NoMargin="true"
                                       Style="min-width: 140px;">
                                 @foreach (var role in UserService.Roles)
                                 {

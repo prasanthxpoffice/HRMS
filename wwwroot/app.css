@@ -185,19 +185,19 @@ main {
 }
 
 /* Enterprise Components */
-.card-hrms {
+.card-ui {
     background: #fff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-subtle);
 }
 
-.table-hrms {
+.table-ui {
     width: 100%;
     border-collapse: collapse;
 }
 
-.table-hrms thead th {
+.table-ui thead th {
     background: #f8fafc;
     padding: 0.5rem 1rem;
     text-align: inherit;
@@ -212,26 +212,26 @@ main {
     transition: background-color 0.2s;
 }
 
-.table-hrms thead th:last-child {
+.table-ui thead th:last-child {
     border-inline-end: none;
 }
 
-.table-hrms tbody td {
+.table-ui tbody td {
     padding: 0.5rem 1rem;
     border-bottom: 1px solid var(--slate-100);
     border-inline-end: 1px solid var(--slate-100);
     color: var(--slate-700);
 }
 
-.table-hrms tbody td:last-child {
+.table-ui tbody td:last-child {
     border-inline-end: none;
 }
 
-.table-hrms tbody tr:nth-child(even) td {
+.table-ui tbody tr:nth-child(even) td {
     background-color: #fcfdfe;
 }
 
-.table-hrms tbody tr:hover td {
+.table-ui tbody tr:hover td {
     background-color: #f5f8ff !important;
 }
 
@@ -249,7 +249,7 @@ main {
 }
 
 /* Buttons */
-.btn-hrms {
+.btn-ui {
     font-weight: 600;
     font-size: var(--font-size-sm);
     padding: 0.5rem 1rem;
@@ -260,13 +260,13 @@ main {
     gap: 0.5rem;
 }
 
-.btn-hrms-primary {
+.btn-ui-primary {
     background-color: var(--primary);
     color: #fff;
     border: none;
 }
 
-.btn-hrms-primary:hover {
+.btn-ui-primary:hover {
     background-color: var(--primary-hover);
 }
 
@@ -305,18 +305,34 @@ main {
     color: var(--slate-900);
 }
 
-.btn-hrms-workflow {
+.btn-ui-workflow {
     background-color: #0d9488; /* Teal-600 */
     color: #fff;
     border: none;
 }
-.btn-hrms-workflow:hover {
+.btn-ui-workflow:hover {
     background-color: #0f766e; /* Teal-700 */
     color: #fff;
 }
 
+.language-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--slate-300);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    color: var(--slate-700);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.language-toggle-btn:hover {
+    background: var(--slate-100);
+    border-color: var(--slate-400);
+}
+
 /* Form Controls */
-.input-hrms {
+.input-ui {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 0.4rem 0.75rem;
@@ -324,10 +340,20 @@ main {
     transition: var(--transition-fast);
 }
 
-.input-hrms:focus {
+.input-ui:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
     outline: none;
+}
+
+/* Specific Top Bar Overrides for Alignment */
+.top-bar-right .input-ui, 
+.top-bar-right .language-select {
+    height: 34px !important;
+    border-radius: 100px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 0.8rem !important;
 }
 
 /* Utilities */
@@ -383,7 +409,7 @@ main {
     background: rgba(0,0,0,0.02) !important;
     padding: 0.5rem !important;
 }
-.filter-row .input-hrms {
+.filter-row .input-ui {
     font-size: 0.75rem !important;
     height: auto !important;
 }
@@ -442,4 +468,44 @@ main {
 
 .ui-grid-table-selection td {
     background-color: transparent !important;
+}
+
+/* --- Language Toggle Premium Styles --- */
+.btn-language-toggle {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(248, 250, 252, 0.8); /* var(--slate-50) */
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 100px;
+    padding: 0 12px;
+    height: 34px; /* Matches UiSelect height */
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--slate-700);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    line-height: 1;
+}
+
+.btn-language-toggle:hover {
+    background: white;
+    color: var(--bs-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: rgba(var(--bs-primary-rgb), 0.2);
+    transform: translateY(-1px);
+}
+
+.btn-language-toggle i {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-language-toggle:hover i {
+    transform: rotate(20deg);
+}
+
+[dir="rtl"] .btn-language-toggle i {
+    margin-right: 0 !important;
+    margin-left: 0.5rem;
 }

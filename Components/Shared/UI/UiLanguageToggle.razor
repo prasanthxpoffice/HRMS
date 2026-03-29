@@ -5,32 +5,25 @@
 @inject NavigationManager Nav
 
 <div class="language-toggle">
-    <UiSelect Value="@Lang.CurrentLanguage"
-              ValueChanged="OnLanguageChangedInternal"
-              CssClass="language-select mb-0"
-              AriaLabel="@Res.GetString("Language_English")">
-        <option value="en-US">🇺🇸 English</option>
-        <option value="ar-AE">🇦🇪 العربية</option>
-    </UiSelect>
+    <button class="btn-language-toggle d-flex align-items-center" @onclick="ToggleLanguage">
+        <i class="bi bi-globe2 me-1"></i>
+        <span>@(Lang.IsRtl ? "English" : "العربية")</span>
+    </button>
 </div>
 
 @code {
-    private async Task OnLanguageChangedInternal(string val)
+    private async Task ToggleLanguage()
     {
-        await OnLanguageChanged(new ChangeEventArgs { Value = val });
+        var targetLanguage = Lang.IsRtl ? "en-US" : "ar-AE";
+        await ApplyLanguage(targetLanguage);
     }
 
-    private async Task OnLanguageChanged(ChangeEventArgs e)
+    private async Task ApplyLanguage(string value)
     {
-        var value = e.Value?.ToString();
         if (!string.IsNullOrEmpty(value))
         {
-            // Set the .AspNetCore.Culture cookie for the server to pick up on reload
-            // Format: c=en-US|uic=en-US
             var cookieValue = $"c={value}|uic={value}";
             await JSRuntime.InvokeVoidAsync("cultureHelper.setCookie", ".AspNetCore.Culture", cookieValue, 365);
-            
-            // Force a page reload to switch between bootstrap.min.css and bootstrap.rtl.min.css
             Nav.NavigateTo(Nav.Uri, forceLoad: true);
         }
     }

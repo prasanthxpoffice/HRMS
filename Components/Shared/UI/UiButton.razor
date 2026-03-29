@@ -2,7 +2,7 @@
 @inherits UiBase
 
 <button type="@(IsSubmit ? "submit" : "button")" 
-        class="btn-hrms @TypeClass @CssClass" 
+        class="btn-ui @TypeClass @CssClass" 
         @onclick="OnClick"
         disabled="@(Disabled || Loading)"
         aria-label="@AriaLabel"
@@ -35,12 +35,12 @@
 
     private string TypeClass => Type.ToLower() switch
     {
-        "primary" => "btn-hrms-primary",
+        "primary" => "btn-ui-primary",
         "danger" => "btn-danger",
         "success" => "btn-success",
         "secondary" => "btn-secondary",
         "light" => "btn-light border",
-        "workflow" => "btn-hrms-workflow",
+        "workflow" => "btn-ui-workflow",
         _ => "btn-secondary"
     };
 }
