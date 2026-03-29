@@ -261,33 +261,37 @@ main {
 }
 
 .btn-ui-primary {
-    background-color: var(--primary);
-    color: #fff;
-    border: none;
+    background-color: rgba(79, 70, 229, 0.08); /* Indigo light tint */
+    color: #4338ca;
+    border: 1px solid rgba(79, 70, 229, 0.2);
 }
 
 .btn-ui-primary:hover {
-    background-color: var(--primary-hover);
+    background-color: rgba(79, 70, 229, 0.15);
+    border-color: rgba(79, 70, 229, 0.3);
+    color: #3730a3;
 }
 
 .btn-danger {
-    background-color: #ef4444;
-    color: #fff;
-    border: none;
+    background-color: rgba(239, 68, 68, 0.08); /* Red light tint */
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 .btn-danger:hover {
-    background-color: #dc2626;
-    color: #fff;
+    background-color: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #b91c1c;
 }
 
 .btn-success {
-    background-color: #10b981;
-    color: #fff;
-    border: none;
+    background-color: rgba(16, 185, 129, 0.08); /* Green light tint */
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
 }
 .btn-success:hover {
-    background-color: #059669;
-    color: #fff;
+    background-color: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #047857;
 }
 
 .btn-secondary {
@@ -306,13 +310,14 @@ main {
 }
 
 .btn-ui-workflow {
-    background-color: #0d9488; /* Teal-600 */
-    color: #fff;
-    border: none;
+    background-color: rgba(13, 148, 136, 0.08); /* Teal light tint */
+    color: #0f766e;
+    border: 1px solid rgba(13, 148, 136, 0.2);
 }
 .btn-ui-workflow:hover {
-    background-color: #0f766e; /* Teal-700 */
-    color: #fff;
+    background-color: rgba(13, 148, 136, 0.15);
+    border-color: rgba(13, 148, 136, 0.3);
+    color: #115e59;
 }
 
 .language-toggle-btn {
