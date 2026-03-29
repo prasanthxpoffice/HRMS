@@ -29,9 +29,9 @@
     --slate-900: #0f172a;
     
     /* Functional Colors */
-    --body-bg: #fcfcfd;
-    --sidebar-bg: #f1f5f9;
-    --sidebar-border: #e2e8f0;
+    --body-bg: #f1f5f9;      /* Refined Light Slate BG for Depth */
+    --sidebar-bg: #1e293b;   /* Deep Slate Base */
+    --sidebar-border: rgba(255, 255, 255, 0.08);
     --border-color: var(--slate-200);
     --text-main: var(--slate-900);
     --text-muted: var(--slate-600);
@@ -99,11 +99,11 @@ html, body {
     overflow: hidden;
 }
 
-/* Sidebar - Professional & Narrow */
+/* Sidebar - Deep Vertical Horizon Gradient */
 .sidebar {
     width: 260px;
-    background-color: var(--sidebar-bg);
-    color: var(--slate-700);
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    color: var(--slate-300);
     display: flex;
     flex-direction: column;
     z-index: 50;
@@ -121,7 +121,7 @@ html, body {
 .sidebar .navbar-brand {
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--slate-900);
+    color: #ffffff;  /* High-Contrast White for Dark Gradient */
     text-decoration: none;
     letter-spacing: -0.01em;
 }
@@ -138,22 +138,22 @@ html, body {
     padding: 0.6rem 1.25rem !important;
     margin: 0.25rem 0.75rem;
     border-radius: 100px;
-    color: var(--slate-600) !important;
+    color: var(--slate-300) !important;
     font-weight: 500;
     transition: var(--transition-fast);
     text-decoration: none !important;
 }
 
 .nav-link:hover {
-    background-color: rgba(0,0,0,0.03);
-    color: var(--primary) !important;
+    background-color: rgba(255,255,255,0.05);
+    color: #ffffff !important;
 }
 
 .nav-link.active {
-    background-color: #ffffff !important;
-    color: var(--primary) !important;
+    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%) !important;
+    color: #ffffff !important;
     font-weight: 600;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }
 
 .nav-link i, .nav-link .bi {
@@ -171,11 +171,13 @@ main {
 
 .top-bar {
     height: 64px;
-    background: #fff;
+    background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 100%);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     padding: 0 1.5rem;
+    z-index: 40;
 }
 
 .content {
@@ -184,12 +186,17 @@ main {
     overflow-y: auto;
 }
 
-/* Enterprise Components */
+/* Enterprise Components - Floating Depth */
 .card-ui {
     background: #fff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-subtle);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: box-shadow 0.2s ease;
+}
+
+.card-ui:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
 }
 
 .table-ui {
