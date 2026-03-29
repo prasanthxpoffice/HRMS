@@ -118,4 +118,5 @@
   <data name="Reload" xml:space="preserve"><value>تحديث</value></data>
   <data name="DatabaseError" xml:space="preserve"><value>حدث خطأ في قاعدة البيانات</value></data>
   <data name="Workflow" xml:space="preserve"><value>سير العمل</value></data>
+  <data name="Close" xml:space="preserve"><value>إغلاق</value></data>
 </root>

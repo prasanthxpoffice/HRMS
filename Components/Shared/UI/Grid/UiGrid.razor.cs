@@ -42,7 +42,7 @@ public partial class UiGrid<TItem> : UiBase
     [Parameter] public EventCallback OnDataChanged { get; set; }
     
     [Parameter] public bool ShowWorkflow { get; set; } = false;
-    [Parameter] public string WorkflowTitle { get; set; } = "Workflow";
+    [Parameter] public string? WorkflowTitle { get; set; }
     [Parameter] public EventCallback<IEnumerable<TItem>> OnWorkflowClick { get; set; }
     #endregion
 

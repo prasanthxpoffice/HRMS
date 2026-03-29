@@ -120,4 +120,5 @@
   <data name="Reload" xml:space="preserve"><value>Reload</value></data>
   <data name="DatabaseError" xml:space="preserve"><value>Database error occurred</value></data>
   <data name="Workflow" xml:space="preserve"><value>Workflow</value></data>
+  <data name="Close" xml:space="preserve"><value>Close</value></data>
 </root>
