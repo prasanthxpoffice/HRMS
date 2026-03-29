@@ -18,7 +18,7 @@
         OnDataChanged="LoadData"
         ShowWorkflow="true"
         ShowExport="true"
-        ExportSpName="master.spGenderGet"
+        OnGetExportData="GetExportData"
         ExportName="Gender"
         Loading="IsLoading" />
 
@@ -57,6 +57,8 @@
         Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
     });
     
+    private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+
     private List<UiGridColumn<Gender>> columns => new()
     {
         new UiGridColumn<Gender> { Title = Res.Id, FieldName = "GenderId" },

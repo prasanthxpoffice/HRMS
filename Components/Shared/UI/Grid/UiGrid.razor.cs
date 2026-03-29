@@ -51,7 +51,7 @@ public partial class UiGrid<TItem> : UiBase
     [Parameter] public bool ShowWorkflow { get; set; } = false;
     [Parameter] public string? WorkflowTitle { get; set; }
     [Parameter] public bool ShowExport { get; set; } = true;
-    [Parameter] public string? ExportSpName { get; set; }
+    [Parameter] public Func<Task<IEnumerable<object>>>? OnGetExportData { get; set; }
     [Parameter] public string? ExportName { get; set; }
     [Parameter] public EventCallback<IEnumerable<TItem>> OnWorkflowClick { get; set; }
 #endregion
@@ -342,45 +342,36 @@ public partial class UiGrid<TItem> : UiBase
         {
             IsLoading = true;
             IEnumerable<object> exportData;
+            Dictionary<string, string>? exportColumns = null;
 
-            if (!string.IsNullOrEmpty(ExportSpName))
+            if (OnGetExportData != null)
             {
-                // Priority 1: Stored Procedure (Raw, no filters)
-                exportData = await DataService.GetListAsync<dynamic>(ExportSpName, null);
-            }
-            else if (SelectedItems.Any())
-            {
-                // Priority 2: Selection
-                exportData = SelectedItems.Cast<object>();
+                // Mode 1: Manual Callback (Auto-detect all fields from data)
+                exportData = await OnGetExportData.Invoke();
+                exportColumns = null; // Triggers auto-detection in ExportService
             }
             else
             {
-                // Priority 3: Current Filtered Grid Items
-                exportData = FilteredItems.Cast<object>();
+                // Mode 2: Standard Grid Export (Selection or Filters)
+                // We only export the columns defined in the grid.
+                exportColumns = Columns
+                    .Where(c => !string.IsNullOrEmpty(c.FieldName))
+                    .ToDictionary(c => c.FieldName!, c => c.Title!);
+
+                if (SelectedItems.Any())
+                {
+                    exportData = SelectedItems.Cast<object>();
+                }
+                else
+                {
+                    exportData = FilteredItems.Cast<object>();
+                }
             }
 
             if (exportData == null || !exportData.Any())
             {
                 NotificationService.Notify(Res.NoRecordsFound, NotificationType.Warning);
                 return;
-            }
-
-            // Prepare columns and localized headers
-            var exportColumns = new Dictionary<string, string>();
-            foreach (var col in Columns)
-            {
-                if (string.IsNullOrEmpty(col.FieldName)) continue;
-
-                // Try to translate using FieldName as key (e.g., "GenderNameEn")
-                string localizedHeader = Res.GetString(col.FieldName);
-                
-                // Fallback to col.Title if no resource found for FieldName
-                if (string.IsNullOrEmpty(localizedHeader) || localizedHeader == col.FieldName)
-                {
-                    localizedHeader = col.Title ?? col.FieldName;
-                }
-
-                exportColumns.Add(col.FieldName, localizedHeader);
             }
 
             var fileName = $"{(string.IsNullOrEmpty(ExportName) ? "Data" : ExportName)}_{DateTime.Now:yyyyMMddHHmmss}";
@@ -391,8 +382,9 @@ public partial class UiGrid<TItem> : UiBase
                 ExportFormat.Pdf => ("pdf", "application/pdf"),
                 _ => ("bin", "application/octet-stream")
             };
-
-            var bytes = await ExportService.ExportAsync(exportData, exportColumns, format, Title ?? Res.AdminDashboard);
+ 
+            var finalTitle = string.IsNullOrEmpty(Title) ? (Res.GetString("AdminDashboard") ?? "HRMS Report") : Title;
+            var bytes = await ExportService.ExportAsync(exportData, exportColumns, format, finalTitle, Lang.IsRtl);
             await JS.InvokeVoidAsync("downloadFileFromStream", $"{fileName}.{extension}", bytes, contentType);
             
             string successMsg = Res.GetString("ExportSuccess") ?? (Lang.IsRtl ? "تم تصدير {0} سجلات بنجاح." : "Successfully exported {0} records.");
