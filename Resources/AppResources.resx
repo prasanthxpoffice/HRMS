@@ -119,4 +119,5 @@
   <data name="UnexpectedErrorDesc" xml:space="preserve"><value>Please refresh the page or try again later.</value></data>
   <data name="Reload" xml:space="preserve"><value>Reload</value></data>
   <data name="DatabaseError" xml:space="preserve"><value>Database error occurred</value></data>
+  <data name="Workflow" xml:space="preserve"><value>Workflow</value></data>
 </root>
