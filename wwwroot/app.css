@@ -300,14 +300,19 @@ main {
     color: #fff;
 }
 
-.btn-light {
-    background-color: #fff;
-    color: var(--slate-700);
-    border: 1px solid var(--border-color);
-}
 .btn-light:hover {
     background-color: var(--slate-50);
     color: var(--slate-900);
+}
+
+.btn-hrms-workflow {
+    background-color: #6366f1; /* Indigo-500 */
+    color: #fff;
+    border: none;
+}
+.btn-hrms-workflow:hover {
+    background-color: #4f46e5; /* Indigo-600 */
+    color: #fff;
 }
 
 /* Form Controls */

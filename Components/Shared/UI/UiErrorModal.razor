@@ -1,7 +1,5 @@
 @inherits UiBase
-@using HRMS.Services
 @implements IDisposable
-@inject INotificationService NotificationService
 
 @if (_show)
 {
@@ -85,7 +83,7 @@
 
     private void ToggleDetails() => _showDetails = !_showDetails;
 
-    public void Dispose()
+    public override void Dispose()
     {
         NotificationService.OnMessage -= HandleNotification;
     }

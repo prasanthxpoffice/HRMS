@@ -11,7 +11,7 @@ namespace HRMS.Components.Shared.UI.Grid;
 public partial class UiGrid<TItem> : UiBase
 {
     [Inject] protected IDataService DataService { get; set; } = default!;
-    [Inject] protected INotificationService NotificationService { get; set; } = default!;
+    [Inject] protected HRMS.Services.WorkflowService.IWorkflowService WorkflowService { get; set; } = default!;
 
     #region Parameters - Configuration
     [Parameter] public string Title { get; set; } = "";
@@ -40,6 +40,10 @@ public partial class UiGrid<TItem> : UiBase
     [Parameter] public string? DeleteSpName { get; set; }
     [Parameter] public string? IdFieldName { get; set; }
     [Parameter] public EventCallback OnDataChanged { get; set; }
+    
+    [Parameter] public bool ShowWorkflow { get; set; } = false;
+    [Parameter] public string WorkflowTitle { get; set; } = "Workflow";
+    [Parameter] public EventCallback<IEnumerable<TItem>> OnWorkflowClick { get; set; }
     #endregion
 
     #region Internal State
@@ -293,6 +297,30 @@ public partial class UiGrid<TItem> : UiBase
         _itemPendingDelete = item;
         _showConfirmModal = true;
         StateHasChanged();
+    }
+
+    private async Task HandleWorkflowClick()
+    {
+        if (!SelectedItems.Any()) return;
+
+        // If a manual callback is provided, use it. Otherwise use the default service logic.
+        if (OnWorkflowClick.HasDelegate)
+        {
+            await OnWorkflowClick.InvokeAsync(SelectedItems);
+        }
+        else
+        {
+            var response = await WorkflowService.StartProcessAsync(SelectedItems);
+            
+            if (!string.IsNullOrEmpty(response.Message))
+            {
+                NotificationService.Notify(response.Message, response.Success ? NotificationType.Success : NotificationType.Error);
+            }
+            else if (!string.IsNullOrEmpty(response.TransactionId))
+            {
+                WorkflowService.OpenViewer(response.TransactionId, WorkflowTitle ?? Res.Workflow);
+            }
+        }
     }
     #endregion
 

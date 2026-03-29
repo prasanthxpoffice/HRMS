@@ -1,5 +1,5 @@
 @namespace HRMS.Components.Shared.UI.Grid
-@inherits UiBase
+@inherits HRMS.Components.Shared.UI.UiBase
 @typeparam TItem
 @using System.Reflection
 @using System.Globalization
@@ -27,6 +27,12 @@
                         {
                             <UiButton Type="danger" Icon="bi-trash3" OnClick="HandleDeleteSelected" CssClass="btn-sm">
                                 @Res.DeleteSelected (@SelectedItems.Count)
+                            </UiButton>
+                        }
+                        @if (ShowWorkflow && SelectedItems.Any())
+                        {
+                            <UiButton Type="workflow" Icon="bi-diagram-3" OnClick="HandleWorkflowClick" CssClass="btn-sm">
+                                @Res.Workflow
                             </UiButton>
                         }
                         @if (ShowAddButton)

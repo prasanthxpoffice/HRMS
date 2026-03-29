@@ -1,5 +1,6 @@
 using HRMS.Components;
 using HRMS.Services;
+using HRMS.Services.WorkflowService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.AddScoped<IResourceService, ResourceService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDataService, DataService>();
+builder.Services.AddScoped<IWorkflowService, HRMS.Services.WorkflowService.WorkflowService>();
 
 var app = builder.Build();
 

@@ -56,4 +56,8 @@ public interface IResourceService
     string UnexpectedErrorDesc => GetString("UnexpectedErrorDesc");
     string Reload => GetString("Reload");
     string DatabaseError => GetString("DatabaseError");
+    string Workflow => GetString("Workflow");
+    string Loading => GetString("Loading");
+    string Close => GetString("Close");
+    string Error_MultipleRequestsSelected => GetString("Error_MultipleRequestsSelected");
 }

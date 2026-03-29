@@ -16,6 +16,7 @@
         DeleteSpName="master.spGenderDelete"
         IdFieldName="GenderId"
         OnDataChanged="LoadData"
+        ShowWorkflow="true"
         Loading="IsLoading" />
 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
@@ -60,7 +61,7 @@
         new UiGridColumn<Gender> { Title = Res.NameAr, FieldName = "GenderNameAr",  FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<Gender> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
         new UiGridColumn<Gender> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
-                                                                                            OnDelete="() => grid.RequestDelete(item)" /> }
+                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
     };
 
     private async Task Prepare(Gender? item = null)

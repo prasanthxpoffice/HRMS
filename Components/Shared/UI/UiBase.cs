@@ -5,8 +5,9 @@ namespace HRMS.Components.Shared.UI;
 
 public class UiBase : ComponentBase, IDisposable
 {
-    [Inject] protected LanguageService Lang { get; set; } = default!;
-    [Inject] protected IResourceService Res { get; set; } = default!;
+    [Inject] public LanguageService Lang { get; set; } = default!;
+    [Inject] public IResourceService Res { get; set; } = default!;
+    [Inject] public INotificationService NotificationService { get; set; } = default!;
 
     protected bool IsLoading { get; set; }
     protected bool IsSaving { get; set; }
