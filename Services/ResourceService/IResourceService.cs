@@ -10,6 +10,8 @@ public interface IResourceService
     string Gender_Description => GetString("Gender_Description");
     string Gender_GridTitle => GetString("Gender_GridTitle");
     string Gender_Add => GetString("Gender_Add");
+    string Gender => GetString("Gender");
+    string Company => GetString("Company");
     
     string Id => GetString("Id");
     string NameEn => GetString("NameEn");

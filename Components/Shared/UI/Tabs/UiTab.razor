@@ -1,0 +1,30 @@
+@namespace HRMS.Components.Shared.UI.Tabs
+
+@implements IDisposable
+
+@if (Parent.ActiveTab == this)
+{
+    <div class="tab-pane fade show active" role="tabpanel">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public UiTabs Parent { get; set; } = default!;
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        if (Parent == null)
+            throw new ArgumentNullException(nameof(Parent), "UiTab must be placed inside a UiTabs component.");
+
+        Parent.AddTab(this);
+    }
+
+    public void Dispose()
+    {
+        Parent.Tabs.Remove(this);
+    }
+}

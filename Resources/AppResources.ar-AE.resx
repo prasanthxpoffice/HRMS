@@ -118,6 +118,8 @@
   <data name="Reload" xml:space="preserve"><value>تحديث</value></data>
   <data name="DatabaseError" xml:space="preserve"><value>حدث خطأ في قاعدة البيانات</value></data>
   <data name="Workflow" xml:space="preserve"><value>سير العمل</value></data>
+  <data name="Gender" xml:space="preserve"><value>الجنس</value></data>
+  <data name="Company" xml:space="preserve"><value>الشركة</value></data>
   <data name="Close" xml:space="preserve"><value>إغلاق</value></data>
   <data name="ExportSuccess" xml:space="preserve"><value>تم تصدير {0} سجلات بنجاح.</value></data>
   <data name="SelectFormat" xml:space="preserve"><value>اختر التنسيق</value></data>

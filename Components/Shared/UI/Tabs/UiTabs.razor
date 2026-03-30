@@ -1,0 +1,48 @@
+@namespace HRMS.Components.Shared.UI.Tabs
+
+<CascadingValue Value="this">
+    <ul class="nav nav-tabs mb-4" id="uiTabs" role="tablist">
+        @foreach (var tab in Tabs)
+        {
+            <li class="nav-item" role="presentation">
+                <button class="nav-link @(ActiveTab == tab ? "active" : "")" 
+                        @onclick="() => ActivateTab(tab)" 
+                        type="button" 
+                        role="tab">
+                    @if (!string.IsNullOrEmpty(tab.Icon))
+                    {
+                        <i class="@tab.Icon me-2"></i>
+                    }
+                    @tab.Title
+                </button>
+            </li>
+        }
+    </ul>
+
+    <div class="tab-content">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    
+    public List<UiTab> Tabs { get; } = new();
+    public UiTab? ActiveTab { get; private set; }
+
+    public void AddTab(UiTab tab)
+    {
+        Tabs.Add(tab);
+        if (Tabs.Count == 1)
+        {
+            ActiveTab = tab;
+        }
+        StateHasChanged();
+    }
+
+    private void ActivateTab(UiTab tab)
+    {
+        ActiveTab = tab;
+        StateHasChanged();
+    }
+}

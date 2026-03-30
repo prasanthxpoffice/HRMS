@@ -118,6 +118,8 @@
   <data name="UnexpectedError" xml:space="preserve"><value>An unexpected error occurred</value></data>
   <data name="UnexpectedErrorDesc" xml:space="preserve"><value>Please refresh the page or try again later.</value></data>
   <data name="Reload" xml:space="preserve"><value>Reload</value></data>
+  <data name="Gender" xml:space="preserve"><value>Gender</value></data>
+  <data name="Company" xml:space="preserve"><value>Company</value></data>
   <data name="Close" xml:space="preserve"><value>Close</value></data>
   <data name="ExportSuccess" xml:space="preserve"><value>Successfully exported {0} records.</value></data>
   <data name="SelectFormat" xml:space="preserve"><value>Select Format</value></data>
