@@ -8,27 +8,29 @@ namespace HRMS.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        private readonly string _connectionString;
+        private readonly IConfiguration _configuration;
         private readonly LanguageService _languageService;
         private readonly IUserService _userService;
 
         public DatabaseService(IConfiguration configuration, LanguageService languageService, IUserService userService)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _configuration = configuration;
             _languageService = languageService;
             _userService = userService;
         }
 
-        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
+        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string connectionName, string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
         {
-            if (string.IsNullOrEmpty(_connectionString))
+            string connectionString = _configuration.GetConnectionString(connectionName) ?? "";
+            
+            if (string.IsNullOrEmpty(connectionString))
             {
                 return new DbResponse<T> { Success = -1, Message = "Connection string not configured." };
             }
 
             try
             {
-                using var db = new SqlConnection(_connectionString);
+                using var db = new SqlConnection(connectionString);
                 await db.OpenAsync();
 
                 var lang = language ?? _languageService.CurrentLanguage;

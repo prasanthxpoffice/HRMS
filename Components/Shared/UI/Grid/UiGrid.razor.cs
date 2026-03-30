@@ -45,6 +45,7 @@ public partial class UiGrid<TItem> : UiBase
     [Parameter] public EventCallback<HashSet<TItem>> OnDeleteSelected { get; set; }
     
     [Parameter] public string? DeleteSpName { get; set; }
+    [Parameter] public string? DeleteConnectionName { get; set; }
     [Parameter] public string? IdFieldName { get; set; }
     [Parameter] public EventCallback OnDataChanged { get; set; }
     
@@ -137,6 +138,15 @@ public partial class UiGrid<TItem> : UiBase
     #endregion
 
     #region Event Handlers - Navigation & Sorting
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        if (!string.IsNullOrEmpty(DeleteSpName) && string.IsNullOrEmpty(DeleteConnectionName))
+        {
+            throw new InvalidOperationException("DeleteConnectionName is strongly required when DeleteSpName is specified.");
+        }
+    }
+
     private void GoToPage(int page) => CurrentPage = Math.Clamp(page, 1, TotalPages == 0 ? 1 : TotalPages);
 
     private void HandleSort(UiGridColumn<TItem> col)
@@ -231,7 +241,7 @@ public partial class UiGrid<TItem> : UiBase
     #endregion
 
     #region Business Logic - Deletion
-    private async Task HandleDeleteSelected()
+    private void HandleDeleteSelected()
     {
         if (SelectedItems == null || !SelectedItems.Any()) return;
         
@@ -261,7 +271,7 @@ public partial class UiGrid<TItem> : UiBase
         if (idVal == null) return;
 
         var param = new Dictionary<string, object> { { IdFieldName, idVal } };
-        var res = await DataService.PostDataAsync(DeleteSpName, param);
+        var res = await DataService.PostDataAsync(DeleteConnectionName!, DeleteSpName, param);
         
         if (res.Success == 1)
         {
@@ -288,7 +298,7 @@ public partial class UiGrid<TItem> : UiBase
             if (idVal == null) continue;
 
             var param = new Dictionary<string, object> { { IdFieldName, idVal } };
-            var res = await DataService.PostDataAsync(DeleteSpName, param, showNotification: false);
+            var res = await DataService.PostDataAsync(DeleteConnectionName!, DeleteSpName, param, showNotification: false);
             
             if (res.Success == 1) successCount++;
             else errorCount++;

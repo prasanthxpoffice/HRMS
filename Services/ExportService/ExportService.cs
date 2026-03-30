@@ -19,17 +19,20 @@ public class ExportService : IExportService
         QuestPDF.Settings.License = LicenseType.Community;
     }
 
-    public async Task<byte[]> ExportAsync<T>(IEnumerable<T> data, Dictionary<string, string>? columns, ExportFormat format, string title, bool isRtl = false)
+    public Task<byte[]> ExportAsync<T>(IEnumerable<T> data, Dictionary<string, string>? columns, ExportFormat format, string title, bool isRtl = false)
     {
-        var dataTable = ToDataTable(data, columns);
-
-        return format switch
+        return Task.Run(() => 
         {
-            ExportFormat.Xlsx => GetXlsxBytes(dataTable, isRtl),
-            ExportFormat.Csv => GetCsvBytes(dataTable),
-            ExportFormat.Pdf => GetPdfBytes(dataTable, title, isRtl),
-            _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
-        };
+            var dataTable = ToDataTable(data, columns);
+
+            return format switch
+            {
+                ExportFormat.Xlsx => GetXlsxBytes(dataTable, isRtl),
+                ExportFormat.Csv => GetCsvBytes(dataTable),
+                ExportFormat.Pdf => GetPdfBytes(dataTable, title, isRtl),
+                _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
+            };
+        });
     }
 
     private DataTable ToDataTable<T>(IEnumerable<T> data, Dictionary<string, string>? columns)

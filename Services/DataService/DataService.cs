@@ -17,9 +17,9 @@ namespace HRMS.Services
             _res = res;
         }
 
-        public async Task<List<T>> GetListAsync<T>(string spName, object json, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
+        public async Task<List<T>> GetListAsync<T>(string connectionName, string spName, object json, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
         {
-            var response = await _db.ExecuteQueryAsync<List<T>>(spName, json, employeeId, language, roleId, useTransaction: useTransaction);
+            var response = await _db.ExecuteQueryAsync<List<T>>(connectionName, spName, json, employeeId, language, roleId, useTransaction: useTransaction);
             
             if (response != null)
             {
@@ -36,9 +36,9 @@ namespace HRMS.Services
             return response?.Data ?? new();
         }
 
-        public async Task<DbResponse<object>> PostDataAsync(string spName, object json, bool showNotification = true, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = true)
+        public async Task<DbResponse<object>> PostDataAsync(string connectionName, string spName, object json, bool showNotification = true, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = true)
         {
-            var res = await _db.ExecuteQueryAsync<object>(spName, json, employeeId, language, roleId, useTransaction: useTransaction);
+            var res = await _db.ExecuteQueryAsync<object>(connectionName, spName, json, employeeId, language, roleId, useTransaction: useTransaction);
             
             if (res != null)
             {
@@ -59,7 +59,7 @@ namespace HRMS.Services
                 }
             }
 
-            return res;
+            return res ?? new DbResponse<object> { Success = -1, Message = "Unknown error" };
         }
     }
 }

@@ -13,7 +13,8 @@
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
-        DeleteSpName="master.spGenderDelete"
+        DeleteSpName="@StoredProcedure.HRMSDB.Master.spGenderDelete"
+        DeleteConnectionName="@ConnectionNames.Default"
         IdFieldName="GenderId"
         OnDataChanged="LoadData"
         ShowWorkflow="true"
@@ -54,7 +55,7 @@
 
     private Task LoadData() => LoadAsync(async () => 
     {
-        Items = await DataService.GetListAsync<Gender>("master.spGenderGet", new { });
+        Items = await DataService.GetListAsync<Gender>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spGenderGet, new { });
     });
     
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
@@ -77,7 +78,7 @@
         }
         else
         {
-            var result = await DataService.GetListAsync<Gender>("master.spGenderGet", new { GenderId = item.GenderId });
+            var result = await DataService.GetListAsync<Gender>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spGenderGet, new { GenderId = item.GenderId });
             CurrentItem = result?.FirstOrDefault() ?? new Gender();
         }
         ShowModal = true;
@@ -85,7 +86,7 @@
 
     private async Task Save()
     {
-        var res = await DataService.PostDataAsync("master.spGenderSave", CurrentItem);
+        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spGenderSave, CurrentItem);
         if (res.Success == 1)
         {
             ShowModal = false;
