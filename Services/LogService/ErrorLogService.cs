@@ -13,8 +13,8 @@ namespace HRMS.Services.LogService
         {
             try
             {
-                // Create ErrorLogs directory at the root of the project
-                string logDirectory = Path.Combine(_env.ContentRootPath, "ErrorLogs");
+                // Move external to the project root to permanently prevent dotnet watch infinite reload loops
+                string logDirectory = Path.Combine(Path.GetTempPath(), "HRMS_ErrorLogs");
                 if (!Directory.Exists(logDirectory))
                 {
                     Directory.CreateDirectory(logDirectory);
