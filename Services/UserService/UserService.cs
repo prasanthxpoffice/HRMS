@@ -58,7 +58,7 @@ public class UserService : IUserService
         _allMenus = new List<Menu>
         {
             new() { MenuCode = "DASHBOARD", ParentMenuCode = null, MenuNameEn = "Dashboard", MenuNameAr = "لوحة القيادة", Href = "", Icon = "bi-speedometer2", SortOrder = 1 },
-            new() { MenuCode = "ADMIN", ParentMenuCode = null, MenuNameEn = "Admin Dashboard", MenuNameAr = "لوحة التحكم للإدارة", Href = "admin", Icon = "bi-shield-shaded", SortOrder = 5 }
+            new() { MenuCode = "ADMIN", ParentMenuCode = null, MenuNameEn = "Admin", MenuNameAr ="الإدارة", Href = "admin", Icon = "bi-shield-shaded", SortOrder = 5 }
         };
 
         _currentRole = _roles.First();

@@ -21,7 +21,7 @@
         OnGetExportData="GetExportData"
         ExportName="Gender"
         Loading="IsLoading" />
-
+ 
 <UiModal Show="ShowModal" Title="@(CurrentItem.GenderId == 0 ? Res.Gender_Add : Res.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="genderForm" Model="CurrentItem" OnValidSubmit="Save">

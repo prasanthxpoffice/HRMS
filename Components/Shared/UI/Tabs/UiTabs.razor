@@ -1,6 +1,7 @@
 @namespace HRMS.Components.Shared.UI.Tabs
 
 <CascadingValue Value="this">
+<div class="ui-tabs-rect">
     <ul class="nav nav-tabs mb-4" id="uiTabs" role="tablist">
         @foreach (var tab in Tabs)
         {
@@ -22,6 +23,7 @@
     <div class="tab-content">
         @ChildContent
     </div>
+</div>
 </CascadingValue>
 
 @code {
