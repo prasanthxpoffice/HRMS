@@ -40,5 +40,8 @@ namespace HRMS.Resources {
 
         public static string LeaveType_NameEn_Required => ResourceManager.GetString("LeaveType_NameEn_Required", resourceCulture);
         public static string LeaveType_NameAr_Required => ResourceManager.GetString("LeaveType_NameAr_Required", resourceCulture);
+
+        public static string ContractType_NameEn_Required => ResourceManager.GetString("ContractType_NameEn_Required", resourceCulture);
+        public static string ContractType_NameAr_Required => ResourceManager.GetString("ContractType_NameAr_Required", resourceCulture);
     }
 }

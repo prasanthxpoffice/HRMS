@@ -137,4 +137,9 @@
   <data name="LeaveType_GridTitle" xml:space="preserve"><value>أنواع الإجازات</value></data>
   <data name="LeaveType_Add" xml:space="preserve"><value>إضافة نوع إجازة</value></data>
   <data name="LeaveType" xml:space="preserve"><value>نوع الإجازة</value></data>
+  <data name="ContractType_NameEn_Required" xml:space="preserve"><value>الاسم (EN) مطلوب</value></data>
+  <data name="ContractType_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
+  <data name="ContractType_GridTitle" xml:space="preserve"><value>أنواع العقود</value></data>
+  <data name="ContractType_Add" xml:space="preserve"><value>إضافة نوع عقد</value></data>
+  <data name="ContractType" xml:space="preserve"><value>نوع العقد</value></data>
 </root>

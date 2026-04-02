@@ -137,4 +137,9 @@
   <data name="LeaveType_GridTitle" xml:space="preserve"><value>Leave Types</value></data>
   <data name="LeaveType_Add" xml:space="preserve"><value>Add Leave Type</value></data>
   <data name="LeaveType" xml:space="preserve"><value>Leave Type</value></data>
+  <data name="ContractType_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
+  <data name="ContractType_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
+  <data name="ContractType_GridTitle" xml:space="preserve"><value>Contract Types</value></data>
+  <data name="ContractType_Add" xml:space="preserve"><value>Add Contract Type</value></data>
+  <data name="ContractType" xml:space="preserve"><value>Contract Type</value></data>
 </root>

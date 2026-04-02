@@ -1,0 +1,96 @@
+@page "/contracttypes"
+@inherits UiBase
+@rendermode InteractiveServer
+@inject IDataService DataService
+
+<UiGrid @ref="grid"
+        TItem="HRMS.Models.Master.ContractType" 
+        Title="@Res.GetString("ContractType_GridTitle")" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="true" 
+        AddButtonText="@Res.GetString("ContractType_Add")" 
+        OnAddClick="() => Prepare()"
+        ShowSelection="true"
+        ShowDeleteButton="true"
+        DeleteSpName="@StoredProcedure.HRMSDB.Master.spContractTypeDelete"
+        DeleteConnectionName="@ConnectionNames.Default"
+        IdFieldName="ContractId"
+        OnDataChanged="LoadData"
+        ShowWorkflow="true"
+        ShowExport="true"
+        OnGetExportData="GetExportData"
+        ExportName="ContractType"
+        Loading="IsLoading" />
+ 
+<UiModal Show="ShowModal" Title="@(CurrentItem.ContractId == 0 ? Res.GetString("ContractType_Add") : Res.Edit)" OnClose="CloseModal">
+    <Body>
+        <EditForm id="contractTypeForm" Model="CurrentItem" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.ContractNameEn" Placeholder="@Res.NameEn" />
+            <ValidationMessage For="@(() => CurrentItem.ContractNameEn)" />
+
+            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.ContractNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <ValidationMessage For="@(() => CurrentItem.ContractNameAr)" />
+        </EditForm>
+    </Body>
+    <Footer>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="contractTypeForm" Loading="IsSaving">@Res.Save</UiButton>
+    </Footer>
+</UiModal>
+
+@code {
+    private List<HRMS.Models.Master.ContractType> Items = new();
+    private HRMS.Models.Master.ContractType CurrentItem = new();
+    private bool ShowModal = false;
+    private void CloseModal() => ShowModal = false;
+    private UiGrid<HRMS.Models.Master.ContractType> grid = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        await LoadData();
+    }
+
+    private Task LoadData() => LoadAsync(async () => 
+    {
+        Items = await DataService.GetListAsync<HRMS.Models.Master.ContractType>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeGet, new { });
+    });
+    
+    private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+
+    private List<UiGridColumn<HRMS.Models.Master.ContractType>> columns => new()
+    {
+        new UiGridColumn<HRMS.Models.Master.ContractType> { Title = Res.Id, FieldName = "ContractId" },
+        new UiGridColumn<HRMS.Models.Master.ContractType> { Title = Res.NameEn, FieldName = "ContractNameEn" },
+        new UiGridColumn<HRMS.Models.Master.ContractType> { Title = Res.NameAr, FieldName = "ContractNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.ContractType> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.ContractType> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
+    };
+
+    private async Task Prepare(HRMS.Models.Master.ContractType? item = null)
+    {
+        if (item == null)
+        {
+            CurrentItem = new HRMS.Models.Master.ContractType { ContractId = 0 };
+        }
+        else
+        {
+            var result = await DataService.GetListAsync<HRMS.Models.Master.ContractType>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeGet, new { ContractId = item.ContractId });
+            CurrentItem = result?.FirstOrDefault() ?? new HRMS.Models.Master.ContractType();
+        }
+        ShowModal = true;
+    }  
+
+    private async Task Save()
+    {
+        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeSave, CurrentItem);
+        if (res.Success == 1)
+        {
+            ShowModal = false;
+            await LoadData();
+        }
+    }
+}
