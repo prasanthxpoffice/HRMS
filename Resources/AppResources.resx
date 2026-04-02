@@ -127,4 +127,9 @@
   <data name="Company_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
   <data name="Company_GridTitle" xml:space="preserve"><value>Companies</value></data>
   <data name="Company_Add" xml:space="preserve"><value>Add Company</value></data>
+  <data name="Position_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
+  <data name="Position_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
+  <data name="Position_GridTitle" xml:space="preserve"><value>Positions</value></data>
+  <data name="Position_Add" xml:space="preserve"><value>Add Position</value></data>
+  <data name="Position" xml:space="preserve"><value>Position</value></data>
 </root>

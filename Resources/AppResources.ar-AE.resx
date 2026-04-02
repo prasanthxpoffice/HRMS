@@ -127,4 +127,9 @@
   <data name="Company_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
   <data name="Company_GridTitle" xml:space="preserve"><value>الشركات</value></data>
   <data name="Company_Add" xml:space="preserve"><value>إضافة شركة</value></data>
+  <data name="Position_NameEn_Required" xml:space="preserve"><value>الاسم (EN) مطلوب</value></data>
+  <data name="Position_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
+  <data name="Position_GridTitle" xml:space="preserve"><value>المناصب</value></data>
+  <data name="Position_Add" xml:space="preserve"><value>إضافة منصب</value></data>
+  <data name="Position" xml:space="preserve"><value>المنصب</value></data>
 </root>

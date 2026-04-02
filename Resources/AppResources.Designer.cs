@@ -34,5 +34,8 @@ namespace HRMS.Resources {
 
         public static string Company_NameEn_Required => ResourceManager.GetString("Company_NameEn_Required", resourceCulture);
         public static string Company_NameAr_Required => ResourceManager.GetString("Company_NameAr_Required", resourceCulture);
+
+        public static string Position_NameEn_Required => ResourceManager.GetString("Position_NameEn_Required", resourceCulture);
+        public static string Position_NameAr_Required => ResourceManager.GetString("Position_NameAr_Required", resourceCulture);
     }
 }
