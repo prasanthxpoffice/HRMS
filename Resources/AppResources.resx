@@ -132,4 +132,9 @@
   <data name="Position_GridTitle" xml:space="preserve"><value>Positions</value></data>
   <data name="Position_Add" xml:space="preserve"><value>Add Position</value></data>
   <data name="Position" xml:space="preserve"><value>Position</value></data>
+  <data name="LeaveType_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
+  <data name="LeaveType_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
+  <data name="LeaveType_GridTitle" xml:space="preserve"><value>Leave Types</value></data>
+  <data name="LeaveType_Add" xml:space="preserve"><value>Add Leave Type</value></data>
+  <data name="LeaveType" xml:space="preserve"><value>Leave Type</value></data>
 </root>

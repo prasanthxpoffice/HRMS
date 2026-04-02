@@ -17,6 +17,10 @@ namespace DB.Constants
                 public const string spPositionGet = "master.spPositionGet";
                 public const string spPositionSave = "master.spPositionSave";
                 public const string spPositionDelete = "master.spPositionDelete";
+
+                public const string spLeaveTypeGet = "master.spLeaveTypeGet";
+                public const string spLeaveTypeSave = "master.spLeaveTypeSave";
+                public const string spLeaveTypeDelete = "master.spLeaveTypeDelete";
             }
         }
     }

@@ -132,4 +132,9 @@
   <data name="Position_GridTitle" xml:space="preserve"><value>المناصب</value></data>
   <data name="Position_Add" xml:space="preserve"><value>إضافة منصب</value></data>
   <data name="Position" xml:space="preserve"><value>المنصب</value></data>
+  <data name="LeaveType_NameEn_Required" xml:space="preserve"><value>الاسم (EN) مطلوب</value></data>
+  <data name="LeaveType_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
+  <data name="LeaveType_GridTitle" xml:space="preserve"><value>أنواع الإجازات</value></data>
+  <data name="LeaveType_Add" xml:space="preserve"><value>إضافة نوع إجازة</value></data>
+  <data name="LeaveType" xml:space="preserve"><value>نوع الإجازة</value></data>
 </root>
