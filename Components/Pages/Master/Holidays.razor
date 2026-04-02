@@ -1,0 +1,96 @@
+@page "/holidays"
+@inherits UiBase
+@rendermode InteractiveServer
+@inject IDataService DataService
+
+<UiGrid @ref="grid"
+        TItem="HRMS.Models.Master.Holiday" 
+        Title="@Res.GetString("Holiday_GridTitle")" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="true" 
+        AddButtonText="@Res.GetString("Holiday_Add")" 
+        OnAddClick="() => Prepare()"
+        ShowSelection="true"
+        ShowDeleteButton="true"
+        DeleteSpName="@StoredProcedure.HRMSDB.Master.spHolidaysDelete"
+        DeleteConnectionName="@ConnectionNames.Default"
+        IdFieldName="HolidayId"
+        OnDataChanged="LoadData"
+        ShowWorkflow="true"
+        ShowExport="true"
+        OnGetExportData="GetExportData"
+        ExportName="Holiday"
+        Loading="IsLoading" />
+ 
+<UiModal Show="ShowModal" Title="@(CurrentItem.HolidayId == 0 ? Res.GetString("Holiday_Add") : Res.Edit)" OnClose="CloseModal">
+    <Body>
+        <EditForm id="holidayForm" Model="CurrentItem" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.HolidayNameEn" Placeholder="@Res.NameEn" />
+            <ValidationMessage For="@(() => CurrentItem.HolidayNameEn)" />
+
+            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.HolidayNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <ValidationMessage For="@(() => CurrentItem.HolidayNameAr)" />
+        </EditForm>
+    </Body>
+    <Footer>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="holidayForm" Loading="IsSaving">@Res.Save</UiButton>
+    </Footer>
+</UiModal>
+
+@code {
+    private List<HRMS.Models.Master.Holiday> Items = new();
+    private HRMS.Models.Master.Holiday CurrentItem = new();
+    private bool ShowModal = false;
+    private void CloseModal() => ShowModal = false;
+    private UiGrid<HRMS.Models.Master.Holiday> grid = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        await LoadData();
+    }
+
+    private Task LoadData() => LoadAsync(async () => 
+    {
+        Items = await DataService.GetListAsync<HRMS.Models.Master.Holiday>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spHolidaysGet, new { });
+    });
+    
+    private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+
+    private List<UiGridColumn<HRMS.Models.Master.Holiday>> columns => new()
+    {
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.Id, FieldName = "HolidayId" },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.NameEn, FieldName = "HolidayNameEn" },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.NameAr, FieldName = "HolidayNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
+    };
+
+    private async Task Prepare(HRMS.Models.Master.Holiday? item = null)
+    {
+        if (item == null)
+        {
+            CurrentItem = new HRMS.Models.Master.Holiday { HolidayId = 0 };
+        }
+        else
+        {
+            var result = await DataService.GetListAsync<HRMS.Models.Master.Holiday>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spHolidaysGet, new { HolidayId = item.HolidayId });
+            CurrentItem = result?.FirstOrDefault() ?? new HRMS.Models.Master.Holiday();
+        }
+        ShowModal = true;
+    }  
+
+    private async Task Save()
+    {
+        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spHolidaysSave, CurrentItem);
+        if (res.Success == 1)
+        {
+            ShowModal = false;
+            await LoadData();
+        }
+    }
+}

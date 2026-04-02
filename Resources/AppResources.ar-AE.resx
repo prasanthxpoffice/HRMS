@@ -142,4 +142,9 @@
   <data name="ContractType_GridTitle" xml:space="preserve"><value>أنواع العقود</value></data>
   <data name="ContractType_Add" xml:space="preserve"><value>إضافة نوع عقد</value></data>
   <data name="ContractType" xml:space="preserve"><value>نوع العقد</value></data>
+  <data name="Holiday_NameEn_Required" xml:space="preserve"><value>الاسم (EN) مطلوب</value></data>
+  <data name="Holiday_NameAr_Required" xml:space="preserve"><value>الاسم (AR) مطلوب</value></data>
+  <data name="Holiday_GridTitle" xml:space="preserve"><value>العطلات</value></data>
+  <data name="Holiday_Add" xml:space="preserve"><value>إضافة عطلة</value></data>
+  <data name="Holiday" xml:space="preserve"><value>عطلة</value></data>
 </root>

@@ -142,4 +142,9 @@
   <data name="ContractType_GridTitle" xml:space="preserve"><value>Contract Types</value></data>
   <data name="ContractType_Add" xml:space="preserve"><value>Add Contract Type</value></data>
   <data name="ContractType" xml:space="preserve"><value>Contract Type</value></data>
+  <data name="Holiday_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
+  <data name="Holiday_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
+  <data name="Holiday_GridTitle" xml:space="preserve"><value>Holidays</value></data>
+  <data name="Holiday_Add" xml:space="preserve"><value>Add Holiday</value></data>
+  <data name="Holiday" xml:space="preserve"><value>Holiday</value></data>
 </root>

@@ -25,6 +25,10 @@ namespace DB.Constants
                 public const string spContractTypeGet = "master.spContractTypeGet";
                 public const string spContractTypeSave = "master.spContractTypeSave";
                 public const string spContractTypeDelete = "master.spContractTypeDelete";
+
+                public const string spHolidaysGet = "master.spHolidaysGet";
+                public const string spHolidaysSave = "master.spHolidaysSave";
+                public const string spHolidaysDelete = "master.spHolidaysDelete";
             }
         }
     }
