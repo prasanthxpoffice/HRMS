@@ -31,5 +31,8 @@ namespace HRMS.Resources {
         public static string Gender_NameEn_Required => ResourceManager.GetString("Gender_NameEn_Required", resourceCulture);
         public static string Gender_NameAr_Required => ResourceManager.GetString("Gender_NameAr_Required", resourceCulture);
         public static string Error_TooLong => ResourceManager.GetString("Error_TooLong", resourceCulture);
+
+        public static string Company_NameEn_Required => ResourceManager.GetString("Company_NameEn_Required", resourceCulture);
+        public static string Company_NameAr_Required => ResourceManager.GetString("Company_NameAr_Required", resourceCulture);
     }
 }

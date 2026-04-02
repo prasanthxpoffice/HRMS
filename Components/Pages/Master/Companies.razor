@@ -1,0 +1,96 @@
+@page "/companies"
+@inherits UiBase
+@rendermode InteractiveServer
+@inject IDataService DataService
+
+<UiGrid @ref="grid"
+        TItem="HRMS.Models.Master.Company" 
+        Title="@Res.GetString("Company_GridTitle")" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="true" 
+        AddButtonText="@Res.GetString("Company_Add")" 
+        OnAddClick="() => Prepare()"
+        ShowSelection="true"
+        ShowDeleteButton="true"
+        DeleteSpName="@StoredProcedure.HRMSDB.Master.spCompanyDelete"
+        DeleteConnectionName="@ConnectionNames.Default"
+        IdFieldName="CompanyId"
+        OnDataChanged="LoadData"
+        ShowWorkflow="true"
+        ShowExport="true"
+        OnGetExportData="GetExportData"
+        ExportName="Company"
+        Loading="IsLoading" />
+ 
+<UiModal Show="ShowModal" Title="@(CurrentItem.CompanyId == 0 ? Res.GetString("Company_Add") : Res.Edit)" OnClose="CloseModal">
+    <Body>
+        <EditForm id="companyForm" Model="CurrentItem" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.CompanyNameEn" Placeholder="@Res.NameEn" />
+            <ValidationMessage For="@(() => CurrentItem.CompanyNameEn)" />
+
+            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.CompanyNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <ValidationMessage For="@(() => CurrentItem.CompanyNameAr)" />
+        </EditForm>
+    </Body>
+    <Footer>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="companyForm" Loading="IsSaving">@Res.Save</UiButton>
+    </Footer>
+</UiModal>
+
+@code {
+    private List<HRMS.Models.Master.Company> Items = new();
+    private HRMS.Models.Master.Company CurrentItem = new();
+    private bool ShowModal = false;
+    private void CloseModal() => ShowModal = false;
+    private UiGrid<HRMS.Models.Master.Company> grid = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        await LoadData();
+    }
+
+    private Task LoadData() => LoadAsync(async () => 
+    {
+        Items = await DataService.GetListAsync<HRMS.Models.Master.Company>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spCompanyGet, new { });
+    });
+    
+    private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+
+    private List<UiGridColumn<HRMS.Models.Master.Company>> columns => new()
+    {
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.Id, FieldName = "CompanyId" },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.NameEn, FieldName = "CompanyNameEn" },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.NameAr, FieldName = "CompanyNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
+    };
+
+    private async Task Prepare(HRMS.Models.Master.Company? item = null)
+    {
+        if (item == null)
+        {
+            CurrentItem = new HRMS.Models.Master.Company { CompanyId = 0 };
+        }
+        else
+        {
+            var result = await DataService.GetListAsync<HRMS.Models.Master.Company>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spCompanyGet, new { CompanyId = item.CompanyId });
+            CurrentItem = result?.FirstOrDefault() ?? new HRMS.Models.Master.Company();
+        }
+        ShowModal = true;
+    }  
+
+    private async Task Save()
+    {
+        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spCompanySave, CurrentItem);
+        if (res.Success == 1)
+        {
+            ShowModal = false;
+            await LoadData();
+        }
+    }
+}
