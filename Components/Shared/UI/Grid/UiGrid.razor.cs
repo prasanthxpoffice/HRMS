@@ -64,6 +64,7 @@ public partial class UiGrid<TItem> : UiBase
     private bool _sortDescending;
     private bool _showConfirmModal = false;
     private TItem? _itemPendingDelete;
+    private bool _exportGridDataOnly = true;
     #endregion
 
     #region Data Processing - Filtering & Sorting
@@ -354,7 +355,7 @@ public partial class UiGrid<TItem> : UiBase
             IEnumerable<object> exportData;
             Dictionary<string, string>? exportColumns = null;
 
-            if (OnGetExportData != null)
+            if (OnGetExportData != null && !_exportGridDataOnly)
             {
                 // Mode 1: Manual Callback (Auto-detect all fields from data)
                 exportData = await OnGetExportData.Invoke();
