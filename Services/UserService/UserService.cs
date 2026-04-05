@@ -50,7 +50,7 @@ public class UserService : IUserService
 
         _roleMenus = new Dictionary<int, List<string>>
         {
-            [1] = new() { "DASHBOARD", "MASTER" },
+            [1] = new() { "DASHBOARD", "MASTER", "ADMIN" },
             [2] = new() { "DASHBOARD", "MASTER" },
             [3] = new() { "DASHBOARD" }
         };
@@ -58,7 +58,8 @@ public class UserService : IUserService
         _allMenus = new List<Menu>
         {
             new() { MenuCode = "DASHBOARD", ParentMenuCode = null, MenuNameEn = "Dashboard", MenuNameAr = "لوحة القيادة", Href = "", Icon = "bi-speedometer2", SortOrder = 1 },
-            new() { MenuCode = "MASTER", ParentMenuCode = null, MenuNameEn = "Master", MenuNameAr ="الإدارة", Href = "master", Icon = "bi-shield-shaded", SortOrder = 5 }
+            new() { MenuCode = "MASTER", ParentMenuCode = null, MenuNameEn = "Master", MenuNameAr ="الإدارة (أساسي)", Href = "master", Icon = "bi-box", SortOrder = 5 },
+            new() { MenuCode = "ADMIN", ParentMenuCode = null, MenuNameEn = "Admin", MenuNameAr ="الإدارة", Href = "admin", Icon = "bi-shield-shaded", SortOrder = 6 }
         };
 
         _currentRole = _roles.First();

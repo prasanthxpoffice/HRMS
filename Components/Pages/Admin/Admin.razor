@@ -1,0 +1,11 @@
+@page "/admin"
+@inherits UiBase
+@rendermode InteractiveServer
+
+<div class="card-ui p-4">
+    <UiTabs>
+        <UiTab Title="@Res.GetString("CompanyContract")" Icon="bi bi-link-45deg">
+            <CompanyContracts />
+        </UiTab>
+    </UiTabs>
+</div>

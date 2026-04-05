@@ -147,4 +147,11 @@
   <data name="Holiday_GridTitle" xml:space="preserve"><value>Holidays</value></data>
   <data name="Holiday_Add" xml:space="preserve"><value>Add Holiday</value></data>
   <data name="Holiday" xml:space="preserve"><value>Holiday</value></data>
+  <data name="CompanyContract_GridTitle" xml:space="preserve"><value>Company Contracts</value></data>
+  <data name="CompanyContract_Add" xml:space="preserve"><value>Assign Contract</value></data>
+  <data name="CompanyContract" xml:space="preserve"><value>Company Contract</value></data>
+  <data name="CompanyContract_Company_Required" xml:space="preserve"><value>Company is required</value></data>
+  <data name="CompanyContract_Contract_Required" xml:space="preserve"><value>Contract is required</value></data>
+  <data name="SelectCompany" xml:space="preserve"><value>Select Company</value></data>
+  <data name="SelectContract" xml:space="preserve"><value>Select Contract</value></data>
 </root>

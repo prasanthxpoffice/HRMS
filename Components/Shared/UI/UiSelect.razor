@@ -1,3 +1,5 @@
+@typeparam TValue
+
 <div class="@(NoMargin ? "" : "mb-3")">
     @if (!string.IsNullOrEmpty(Label))
     {
@@ -5,14 +7,24 @@
     }
     <select class="input-ui w-100 @CssClass" 
             style="@Style"
-            value="@Value" 
+            value="@(Value?.ToString() ?? DefaultValue?.ToString() ?? "")" 
             @onchange="HandleChange"
             disabled="@Disabled"
             @attributes="AdditionalAttributes">
+            
         @if (!string.IsNullOrEmpty(Placeholder))
         {
-            <option value="" disabled selected>@Placeholder</option>
+            <option value="@(DefaultValue?.ToString() ?? "")" disabled="@DisablePlaceholder" selected="@(Value == null || Value.ToString() == DefaultValue?.ToString())">@Placeholder</option>
         }
+        
+        @if (Items != null)
+        {
+            @foreach (var item in Items)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        }
+        
         @ChildContent
     </select>
 </div>
@@ -22,8 +34,9 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    [Parameter] public string Value { get; set; } = "";
-    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public TValue? Value { get; set; }
+    [Parameter] public EventCallback<TValue?> ValueChanged { get; set; }
+    
     [Parameter] public string Label { get; set; } = "";
     [Parameter] public string Placeholder { get; set; } = "";
     [Parameter] public string CssClass { get; set; } = "";
@@ -31,9 +44,42 @@
     [Parameter] public bool Disabled { get; set; } = false;
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
+    // Generics Upgrade Properties
+    [Parameter] public IEnumerable<HRMS.Models.Shared.LookupItem>? Items { get; set; }
+    [Parameter] public TValue? DefaultValue { get; set; }
+    [Parameter] public bool DisablePlaceholder { get; set; } = true;
+
     private async Task HandleChange(ChangeEventArgs e)
     {
-        Value = e.Value?.ToString() ?? "";
-        await ValueChanged.InvokeAsync(Value);
+        var strValue = e.Value?.ToString();
+        TValue? parsedValue = default;
+
+        if (!string.IsNullOrEmpty(strValue) && strValue != DefaultValue?.ToString())
+        {
+            var targetType = Nullable.GetUnderlyingType(typeof(TValue)) ?? typeof(TValue);
+            
+            try
+            {
+                if (targetType == typeof(int))
+                {
+                    parsedValue = (TValue)(object)int.Parse(strValue);
+                }
+                else if (targetType == typeof(string))
+                {
+                    parsedValue = (TValue)(object)strValue;
+                }
+                else
+                {
+                    parsedValue = (TValue)Convert.ChangeType(strValue, targetType);
+                }
+            }
+            catch
+            {
+                parsedValue = default;
+            }
+        }
+
+        Value = parsedValue;
+        await ValueChanged.InvokeAsync(parsedValue);
     }
 }

@@ -4,6 +4,13 @@ namespace DB.Constants
     {
         public static class HRMSDB
         {
+            public static class Admin
+            {
+                public const string spCompanyContractGet = "admin.spCompanyContractGet";
+                public const string spCompanyContractSave = "admin.spCompanyContractSave";
+                public const string spCompanyContractDelete = "admin.spCompanyContractDelete";
+            }
+
             public static class Master
             {
                 public const string spGenderGet = "master.spGenderGet";

@@ -147,4 +147,11 @@
   <data name="Holiday_GridTitle" xml:space="preserve"><value>العطلات</value></data>
   <data name="Holiday_Add" xml:space="preserve"><value>إضافة عطلة</value></data>
   <data name="Holiday" xml:space="preserve"><value>عطلة</value></data>
+  <data name="CompanyContract_GridTitle" xml:space="preserve"><value>عقود الشركات</value></data>
+  <data name="CompanyContract_Add" xml:space="preserve"><value>إسناد عقد</value></data>
+  <data name="CompanyContract" xml:space="preserve"><value>عقد الشركة</value></data>
+  <data name="CompanyContract_Company_Required" xml:space="preserve"><value>الشركة مطلوبة</value></data>
+  <data name="CompanyContract_Contract_Required" xml:space="preserve"><value>العقد مطلوب</value></data>
+  <data name="SelectCompany" xml:space="preserve"><value>اختر الشركة</value></data>
+  <data name="SelectContract" xml:space="preserve"><value>اختر العقد</value></data>
 </root>
