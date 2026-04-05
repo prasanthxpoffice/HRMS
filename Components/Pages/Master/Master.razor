@@ -1,26 +1,23 @@
-@page "/admin"
+@page "/master"
 @inherits UiBase
 @rendermode InteractiveServer
 
 <div class="card-ui p-4">
     <UiTabs>
-        <UiTab Title="@Res.Gender" Icon="bi bi-gender-ambiguous">
-            <Genders />
-        </UiTab>
         <UiTab Title="@Res.Company" Icon="bi bi-building">
             <Companies />
         </UiTab>
         <UiTab Title="@Res.GetString("Position")" Icon="bi bi-person-badge">
             <Positions />
         </UiTab>
-        <UiTab Title="@Res.GetString("LeaveType")" Icon="bi bi-airplane">
-            <LeaveTypes />
-        </UiTab>
         <UiTab Title="@Res.GetString("ContractType")" Icon="bi bi-file-earmark-text">
             <ContractTypes />
         </UiTab>
         <UiTab Title="@Res.GetString("Holiday")" Icon="bi bi-calendar-heart">
             <Holidays />
+        </UiTab>
+         <UiTab Title="@Res.GetString("LeaveType")" Icon="bi bi-airplane">
+            <LeaveTypes />
         </UiTab>
     </UiTabs>
 </div>
