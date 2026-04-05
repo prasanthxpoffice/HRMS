@@ -13,6 +13,10 @@ namespace DB.Constants
                 public const string spCompanyPositionGet = "admin.spCompanyPositionGet";
                 public const string spCompanyPositionSave = "admin.spCompanyPositionSave";
                 public const string spCompanyPositionDelete = "admin.spCompanyPositionDelete";
+
+                public const string spHolidayDetailsGet = "admin.spHolidayDetailsGet";
+                public const string spHolidayDetailsSave = "admin.spHolidayDetailsSave";
+                public const string spHolidayDetailsDelete = "admin.spHolidayDetailsDelete";
             }
 
             public static class Master
@@ -38,6 +42,10 @@ namespace DB.Constants
                 public const string spHolidaysGet = "master.spHolidaysGet";
                 public const string spHolidaysSave = "master.spHolidaysSave";
                 public const string spHolidaysDelete = "master.spHolidaysDelete";
+
+                public const string spReligionGet = "master.spReligionGet";
+                public const string spNationalityGet = "master.spNationalityGet";
+                public const string spShiftTypeGet = "master.spShiftTypeGet";
             }
         }
     }

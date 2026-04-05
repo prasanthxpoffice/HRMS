@@ -1,0 +1,178 @@
+@inherits UiBase
+@rendermode InteractiveServer
+@inject IDataService DataService
+
+@using HRMS.Models.Admin
+@using HRMS.Models.Master
+@using HRMS.Models.Shared
+
+<UiGrid @ref="grid"
+        TItem="HolidayDetail" 
+        Title="@Res.HolidayDetail_GridTitle" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="true" 
+        AddButtonText="@Res.HolidayDetail_Add" 
+        OnAddClick="() => Prepare()"
+        ShowSelection="true"
+        ShowDeleteButton="true"
+        DeleteSpName="@StoredProcedure.HRMSDB.Admin.spHolidayDetailsDelete"
+        IdFieldName="HolidayDetailId"
+        DeleteConnectionName="@ConnectionNames.Default"
+        OnDataChanged="LoadData"
+        ShowWorkflow="true"
+        ShowExport="true"
+        OnGetExportData="GetExportData"
+        ExportName="HolidayCalendar"
+        Loading="IsLoading" />
+ 
+<UiModal Show="ShowModal" Title="@(CurrentItem.HolidayDetailId == 0 ? Res.HolidayDetail_Add : Res.Edit)" OnClose="CloseModal">
+    <Body>
+        <EditForm id="holidayDetailForm" Model="CurrentItem" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <UiSelect Label="@Res.Holiday" 
+                              Items="Lookups.Holidays"
+                              Placeholder="@Res.SelectHoliday"
+                              @bind-Value="CurrentItem.HolidayId" />
+                    <ValidationMessage For="@(() => CurrentItem.HolidayId)" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="small-label mb-1">@Res.FromDate</label>
+                    <input type="date" class="input-ui w-100" @bind="CurrentItem.FromDate" />
+                    <ValidationMessage For="@(() => CurrentItem.FromDate)" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="small-label mb-1">@Res.ToDate</label>
+                    <input type="date" class="input-ui w-100" @bind="CurrentItem.ToDate" />
+                    <ValidationMessage For="@(() => CurrentItem.ToDate)" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <UiSelect Label="@Res.ShiftType" 
+                              Items="Lookups.ShiftTypes"
+                              Placeholder="@Res.SelectShiftType"
+                              @bind-Value="CurrentItem.ShiftTypeId" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <UiSelect Label="@Res.Gender" 
+                              Items="Lookups.Genders"
+                              Placeholder="@Res.SelectGender"
+                              @bind-Value="CurrentItem.GenderId" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <UiSelect Label="@Res.Religion" 
+                              Items="Lookups.Religions"
+                              Placeholder="@Res.SelectReligion"
+                              @bind-Value="CurrentItem.ReligionId" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <UiSelect Label="@Res.Nationality" 
+                              Items="Lookups.Nationalities"
+                              Placeholder="@Res.SelectNationality"
+                              @bind-Value="CurrentItem.NationalityId" />
+                </div>
+            </div>
+
+        </EditForm>
+    </Body>
+    <Footer>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="holidayDetailForm" Loading="IsSaving">@Res.Save</UiButton>
+    </Footer>
+</UiModal>
+
+@code {
+    private List<HolidayDetail> Items = new();
+    private HolidayDetail CurrentItem = new();
+    
+    // Lookup caches
+    private (List<LookupItem> Holidays, 
+             List<LookupItem> ShiftTypes, 
+             List<LookupItem> Genders,
+             List<LookupItem> Religions,
+             List<LookupItem> Nationalities) Lookups = (new(), new(), new(), new(), new());
+    
+    private bool ShowModal = false;
+    private void CloseModal() => ShowModal = false;
+    private UiGrid<HolidayDetail> grid = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        await LoadData();
+        await LoadLookups();
+    }
+
+    private Task LoadData() => LoadAsync(async () => 
+    {
+        Items = await DataService.GetListAsync<HolidayDetail>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spHolidayDetailsGet, new { });
+    });
+    
+    private async Task LoadLookups()
+    {
+        var holidays = await DataService.GetListAsync<Holiday>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spHolidaysGet, new { });
+        Lookups.Holidays = holidays.Select(x => new LookupItem { Id = x.HolidayId.ToString(), Name = x.HolidayName ?? "" }).ToList();
+        
+        var shifts = await DataService.GetListAsync<ShiftType>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spShiftTypeGet, new { });
+        Lookups.ShiftTypes = shifts.Select(x => new LookupItem { Id = x.ShiftTypeId.ToString(), Name = x.ShiftTypeName ?? "" }).ToList();
+
+        var genders = await DataService.GetListAsync<Gender>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spGenderGet, new { });
+        Lookups.Genders = genders.Select(x => new LookupItem { Id = x.GenderId.ToString(), Name = x.GenderName ?? "" }).ToList();
+
+        var religions = await DataService.GetListAsync<Religion>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spReligionGet, new { });
+        Lookups.Religions = religions.Select(x => new LookupItem { Id = x.ReligionId.ToString(), Name = x.ReligionName ?? "" }).ToList();
+
+        var nationalities = await DataService.GetListAsync<Nationality>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spNationalityGet, new { });
+        Lookups.Nationalities = nationalities.Select(x => new LookupItem { Id = x.NationalityId.ToString(), Name = x.NationalityName ?? "" }).ToList();
+    }
+
+    private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+
+    private List<UiGridColumn<HolidayDetail>> columns => new()
+    {
+        new UiGridColumn<HolidayDetail> { Title = Res.Holiday, FieldName = "HolidayName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = Res.FromDate, FieldName = "FromDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HolidayDetail> { Title = Res.ToDate, FieldName = "ToDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HolidayDetail> { Title = Res.ShiftType, FieldName = "ShiftType", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = Res.Gender, FieldName = "GenderName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = Res.Religion, FieldName = "ReligionName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = Res.Nationality, FieldName = "NationalityName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
+    };
+
+    private async Task Prepare(HolidayDetail? item = null)
+    {
+        if (item == null)
+        {
+            CurrentItem = new HolidayDetail { HolidayDetailId = 0, FromDate = DateTime.Today, ToDate = DateTime.Today };
+        }
+        else
+        {
+            var result = await DataService.GetListAsync<HolidayDetail>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spHolidayDetailsGet, new { HolidayDetailId = item.HolidayDetailId });
+            CurrentItem = result?.FirstOrDefault() ?? new HolidayDetail();
+        }
+        ShowModal = true;
+    }  
+
+    private async Task Save()
+    {
+        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spHolidayDetailsSave, CurrentItem);
+        if (res.Success == 1)
+        {
+            ShowModal = false;
+            await LoadData();
+        }
+    }
+}

@@ -55,5 +55,31 @@ namespace HRMS.Resources {
         public static string CompanyPosition_Company_Required => ResourceManager.GetString("CompanyPosition_Company_Required", resourceCulture);
         public static string CompanyPosition_Position_Required => ResourceManager.GetString("CompanyPosition_Position_Required", resourceCulture);
         public static string SelectPosition => ResourceManager.GetString("SelectPosition", resourceCulture);
+        public static string Religion => ResourceManager.GetString("Religion", resourceCulture);
+        public static string Nationality => ResourceManager.GetString("Nationality", resourceCulture);
+        public static string ShiftType => ResourceManager.GetString("ShiftType", resourceCulture);
+        public static string Gender => ResourceManager.GetString("Gender", resourceCulture);
+        public static string Holiday => ResourceManager.GetString("Holiday", resourceCulture);
+        public static string Company => ResourceManager.GetString("Company", resourceCulture);
+        public static string Id => ResourceManager.GetString("Id", resourceCulture);
+        public static string All => ResourceManager.GetString("All", resourceCulture);
+        public static string Add => ResourceManager.GetString("Add", resourceCulture);
+        public static string Edit => ResourceManager.GetString("Edit", resourceCulture);
+        public static string Delete => ResourceManager.GetString("Delete", resourceCulture);
+        public static string Save => ResourceManager.GetString("Save", resourceCulture);
+        public static string Cancel => ResourceManager.GetString("Cancel", resourceCulture);
+        public static string Search => ResourceManager.GetString("Search", resourceCulture);
+        public static string NoRecordsFound => ResourceManager.GetString("NoRecordsFound", resourceCulture);
+        public static string Actions => ResourceManager.GetString("Actions", resourceCulture);
+        public static string CreatedDate => ResourceManager.GetString("CreatedDate", resourceCulture);
+        public static string SelectReligion => ResourceManager.GetString("SelectReligion", resourceCulture);
+        public static string SelectNationality => ResourceManager.GetString("SelectNationality", resourceCulture);
+        public static string SelectShiftType => ResourceManager.GetString("SelectShiftType", resourceCulture);
+        public static string HolidayDetails => ResourceManager.GetString("HolidayDetails", resourceCulture);
+        public static string FromDate => ResourceManager.GetString("FromDate", resourceCulture);
+        public static string ToDate => ResourceManager.GetString("ToDate", resourceCulture);
+        public static string RequiredField => ResourceManager.GetString("RequiredField", resourceCulture);
+        public static string InvalidDateRange => ResourceManager.GetString("InvalidDateRange", resourceCulture);
+        public static string HolidayOverlapError => ResourceManager.GetString("HolidayOverlapError", resourceCulture);
     }
 }

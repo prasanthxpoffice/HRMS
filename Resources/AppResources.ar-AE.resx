@@ -160,4 +160,18 @@
   <data name="CompanyPosition_Company_Required" xml:space="preserve"><value>الشركة مطلوبة</value></data>
   <data name="CompanyPosition_Position_Required" xml:space="preserve"><value>المنصب مطلوب</value></data>
   <data name="SelectPosition" xml:space="preserve"><value>اختر المنصب</value></data>
+  <data name="Religion" xml:space="preserve"><value>الديانة</value></data>
+  <data name="Nationality" xml:space="preserve"><value>الجنسية</value></data>
+  <data name="ShiftType" xml:space="preserve"><value>نوع الوردية</value></data>
+  <data name="SelectReligion" xml:space="preserve"><value>اختر الديانة</value></data>
+  <data name="SelectNationality" xml:space="preserve"><value>اختر الجنسية</value></data>
+  <data name="SelectShiftType" xml:space="preserve"><value>اختر نوع الوردية</value></data>
+  <data name="HolidayDetails" xml:space="preserve"><value>تفاصيل الإجازة</value></data>
+  <data name="HolidayDetail_GridTitle" xml:space="preserve"><value>تقويم الإجازات</value></data>
+  <data name="HolidayDetail_Add" xml:space="preserve"><value>إضافة نطاق إجازة</value></data>
+  <data name="FromDate" xml:space="preserve"><value>من تاريخ</value></data>
+  <data name="ToDate" xml:space="preserve"><value>إلى تاريخ</value></data>
+  <data name="RequiredField" xml:space="preserve"><value>هذا الحقل مطلوب</value></data>
+  <data name="InvalidDateRange" xml:space="preserve"><value>تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء</value></data>
+  <data name="HolidayOverlapError" xml:space="preserve"><value>يوجد تداخل مع إجازة أخرى لهذا التصنيف.</value></data>
 </root>

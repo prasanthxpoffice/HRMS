@@ -160,4 +160,20 @@
   <data name="CompanyPosition_Company_Required" xml:space="preserve"><value>Company is required</value></data>
   <data name="CompanyPosition_Position_Required" xml:space="preserve"><value>Position is required</value></data>
   <data name="SelectPosition" xml:space="preserve"><value>Select Position</value></data>
+  <data name="SelectHoliday" xml:space="preserve"><value>Select Holiday</value></data>
+  <data name="SelectGender" xml:space="preserve"><value>Select Gender</value></data>
+  <data name="Religion" xml:space="preserve"><value>Religion</value></data>
+  <data name="Nationality" xml:space="preserve"><value>Nationality</value></data>
+  <data name="ShiftType" xml:space="preserve"><value>Shift Type</value></data>
+  <data name="SelectReligion" xml:space="preserve"><value>Select Religion</value></data>
+  <data name="SelectNationality" xml:space="preserve"><value>Select Nationality</value></data>
+  <data name="SelectShiftType" xml:space="preserve"><value>Select Shift Type</value></data>
+  <data name="HolidayDetails" xml:space="preserve"><value>Holiday Details</value></data>
+  <data name="HolidayDetail_GridTitle" xml:space="preserve"><value>Holiday Calendar</value></data>
+  <data name="HolidayDetail_Add" xml:space="preserve"><value>Add Holiday Range</value></data>
+  <data name="FromDate" xml:space="preserve"><value>From Date</value></data>
+  <data name="ToDate" xml:space="preserve"><value>To Date</value></data>
+  <data name="RequiredField" xml:space="preserve"><value>This field is required</value></data>
+  <data name="InvalidDateRange" xml:space="preserve"><value>To Date must be after From Date</value></data>
+  <data name="HolidayOverlapError" xml:space="preserve"><value>Holiday overlap detected for this demographic.</value></data>
 </root>

@@ -21,7 +21,7 @@
         {
             @foreach (var item in Items)
             {
-                <option value="@item.Id">@item.Name</option>
+                <option value="@item.Id" selected="@(item.Id == Value?.ToString())">@item.Name</option>
             }
         }
         
@@ -47,7 +47,7 @@
     // Generics Upgrade Properties
     [Parameter] public IEnumerable<HRMS.Models.Shared.LookupItem>? Items { get; set; }
     [Parameter] public TValue? DefaultValue { get; set; }
-    [Parameter] public bool DisablePlaceholder { get; set; } = true;
+    [Parameter] public bool DisablePlaceholder { get; set; } = false;
 
     private async Task HandleChange(ChangeEventArgs e)
     {

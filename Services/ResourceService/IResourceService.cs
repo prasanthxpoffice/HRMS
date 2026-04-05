@@ -62,4 +62,31 @@ public interface IResourceService
     string Loading => GetString("Loading");
     string Close => GetString("Close");
     string Error_MultipleRequestsSelected => GetString("Error_MultipleRequestsSelected");
+
+    // Holiday & Demographics
+    string Holiday => GetString("Holiday");
+    string HolidayDetails => GetString("HolidayDetails");
+    string HolidayDetail_GridTitle => GetString("HolidayDetail_GridTitle");
+    string HolidayDetail_Add => GetString("HolidayDetail_Add");
+    string FromDate => GetString("FromDate");
+    string ToDate => GetString("ToDate");
+    string ShiftType => GetString("ShiftType");
+    string Religion => GetString("Religion");
+    string Nationality => GetString("Nationality");
+    string SelectReligion => GetString("SelectReligion");
+    string SelectNationality => GetString("SelectNationality");
+    string SelectShiftType => GetString("SelectShiftType");
+    string SelectHoliday => GetString("SelectHoliday");
+    string RequiredField => GetString("RequiredField");
+    string InvalidDateRange => GetString("InvalidDateRange");
+    string HolidayOverlapError => GetString("HolidayOverlapError");
+
+    // Company Position
+    string CompanyPosition => GetString("CompanyPosition");
+    string CompanyPosition_GridTitle => GetString("CompanyPosition_GridTitle");
+    string CompanyPosition_Add => GetString("CompanyPosition_Add");
+    
+    // Additional Selects
+    string SelectPosition => GetString("SelectPosition");
+    string SelectGender => GetString("SelectGender");
 }
