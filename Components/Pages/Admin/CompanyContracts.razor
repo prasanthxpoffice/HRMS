@@ -2,8 +2,12 @@
 @rendermode InteractiveServer
 @inject IDataService DataService
 
+@using HRMS.Models.Admin
+@using HRMS.Models.Master
+@using HRMS.Models.Shared
+
 <UiGrid @ref="grid"
-        TItem="HRMS.Models.Admin.CompanyContract" 
+        TItem="CompanyContract" 
         Title="@Res.GetString("CompanyContract_GridTitle")" 
         Items="Items" 
         Columns="columns" 
@@ -52,15 +56,15 @@
 </UiModal>
 
 @code {
-    private List<HRMS.Models.Admin.CompanyContract> Items = new();
-    private HRMS.Models.Admin.CompanyContract CurrentItem = new();
+    private List<CompanyContract> Items = new();
+    private CompanyContract CurrentItem = new();
     
     // Lookup caches for Dropdowns
-    private (List<HRMS.Models.Shared.LookupItem> Companies, List<HRMS.Models.Shared.LookupItem> ContractTypes) Lookups = (new(), new());
+    private (List<LookupItem> Companies, List<LookupItem> ContractTypes) Lookups = (new(), new());
     
     private bool ShowModal = false;
     private void CloseModal() => ShowModal = false;
-    private UiGrid<HRMS.Models.Admin.CompanyContract> grid = default!;
+    private UiGrid<CompanyContract> grid = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,40 +75,40 @@
 
     private Task LoadData() => LoadAsync(async () => 
     {
-        Items = await DataService.GetListAsync<HRMS.Models.Admin.CompanyContract>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyContractGet, new { });
+        Items = await DataService.GetListAsync<CompanyContract>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyContractGet, new { });
     });
     
     private async Task LoadLookups()
     {
-        var companies = await DataService.GetListAsync<HRMS.Models.Master.Company>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spCompanyGet, new { });
-        Lookups.Companies = companies.Select(c => new HRMS.Models.Shared.LookupItem { Id = c.CompanyId.ToString(), Name = c.CompanyName ?? "" }).ToList();
+        var companies = await DataService.GetListAsync<Company>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spCompanyGet, new { });
+        Lookups.Companies = companies.Select(c => new LookupItem { Id = c.CompanyId.ToString(), Name = c.CompanyName ?? "" }).ToList();
         
-        var contracts = await DataService.GetListAsync<HRMS.Models.Master.ContractType>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeGet, new { });
-        Lookups.ContractTypes = contracts.Select(c => new HRMS.Models.Shared.LookupItem { Id = c.ContractId.ToString(), Name = c.ContractName ?? "" }).ToList();
+        var contracts = await DataService.GetListAsync<ContractType>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeGet, new { });
+        Lookups.ContractTypes = contracts.Select(c => new LookupItem { Id = c.ContractId.ToString(), Name = c.ContractName ?? "" }).ToList();
     }
 
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HRMS.Models.Admin.CompanyContract>> columns => new()
+    private List<UiGridColumn<CompanyContract>> columns => new()
     {
-        new UiGridColumn<HRMS.Models.Admin.CompanyContract> { Title = Res.Id, FieldName = "CompanyContractId" },
-        new UiGridColumn<HRMS.Models.Admin.CompanyContract> { Title = Res.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HRMS.Models.Admin.CompanyContract> { Title = Res.GetString("ContractType"), FieldName = "ContractName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HRMS.Models.Admin.CompanyContract> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HRMS.Models.Admin.CompanyContract> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<CompanyContract> { Title = Res.Id, FieldName = "CompanyContractId" },
+        new UiGridColumn<CompanyContract> { Title = Res.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<CompanyContract> { Title = Res.GetString("ContractType"), FieldName = "ContractName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<CompanyContract> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<CompanyContract> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 
-    private async Task Prepare(HRMS.Models.Admin.CompanyContract? item = null)
+    private async Task Prepare(CompanyContract? item = null)
     {
         if (item == null)
         {
-            CurrentItem = new HRMS.Models.Admin.CompanyContract { CompanyContractId = 0 };
+            CurrentItem = new CompanyContract { CompanyContractId = 0 };
         }
         else
         {
-            var result = await DataService.GetListAsync<HRMS.Models.Admin.CompanyContract>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyContractGet, new { CompanyContractId = item.CompanyContractId });
-            CurrentItem = result?.FirstOrDefault() ?? new HRMS.Models.Admin.CompanyContract();
+            var result = await DataService.GetListAsync<CompanyContract>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyContractGet, new { CompanyContractId = item.CompanyContractId });
+            CurrentItem = result?.FirstOrDefault() ?? new CompanyContract();
         }
         ShowModal = true;
     }  
