@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace HRMS.Models.Master;
 
 public class LeaveType
 {
     public int LeaveTypeId { get; set; }
-
+    public string? LeaveTypeName { get; set; }
     [Required(ErrorMessageResourceName = "LeaveType_NameEn_Required", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     [StringLength(100, ErrorMessageResourceName = "Error_TooLong", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     public string LeaveTypeEn { get; set; } = "";

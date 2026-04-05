@@ -5,6 +5,7 @@ namespace HRMS.Models.Master;
 public class Company
 {
     public int CompanyId { get; set; }
+    public string? CompanyName { get; set; }
 
     [Required(ErrorMessageResourceName = "Company_NameEn_Required", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     [StringLength(100, ErrorMessageResourceName = "Error_TooLong", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]

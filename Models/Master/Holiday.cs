@@ -5,6 +5,7 @@ namespace HRMS.Models.Master;
 public class Holiday
 {
     public int HolidayId { get; set; }
+    public string? HolidayName { get; set; }
 
     [Required(ErrorMessageResourceName = "Holiday_NameEn_Required", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     [StringLength(100, ErrorMessageResourceName = "Error_TooLong", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]

@@ -5,6 +5,7 @@ namespace HRMS.Models.Master;
 public class ContractType
 {
     public int ContractId { get; set; }
+    public string? ContractName { get; set; }
 
     [Required(ErrorMessageResourceName = "ContractType_NameEn_Required", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     [StringLength(100, ErrorMessageResourceName = "Error_TooLong", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]

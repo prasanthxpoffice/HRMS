@@ -5,7 +5,7 @@ namespace HRMS.Models.Master;
 public class Gender
 {
     public int GenderId { get; set; }
-
+    public string? GenderName { get; set; }
     [Required(ErrorMessageResourceName = "Gender_NameEn_Required", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     [StringLength(100, ErrorMessageResourceName = "Error_TooLong", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     public string GenderNameEn { get; set; } = "";

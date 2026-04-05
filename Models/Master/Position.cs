@@ -5,6 +5,7 @@ namespace HRMS.Models.Master;
 public class Position
 {
     public int PositionId { get; set; }
+    public string? PositionName { get; set; }
 
     [Required(ErrorMessageResourceName = "Position_NameEn_Required", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
     [StringLength(100, ErrorMessageResourceName = "Error_TooLong", ErrorMessageResourceType = typeof(HRMS.Resources.AppResources))]
