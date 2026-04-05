@@ -9,6 +9,10 @@ namespace DB.Constants
                 public const string spCompanyContractGet = "admin.spCompanyContractGet";
                 public const string spCompanyContractSave = "admin.spCompanyContractSave";
                 public const string spCompanyContractDelete = "admin.spCompanyContractDelete";
+
+                public const string spCompanyPositionGet = "admin.spCompanyPositionGet";
+                public const string spCompanyPositionSave = "admin.spCompanyPositionSave";
+                public const string spCompanyPositionDelete = "admin.spCompanyPositionDelete";
             }
 
             public static class Master

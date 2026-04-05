@@ -51,5 +51,9 @@ namespace HRMS.Resources {
         public static string CompanyContract_Contract_Required => ResourceManager.GetString("CompanyContract_Contract_Required", resourceCulture);
         public static string SelectCompany => ResourceManager.GetString("SelectCompany", resourceCulture);
         public static string SelectContract => ResourceManager.GetString("SelectContract", resourceCulture);
+
+        public static string CompanyPosition_Company_Required => ResourceManager.GetString("CompanyPosition_Company_Required", resourceCulture);
+        public static string CompanyPosition_Position_Required => ResourceManager.GetString("CompanyPosition_Position_Required", resourceCulture);
+        public static string SelectPosition => ResourceManager.GetString("SelectPosition", resourceCulture);
     }
 }

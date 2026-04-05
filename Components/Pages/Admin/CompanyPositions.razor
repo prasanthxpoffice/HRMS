@@ -1,0 +1,125 @@
+@inherits UiBase
+@rendermode InteractiveServer
+@inject IDataService DataService
+
+@using HRMS.Models.Admin
+@using HRMS.Models.Master
+@using HRMS.Models.Shared
+
+<UiGrid @ref="grid"
+        TItem="CompanyPosition" 
+        Title="@Res.GetString("CompanyPosition_GridTitle")" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="true" 
+        AddButtonText="@Res.GetString("CompanyPosition_Add")" 
+        OnAddClick="() => Prepare()"
+        ShowSelection="true"
+        ShowDeleteButton="true"
+        DeleteSpName="@StoredProcedure.HRMSDB.Admin.spCompanyPositionDelete"
+        DeleteConnectionName="@ConnectionNames.Default"
+        IdFieldName="CompanyPositionId"
+        OnDataChanged="LoadData"
+        ShowWorkflow="true"
+        ShowExport="true"
+        OnGetExportData="GetExportData"
+        ExportName="CompanyPositions"
+        Loading="IsLoading" />
+ 
+<UiModal Show="ShowModal" Title="@(CurrentItem.CompanyPositionId == 0 ? Res.GetString("CompanyPosition_Add") : Res.Edit)" OnClose="CloseModal">
+    <Body>
+        <EditForm id="companyPositionForm" Model="CurrentItem" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            
+            <div class="mb-3">
+                <UiSelect Label="@Res.Company" 
+                          Items="Lookups.Companies"
+                          Placeholder="@Res.GetString("SelectCompany")"
+                          @bind-Value="CurrentItem.CompanyId" />
+                <ValidationMessage For="@(() => CurrentItem.CompanyId)" />
+            </div>
+
+            <div class="mb-3">
+                <UiSelect Label="@Res.GetString("Position")" 
+                          Items="Lookups.Positions"
+                          Placeholder="@Res.GetString("SelectPosition")"
+                          @bind-Value="CurrentItem.PositionId" />
+                <ValidationMessage For="@(() => CurrentItem.PositionId)" />
+            </div>
+
+        </EditForm>
+    </Body>
+    <Footer>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="companyPositionForm" Loading="IsSaving">@Res.Save</UiButton>
+    </Footer>
+</UiModal>
+
+@code {
+    private List<CompanyPosition> Items = new();
+    private CompanyPosition CurrentItem = new();
+    
+    // Lookup caches for Dropdowns
+    private (List<LookupItem> Companies, List<LookupItem> Positions) Lookups = (new(), new());
+    
+    private bool ShowModal = false;
+    private void CloseModal() => ShowModal = false;
+    private UiGrid<CompanyPosition> grid = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        await LoadData();
+        await LoadLookups();
+    }
+
+    private Task LoadData() => LoadAsync(async () => 
+    {
+        Items = await DataService.GetListAsync<CompanyPosition>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyPositionGet, new { });
+    });
+    
+    private async Task LoadLookups()
+    {
+        var companies = await DataService.GetListAsync<Company>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spCompanyGet, new { });
+        Lookups.Companies = companies.Select(c => new LookupItem { Id = c.CompanyId.ToString(), Name = c.CompanyName ?? "" }).ToList();
+        
+        var positions = await DataService.GetListAsync<Position>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spPositionGet, new { });
+        Lookups.Positions = positions.Select(c => new LookupItem { Id = c.PositionId.ToString(), Name = c.PositionName ?? "" }).ToList();
+    }
+
+    private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+
+    private List<UiGridColumn<CompanyPosition>> columns => new()
+    {
+        new UiGridColumn<CompanyPosition> { Title = Res.Id, FieldName = "CompanyPositionId" },
+        new UiGridColumn<CompanyPosition> { Title = Res.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<CompanyPosition> { Title = Res.GetString("Position"), FieldName = "PositionName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<CompanyPosition> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<CompanyPosition> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
+    };
+
+    private async Task Prepare(CompanyPosition? item = null)
+    {
+        if (item == null)
+        {
+            CurrentItem = new CompanyPosition { CompanyPositionId = 0 };
+        }
+        else
+        {
+            var result = await DataService.GetListAsync<CompanyPosition>(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyPositionGet, new { CompanyPositionId = item.CompanyPositionId });
+            CurrentItem = result?.FirstOrDefault() ?? new CompanyPosition();
+        }
+        ShowModal = true;
+    }  
+
+    private async Task Save()
+    {
+        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyPositionSave, CurrentItem);
+        if (res.Success == 1)
+        {
+            ShowModal = false;
+            await LoadData();
+        }
+    }
+}

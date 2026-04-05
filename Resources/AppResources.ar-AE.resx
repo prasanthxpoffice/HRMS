@@ -154,4 +154,10 @@
   <data name="CompanyContract_Contract_Required" xml:space="preserve"><value>العقد مطلوب</value></data>
   <data name="SelectCompany" xml:space="preserve"><value>اختر الشركة</value></data>
   <data name="SelectContract" xml:space="preserve"><value>اختر العقد</value></data>
+  <data name="CompanyPosition_GridTitle" xml:space="preserve"><value>مناصب الشركة</value></data>
+  <data name="CompanyPosition_Add" xml:space="preserve"><value>إسناد منصب</value></data>
+  <data name="CompanyPosition" xml:space="preserve"><value>منصب الشركة</value></data>
+  <data name="CompanyPosition_Company_Required" xml:space="preserve"><value>الشركة مطلوبة</value></data>
+  <data name="CompanyPosition_Position_Required" xml:space="preserve"><value>المنصب مطلوب</value></data>
+  <data name="SelectPosition" xml:space="preserve"><value>اختر المنصب</value></data>
 </root>
