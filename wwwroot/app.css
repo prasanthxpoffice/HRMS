@@ -16,37 +16,54 @@
 }
 
 :root {
-    /* Enterprise Color Palette - Slate & Indigo accents */
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --slate-50: #f8fafc;
-    --slate-100: #f1f5f9;
-    --slate-200: #e2e8f0;
+    /* --- Master Design Tokens (Official UAE Federal Identity - ICP Style) --- */
+    --h-primary: 160;      /* UAE Green Base */
+    --s-primary: 100%;
+    --l-primary: 21%;
+    
+    --primary: var(--uae-bronze); /* Unified Bronze Primary */
+    --primary-hover: hsl(35, 35%, 40%);
+    --primary-tint: hsla(35, 34%, 55%, 0.1);
+
+    /* ICP & Ministry Warm Palette Accents */
+    --icp-gold: hsl(35, 50%, 39%); 
+    --uae-gold: var(--icp-gold);
+    --uae-sand: hsl(35, 34%, 55%);    /* The beautiful 'UAE Sand Gold' from your image */
+    --uae-bronze: hsl(35, 30%, 45%); 
+    --uae-beige: hsl(35, 45%, 94%);   
+    --uae-red: hsl(351, 85%, 42%);
+    --uae-black: hsl(216, 6%, 15%);
+
+    /* Surface Colors (Warm & Airy Institutional Feel) */
+    --slate-50: var(--uae-beige);
+    --slate-100: hsl(35, 45%, 96%);
+    --slate-200: hsl(35, 30%, 88%);
     --slate-300: #cbd5e1;
-    --slate-600: #475569;
-    --slate-700: #334155;
-    --slate-800: #1e293b;
-    --slate-900: #0f172a;
+    --slate-600: #4b5563;
+    --slate-700: #374151;
+    --slate-800: #1f2937;
+    --slate-900: #111827;
     
     /* Functional Colors */
-    --body-bg: #f1f5f9;      /* Refined Light Slate BG for Depth */
-    --sidebar-bg: #1e293b;   /* Deep Slate Base */
-    --sidebar-border: rgba(255, 255, 255, 0.08);
+    --body-bg: var(--slate-100);
+    --sidebar-bg: var(--uae-beige);
+    --sidebar-border: var(--slate-200);
     --border-color: var(--slate-200);
-    --text-main: var(--slate-900);
-    --text-muted: var(--slate-600);
+    --text-main: hsl(210, 20%, 20%);
+    --text-muted: hsl(210, 15%, 45%);
 
-    /* Typography - Enterprise Standard */
-    --font-size-base: 1rem;     /* 16px */
-    --font-size-sm: 0.875rem;   /* 14px */
-    --font-size-lg: 1.125rem;   /* 18px */
-    --font-size-xl: 1.5rem;     /* 24px */
+    /* Typography */
+    --font-size-base: 1rem;
+    --font-size-sm: 0.875rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.5rem;
 
-    /* Spacing & Borders */
-    --radius-md: 6px;
-    --radius-lg: 8px;
-    --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    --transition-fast: 0.15s ease-out;
+    /* Spacing & Borders - Adjusted for 'Pleasant' ICP Feel */
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base resets */
@@ -58,10 +75,11 @@ html, body {
     background-color: var(--body-bg);
     color: var(--text-main);
     line-height: 1.5;
-    height: 100%;
     margin: 0;
     height: 100%;
 }
+
+
 
 /* --- Premium Scrollbar Customization --- */
 /* Firefox */
@@ -99,31 +117,35 @@ html, body {
     overflow: hidden;
 }
 
-/* Sidebar - Deep Vertical Horizon Gradient */
+/* Sidebar - Elite UAE Sand Gold Surface with Depth */
 .sidebar {
     width: 260px;
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    color: var(--slate-300);
+    background: linear-gradient(180deg, var(--uae-sand) 0%, var(--uae-bronze) 100%);
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     z-index: 50;
-    border-inline-end: 1px solid var(--sidebar-border);
+    border-inline-end: 1px solid var(--uae-bronze);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
 }
 
 .sidebar .top-row {
-    height: 60px;
+    height: 70px;
     display: flex;
     align-items: center;
-    padding: 0 1.25rem;
-    border-bottom: 1px solid var(--sidebar-border);
+    padding: 0 1.5rem;
+    background: rgba(0, 0, 0, 0.1); /* Subtle darkening for branding area */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
 }
 
 .sidebar .navbar-brand {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #ffffff;  /* High-Contrast White for Dark Gradient */
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffffff;
     text-decoration: none;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
 }
 
 .nav-scrollable {
@@ -135,25 +157,32 @@ html, body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 0.6rem 1.25rem !important;
-    margin: 0.25rem 0.75rem;
-    border-radius: 100px;
-    color: var(--slate-300) !important;
+    padding: 0.8rem 1.25rem !important;
+    margin: 0.2rem 1rem;
+    border-radius: var(--radius-md);
+    color: rgba(255, 255, 255, 0.85) !important;
     font-weight: 500;
     transition: var(--transition-fast);
     text-decoration: none !important;
 }
 
 .nav-link:hover {
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff !important;
 }
 
 .nav-link.active {
-    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%) !important;
+    background: var(--uae-bronze) !important;
     color: #ffffff !important;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    font-weight: 700;
+    border-inline-start: 4px solid #ffffff;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin-inline-start: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+[dir="rtl"] .nav-link.active {
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
 
 .nav-link i, .nav-link .bi {
@@ -170,13 +199,13 @@ main {
 }
 
 .top-bar {
-    height: 64px;
-    background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 100%);
-    backdrop-filter: blur(12px);
+    height: 70px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
-    padding: 0 1.5rem;
+    padding: 0 2rem;
     z-index: 40;
 }
 
@@ -191,12 +220,13 @@ main {
     background: #fff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    transition: box-shadow 0.2s ease;
+    box-shadow: var(--shadow-subtle);
+    transition: var(--transition-fast), transform 0.2s ease;
 }
 
 .card-ui:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-2px);
 }
 
 .table-ui {
@@ -205,17 +235,17 @@ main {
 }
 
 .table-ui thead th {
-    background: #f8fafc;
-    padding: 0.5rem 1rem;
+    background: var(--slate-100); /* Warm Beige-Gold Tint */
+    padding: 0.75rem 1rem;
     text-align: inherit;
-    font-weight: 700;
-    font-size: var(--font-size-sm);
-    color: var(--slate-600);
+    font-weight: 800;
+    font-size: 0.75rem;
+    color: var(--uae-bronze);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-top: 3px solid var(--primary);
+    letter-spacing: 0.08em;
+    border-top: 3px solid var(--uae-sand);
     border-bottom: 1px solid var(--border-color);
-    border-inline-end: 1px solid var(--slate-100);
+    border-inline-end: 1px solid var(--slate-200);
     transition: background-color 0.2s;
 }
 
@@ -242,12 +272,18 @@ main {
     background-color: #f5f8ff !important;
 }
 
-/* Page Headers */
+/* Page Headers - UAE Sand Gold Premium */
 .header-title {
     font-size: var(--font-size-xl);
-    font-weight: 700;
-    color: var(--slate-900);
+    font-weight: 800;
+    color: var(--uae-bronze); /* Slightly darker bronze for better readability */
     margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.header-title i, .header-title .bi {
+    color: var(--uae-sand);
+    margin-inline-end: 0.5rem;
 }
 
 .header-subtitle {
@@ -268,37 +304,37 @@ main {
 }
 
 .btn-ui-primary {
-    background-color: rgba(79, 70, 229, 0.08); /* Indigo light tint */
-    color: #4338ca;
-    border: 1px solid rgba(79, 70, 229, 0.2);
+    background-color: var(--primary-tint);
+    color: var(--primary);
+    border: 1px solid hsla(var(--h-primary), var(--s-primary), var(--l-primary), 0.2);
 }
 
 .btn-ui-primary:hover {
-    background-color: rgba(79, 70, 229, 0.15);
-    border-color: rgba(79, 70, 229, 0.3);
-    color: #3730a3;
+    background-color: hsla(var(--h-primary), var(--s-primary), var(--l-primary), 0.15);
+    border-color: hsla(var(--h-primary), var(--s-primary), var(--l-primary), 0.4);
+    color: var(--primary-hover);
 }
 
 .btn-danger {
-    background-color: rgba(239, 68, 68, 0.08); /* Red light tint */
-    color: #dc2626;
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background-color: hsla(0, 75%, 59%, 0.08);
+    color: hsl(0, 75%, 59%);
+    border: 1px solid hsla(0, 75%, 59%, 0.2);
 }
 .btn-danger:hover {
-    background-color: rgba(239, 68, 68, 0.15);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: #b91c1c;
+    background-color: hsla(0, 75%, 59%, 0.15);
+    border-color: hsla(0, 75%, 59%, 0.3);
+    color: hsl(0, 75%, 49%);
 }
 
 .btn-success {
-    background-color: rgba(16, 185, 129, 0.08); /* Green light tint */
-    color: #059669;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background-color: hsla(140, 75%, 45%, 0.08);
+    color: hsl(140, 75%, 45%);
+    border: 1px solid hsla(140, 75%, 45%, 0.2);
 }
 .btn-success:hover {
-    background-color: rgba(16, 185, 129, 0.15);
-    border-color: rgba(16, 185, 129, 0.3);
-    color: #047857;
+    background-color: hsla(140, 75%, 45%, 0.15);
+    border-color: hsla(140, 75%, 45%, 0.3);
+    color: hsl(140, 75%, 35%);
 }
 
 .btn-secondary {
@@ -353,8 +389,8 @@ main {
 }
 
 .input-ui:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+    border-color: var(--uae-sand);
+    box-shadow: 0 0 0 3px hsla(35, 34%, 55%, 0.15);
     outline: none;
 }
 
@@ -406,10 +442,10 @@ main {
     pointer-events: auto;
 }
 
-.toast-success { background: #10b981; border-left: 4px solid #065f46; }
-.toast-error { background: #ef4444; border-left: 4px solid #991b1b; }
-.toast-info { background: #3b82f6; border-left: 4px solid #1e40af; }
-.toast-warning { background: #f59e0b; border-left: 4px solid #92400e; }
+.toast-success { background: hsl(140, 75%, 45%); border-left: 4px solid hsl(140, 75%, 35%); }
+.toast-error { background: hsl(0, 75%, 59%); border-left: 4px solid hsl(0, 75%, 49%); }
+.toast-info { background: hsl(210, 75%, 59%); border-left: 4px solid hsl(210, 75%, 49%); }
+.toast-warning { background: hsl(35, 75%, 59%); border-left: 4px solid hsl(35, 75%, 49%); }
 
 @keyframes slideUp {
     from { transform: translateY(100%); opacity: 0; }
@@ -554,13 +590,85 @@ main {
 }
 
 .ui-tabs-rect .nav-link.active {
-    background: var(--primary) !important;
+    background: var(--uae-sand) !important;
     color: #ffffff !important;
-    border-color: var(--primary) !important;
-    font-weight: 600 !important;
-    box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2) !important;
+    border-color: var(--uae-sand) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px hsla(35, 34%, 55%, 0.25) !important;
 }
 
 [dir="rtl"] .ui-tabs-rect .nav-link {
     margin: 0 0 0 0.25rem !important;
 }
+
+
+
+/* --- Institutional Modal System: Local Rendering Mode --- */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1040;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(8px);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1050;
+    display: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+
+.modal.show {
+    display: block !important;
+}
+
+.modal-dialog {
+    z-index: 1060;
+    margin: 1.75rem auto;
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 3.5rem);
+    pointer-events: none;
+}
+
+.modal-dialog > * {
+    pointer-events: all;
+}
+
+.modal-content {
+    border-radius: var(--radius-lg);
+    border: none;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.modal-header {
+    background-color: var(--uae-beige);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+    color: var(--uae-bronze);
+    font-weight: 800;
+}
+
+.modal-footer {
+    background-color: var(--slate-50);
+}
+
+
