@@ -1,0 +1,56 @@
+@using HRMS.Services
+@inject IUserService UserService
+@inject LanguageService Lang
+
+<div class="top-bar">
+    <div class="d-flex align-items-center justify-content-between w-100">
+        <div class="top-bar-left d-flex align-items-center">
+            <button class="btn btn-link link-dark p-0 me-3 d-md-none">
+                <UiIcon Name="list" CssClass="fs-5" />
+            </button>
+            <div class="text-muted small fw-medium d-none d-md-block">
+                 HRMS / <span class="text-dark">Admin Dashboard</span>
+            </div>
+        </div>
+
+        <div class="top-bar-right d-flex align-items-center">
+            @if (UserService.Roles.Count > 1)
+            {
+                <div class="me-3">
+                    <UiSelect TValue="string" Value="@(UserService.CurrentRole?.RoleId.ToString())"
+                              ValueChanged="@((string? v) => OnRoleChanged(new ChangeEventArgs { Value = v }))"
+                              CssClass="bg-light border-0"
+                              NoMargin="true"
+                              Style="min-width: 140px;">
+                        @foreach (var role in UserService.Roles)
+                        {
+                            <option value="@role.RoleId">@role.RoleName</option>
+                        }
+                    </UiSelect>
+                </div>
+            }
+
+            <div class="me-3 border-end pe-3">
+                <UiLanguageToggle />
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div class="me-3 text-end d-none d-md-block">
+                    <div class="small fw-bold lh-1">@(UserService.CurrentUser?.UserName ?? "—")</div>
+                    <div class="text-muted" style="font-size: 0.65rem;">@(UserService.CurrentRole?.RoleName ?? "—")</div>
+                </div>
+                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center border" style="width: 32px; height: 32px;">
+                    <UiIcon Name="person" CssClass="text-secondary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void OnRoleChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var roleId))
+            UserService.SetCurrentRole(roleId);
+    }
+}
