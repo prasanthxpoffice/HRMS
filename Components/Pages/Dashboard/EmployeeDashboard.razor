@@ -1,0 +1,92 @@
+@inherits UiBase
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-sm-6 col-md-3">
+        <UiDashboardCard Label="@Res.GetString("MyLeaveBalance")" Value="18" Icon="bi-calendar-event" Color="primary" Trend="@(Lang.IsRtl ? "أيام" : "Days")" IsTrendUp="true" />
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <UiDashboardCard Label="@Res.GetString("MyAttendance")" Value="98.2%" Icon="bi-activity" Color="success" Trend="@(Lang.IsRtl ? "فوق المعدل" : "Above Avg")" IsTrendUp="true" />
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <UiDashboardCard Label="@Res.GetString("PendingRequests")" Value="2" Icon="bi-hourglass-split" Color="warning" Trend="@(Lang.IsRtl ? "قيد الانتظار" : "Pending")" IsTrendUp="true" />
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+        <UiDashboardCard Label="@Res.GetString("NextHoliday")" Value="@(Lang.IsRtl ? "عيد الأضحى" : "Eid Al Adha")" Icon="bi-flag" Color="info" Trend="@(Lang.IsRtl ? "8 أيام" : "8 Days")" IsTrendUp="true" />
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-md-7">
+        <div class="card-ui p-4 bg-white border-0 shadow-sm h-100">
+            <h5 class="fw-bold mb-4">@Res.GetString("MyAttendanceConsistency")</h5>
+            <UiChart Options="PersonalAttendanceOptions" Height="280" />
+        </div>
+    </div>
+    
+    <div class="col-12 col-md-5">
+        <div class="card-ui p-4 bg-white border-0 shadow-sm h-100">
+            <h5 class="fw-bold mb-4">@Res.GetString("LeaveUsageBreakdown")</h5>
+            <UiChart Options="LeaveUsageOptions" Height="280" />
+            
+            <div class="mt-4 pt-2 border-top">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="p-2 rounded bg-light">
+                        <UiIcon Name="bi-info-circle" CssClass="text-info" />
+                    </div>
+                    <div>
+                        <div class="small fw-bold">@Res.GetString("ContractReminder")</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">@Res.GetString("ContractExpiryWarning", 45)</div>
+                    </div>
+                </div>
+                <button class="btn-ui btn-ui-primary w-100 justify-content-center">
+                    @Res.GetString("RequestLeave")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private object PersonalAttendanceOptions => new {
+        chart = new {
+            type = "line",
+            toolbar = new { show = false },
+            fontFamily = "Inter, sans-serif"
+        },
+        colors = new[] { "#9c7c4b" },
+        stroke = new { curve = "smooth", width = 4 },
+        series = new[] {
+            new { name = Lang.IsRtl ? "حضوري" : "My Attendance", data = new[] { 98, 100, 96, 100, 98, 99 } }
+        },
+        xaxis = new {
+            categories = Lang.IsRtl 
+                ? new[] { "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو" }
+                : new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun" }
+        },
+        markers = new { size = 5 },
+        grid = new { borderColor = "#f1f1f1" }
+    };
+
+    private object LeaveUsageOptions => new {
+        chart = new {
+            type = "radialBar",
+            fontFamily = "Inter, sans-serif"
+        },
+        colors = new[] { "#9c7c4b", "#c5a36b", "#e5e7eb" },
+        series = new[] { 70, 45, 20 },
+        plotOptions = new {
+            radialBar = new {
+                dataLabels = new {
+                    name = new { fontSize = "16px" },
+                    value = new { fontSize = "14px" },
+                    total = new {
+                        show = true,
+                        label = Lang.IsRtl ? "المستنفذ" : "Used",
+                        formatter = "function(w) { return '12d' }"
+                    }
+                }
+            }
+        },
+        labels = Lang.IsRtl ? new[] { "سنوية", "مرضية", "أخرى" } : new[] { "Annual", "Sick", "Other" }
+    };
+}

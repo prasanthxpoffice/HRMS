@@ -176,4 +176,17 @@
   <data name="RequiredField" xml:space="preserve"><value>This field is required</value></data>
   <data name="InvalidDateRange" xml:space="preserve"><value>To Date must be after From Date</value></data>
   <data name="HolidayOverlapError" xml:space="preserve"><value>Holiday overlap detected for this demographic.</value></data>
+  <data name="TotalEmployees" xml:space="preserve"><value>Total Employees</value></data>
+  <data name="PendingRequests" xml:space="preserve"><value>Pending Requests</value></data>
+  <data name="ActiveContracts" xml:space="preserve"><value>Active Contracts</value></data>
+  <data name="AttendanceAvg" xml:space="preserve"><value>Attendance Avg</value></data>
+  <data name="AttendanceTrend" xml:space="preserve"><value>Attendance Trend</value></data>
+  <data name="GenderDistribution" xml:space="preserve"><value>Gender Distribution</value></data>
+  <data name="MyLeaveBalance" xml:space="preserve"><value>My Leave Balance</value></data>
+  <data name="MyAttendance" xml:space="preserve"><value>My Attendance</value></data>
+  <data name="MyAttendanceConsistency" xml:space="preserve"><value>My Attendance Consistency</value></data>
+  <data name="LeaveUsageBreakdown" xml:space="preserve"><value>Leave Usage Breakdown</value></data>
+  <data name="NextHoliday" xml:space="preserve"><value>Next Holiday</value></data>
+  <data name="Last6Months" xml:space="preserve"><value>Last 6 Months</value></data>
+  <data name="LastYear" xml:space="preserve"><value>Last Year</value></data>
 </root>

@@ -174,4 +174,17 @@
   <data name="RequiredField" xml:space="preserve"><value>هذا الحقل مطلوب</value></data>
   <data name="InvalidDateRange" xml:space="preserve"><value>تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء</value></data>
   <data name="HolidayOverlapError" xml:space="preserve"><value>يوجد تداخل مع إجازة أخرى لهذا التصنيف.</value></data>
+  <data name="TotalEmployees" xml:space="preserve"><value>إجمالي الموظفين</value></data>
+  <data name="PendingRequests" xml:space="preserve"><value>الطلبات المعلقة</value></data>
+  <data name="ActiveContracts" xml:space="preserve"><value>العقود النشطة</value></data>
+  <data name="AttendanceAvg" xml:space="preserve"><value>متوسط الحضور</value></data>
+  <data name="AttendanceTrend" xml:space="preserve"><value>اتجاه الحضور</value></data>
+  <data name="GenderDistribution" xml:space="preserve"><value>توزيع الجنسين</value></data>
+  <data name="MyLeaveBalance" xml:space="preserve"><value>رصيد إجازاتي</value></data>
+  <data name="MyAttendance" xml:space="preserve"><value>حضوري</value></data>
+  <data name="MyAttendanceConsistency" xml:space="preserve"><value>انتظام الحضور الشخصي</value></data>
+  <data name="LeaveUsageBreakdown" xml:space="preserve"><value>تفاصيل استخدام الإجازات</value></data>
+  <data name="NextHoliday" xml:space="preserve"><value>الإجازة القادمة</value></data>
+  <data name="Last6Months" xml:space="preserve"><value>آخر 6 أشهر</value></data>
+  <data name="LastYear" xml:space="preserve"><value>آخر سنة</value></data>
 </root>

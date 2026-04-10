@@ -1,38 +1,48 @@
 @page "/"
 @inherits UiBase
+@using HRMS.Components.Pages.Dashboard
+@inject IUserService UserService
 
-<div class="row g-4">
-    <div class="col-12 col-xl-8">
-        <div class="card-ui p-5 bg-white border-0" style="background: linear-gradient(to right, #ffffff, #f8fafc);">
-            <div class="small-label text-primary mb-2">@Res.WelcomeBack</div>
-            <h1 class="header-title mb-3" style="font-size: 2.5rem;">@Res.SystemDashboard</h1>
-            <p class="text-muted mb-4" style="max-width: 500px;">
-                @Res.DashboardDescription
-            </p>
-            <div class="d-flex gap-2">
-                <a href="genders" class="btn-ui btn-ui-primary px-4">
-                    <UiIcon Name="people" />
-                    @Res.ManageGenders
-                </a>
-                <button class="btn btn-sm btn-light border px-4">
-                    <UiIcon Name="gear" />
-                    @Res.Settings
-                </button>
-            </div>
-        </div>
+<div class="dashboard-hero mb-4 p-3 p-md-4 rounded-4 shadow-sm border-0 position-relative overflow-hidden" 
+     style="background: linear-gradient(135deg, var(--uae-bronze) 0%, var(--uae-sand) 100%); color: white;">
+    <div class="position-relative z-1">
+        <div class="small-label text-white text-opacity-75 mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">@Res.WelcomeBack</div>
+        <h2 class="fw-bold mb-1">
+            @(Lang.IsRtl ? "مرحباً ،" : "Welcome, ") @(UserService.CurrentUser?.UserName ?? "Admin")
+        </h2>
+        <p class="mb-0 text-white text-opacity-90 small" style="max-width: 600px;">
+            @(Lang.IsRtl ? "إليك ملخص سريع لنظام إدارة الموارد البشرية لليوم." : "Here is a quick summary of the HRMS system for today.")
+        </p>
     </div>
     
-    <div class="col-12 col-xl-4">
-        <div class="card-ui p-4 h-100">
-            <div class="small-label mb-3">@Res.SystemStatus</div>
-            <div class="d-flex align-items-center mb-3">
-                <div class="rounded-circle bg-success me-2" style="width: 8px; height: 8px;"></div>
-                <div class="small fw-medium">@Res.DatabaseConnected</div>
-            </div>
-            <div class="d-flex align-items-center mb-3">
-                <div class="rounded-circle bg-success me-2" style="width: 8px; height: 8px;"></div>
-                <div class="small fw-medium">@Res.AuthenticationActive</div>
-            </div>
-        </div>
+    <!-- Decorative Pattern -->
+    <div class="position-absolute end-0 top-50 translate-middle-y opacity-10" style="font-size: 8rem; margin-right: -2rem;">
+        <i class="bi bi-grid-3x3-gap"></i>
     </div>
 </div>
+
+@if (UserService.CurrentRole?.RoleName == "Administrator")
+{
+    <AdminDashboard />
+}
+else
+{
+    <EmployeeDashboard />
+}
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Task.CompletedTask;
+    }
+}
+
+<style>
+    .dashboard-hero {
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>

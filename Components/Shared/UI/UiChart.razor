@@ -1,0 +1,33 @@
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+<div id="@ChartId" style="min-height: @(Height)px; width: 100%;"></div>
+
+@code {
+    [Parameter] public string ChartId { get; set; } = $"chart_{Guid.NewGuid().ToString("N")}";
+    [Parameter] public string Height { get; set; } = "350";
+    [Parameter] public object? Options { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await RenderChartAsync();
+        }
+    }
+
+    public async Task RenderChartAsync()
+    {
+        if (Options != null)
+        {
+            var optionsJson = System.Text.Json.JsonSerializer.Serialize(Options);
+            await JSRuntime.InvokeVoidAsync("dashboardCharts.renderChart", ChartId, optionsJson);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        // ApexCharts cleanup if needed via JS
+        await ValueTask.CompletedTask;
+    }
+}
