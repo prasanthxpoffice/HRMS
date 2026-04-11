@@ -24,16 +24,16 @@
                 </div>
                 <div class="col-auto">
                     <div class="d-flex gap-2 align-items-center">
-                        @if (ShowDeleteButton && SelectedItems.Any())
+                        @if (ShowDeleteButton && (_isAllPagesSelected || SelectedIds.Any()))
                         {
                             <UiButton Type="danger" Icon="bi-trash3" OnClick="HandleDeleteSelected" CssClass="btn-sm">
-                                @AppResources.DeleteSelected (@SelectedItems.Count)
+                                @AppResources.DeleteSelected (@(_isAllPagesSelected ? TotalItems : SelectedIds.Count))
                             </UiButton>
                         }
-                        @if (ShowWorkflow && SelectedItems.Any())
+                        @if (ShowWorkflow && (_isAllPagesSelected || SelectedIds.Any()))
                         {
                             <UiButton Type="workflow" Icon="bi-diagram-3" OnClick="HandleWorkflowClick" CssClass="btn-sm">
-                                @AppResources.Workflow
+                                @AppResources.Workflow (@(_isAllPagesSelected ? TotalItems : SelectedIds.Count))
                             </UiButton>
                         }
                         @if (ShowExport)
@@ -144,6 +144,27 @@
                         </td>
                     }
                 </tr>
+                @if (ShowSelection && (_isAllPagesSelected || SelectedIds.Any()))
+                {
+                    <tr class="selection-banner">
+                        <td colspan="@(Columns.Count + 1)">
+                            <div class="py-2 px-3 small d-flex align-items-center justify-content-center gap-2">
+                                <span>
+                                    <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                    @string.Format(AppResources.RecordsSelected, _isAllPagesSelected ? TotalItems : SelectedIds.Count)
+                                </span>
+                                @if (!_isAllPagesSelected && IsAllSelected && TotalItems > PageSize)
+                                {
+                                    <button class="btn btn-link btn-sm p-0 fw-bold ms-2" @onclick="() => SelectAllFiltered(true)">@string.Format(AppResources.SelectAllMatchingRecords, TotalItems)</button>
+                                }
+                                else if (_isAllPagesSelected)
+                                {
+                                    <button class="btn btn-link btn-sm p-0 fw-bold ms-2" @onclick="() => SelectAllFiltered(false)">@AppResources.ClearSelection</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
             </thead>
             <tbody>
                 @if (Loading)
@@ -161,12 +182,12 @@
                 {
                     @foreach (var item in PagedItems)
                     {
-                        <tr class="@(SelectedItems.Contains(item) ? "ui-grid-table-selection" : "")">
+                        <tr class="@(IsSelected(item) ? "ui-grid-table-selection" : "")">
                             @if (ShowSelection)
                             {
                                 <td style="text-align: center;">
                                     <input type="checkbox" class="form-check-input" 
-                                           checked="@SelectedItems.Contains(item)" 
+                                           checked="@IsSelected(item)" 
                                            @onchange="() => ToggleSelection(item)" />
                                 </td>
                             }
@@ -275,7 +296,7 @@
                 }
                 else
                 {
-                    @(string.Format(AppResources.BulkDeleteConfirmMessage, SelectedItems.Count))
+                    @string.Format(AppResources.BulkDeleteConfirmMessage, _isAllPagesSelected ? TotalItems : SelectedIds.Count)
                 }
             </p>
         </div>

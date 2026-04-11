@@ -551,11 +551,35 @@ main {
 
 /* Selection Highlight */
 .ui-grid-table-selection {
-    background-color: rgba(0, 0, 0, 0.02) !important;
+    background-color: hsla(var(--h-primary), var(--s-primary), var(--l-primary), 0.05) !important;
 }
 
 .ui-grid-table-selection td {
     background-color: transparent !important;
+}
+
+/* Selection Banner Style */
+.selection-banner td {
+    background-color: var(--uae-beige) !important;
+    border-bottom: 1px solid var(--uae-sand) !important;
+    text-align: center;
+    color: var(--uae-bronze);
+    animation: fadeInDown 0.3s ease-out;
+}
+
+.selection-banner .btn-link {
+    color: var(--uae-bronze) !important;
+    text-decoration: underline;
+    font-size: 0.8rem;
+}
+
+.selection-banner .btn-link:hover {
+    color: var(--primary-hover) !important;
+}
+
+@keyframes fadeInDown {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* --- Language Toggle Premium Styles --- */

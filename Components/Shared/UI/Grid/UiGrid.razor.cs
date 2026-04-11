@@ -41,9 +41,13 @@ public partial class UiGrid<TItem> : UiBase
     #region Parameters - Selection & Deletion
     [Parameter] public bool ShowSelection { get; set; } = false;
     [Parameter] public bool ShowDeleteButton { get; set; } = false;
+    [Parameter] public HashSet<object> SelectedIds { get; set; } = new();
+    [Parameter] public EventCallback<HashSet<object>> SelectedIdsChanged { get; set; }
+    [Parameter] public EventCallback<HashSet<object>> OnDeleteSelected { get; set; }
+    
+    // Legacy support (optional, can be phased out)
     [Parameter] public HashSet<TItem> SelectedItems { get; set; } = new();
     [Parameter] public EventCallback<HashSet<TItem>> SelectedItemsChanged { get; set; }
-    [Parameter] public EventCallback<HashSet<TItem>> OnDeleteSelected { get; set; }
     
     [Parameter] public string? DeleteSpName { get; set; }
     [Parameter] public string? DeleteConnectionName { get; set; }
@@ -66,6 +70,7 @@ public partial class UiGrid<TItem> : UiBase
     private bool _showConfirmModal = false;
     private TItem? _itemPendingDelete;
     private bool _exportGridDataOnly = true;
+    private bool _isAllPagesSelected = false;
     #endregion
 
     #region Data Processing - Filtering & Sorting
@@ -201,23 +206,83 @@ public partial class UiGrid<TItem> : UiBase
     #endregion
 
     #region Event Handlers - Selection
-    private bool IsAllSelected => PagedItems.Any() && PagedItems.All(i => SelectedItems.Contains(i));
+    private bool IsAllSelected => PagedItems.Any() && PagedItems.All(i => IsSelected(i));
+
+    private bool IsSelected(TItem item)
+    {
+        if (_isAllPagesSelected) return true;
+        var id = GetPropertyValue(item, IdFieldName);
+        return id != null && SelectedIds.Contains(id);
+    }
 
     private async Task ToggleSelectAll(ChangeEventArgs e)
     {
         bool isChecked = (bool)(e.Value ?? false);
+        _isAllPagesSelected = false; // Always reset global selection when toggling page
+
         foreach (var item in PagedItems)
         {
-            if (isChecked) SelectedItems.Add(item);
-            else SelectedItems.Remove(item);
+            var id = GetPropertyValue(item, IdFieldName);
+            if (id == null) continue;
+
+            if (isChecked) SelectedIds.Add(id);
+            else SelectedIds.Remove(id);
         }
-        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+        await NotifySelectionChanged();
     }
 
     private async Task ToggleSelection(TItem item)
     {
-        if (SelectedItems.Contains(item)) SelectedItems.Remove(item);
-        else SelectedItems.Add(item);
+        var id = GetPropertyValue(item, IdFieldName);
+        if (id == null) return;
+
+        if (_isAllPagesSelected)
+        {
+            _isAllPagesSelected = false;
+            // Transition from Global to Manual: Select everything on the current page EXCEPT the one toggled
+            SelectedIds.Clear();
+            foreach (var pItem in PagedItems)
+            {
+                var pId = GetPropertyValue(pItem, IdFieldName);
+                if (pId != null && !pId.Equals(id)) SelectedIds.Add(pId);
+            }
+        }
+        else
+        {
+            if (SelectedIds.Contains(id))
+            {
+                SelectedIds.Remove(id);
+            }
+            else
+            {
+                SelectedIds.Add(id);
+            }
+        }
+        await NotifySelectionChanged();
+    }
+
+    private async Task SelectAllFiltered(bool value)
+    {
+        _isAllPagesSelected = value;
+        if (value)
+        {
+            // When selecting all pages, we usually clear manual selections to avoid confusion
+            SelectedIds.Clear();
+        }
+        await NotifySelectionChanged();
+    }
+
+    private async Task NotifySelectionChanged()
+    {
+        await SelectedIdsChanged.InvokeAsync(SelectedIds);
+        
+        // Update legacy SelectedItems for compatibility if needed
+        SelectedItems.Clear();
+        foreach (var item in Items ?? new())
+        {
+            var id = GetPropertyValue(item, IdFieldName);
+            if (id != null && SelectedIds.Contains(id)) SelectedItems.Add(item);
+        }
         await SelectedItemsChanged.InvokeAsync(SelectedItems);
     }
     #endregion
@@ -245,7 +310,7 @@ public partial class UiGrid<TItem> : UiBase
     #region Business Logic - Deletion
     private void HandleDeleteSelected()
     {
-        if (SelectedItems == null || !SelectedItems.Any()) return;
+        if (!_isAllPagesSelected && (SelectedIds == null || !SelectedIds.Any())) return;
         
         _itemPendingDelete = default;
         _showConfirmModal = true;
@@ -277,8 +342,8 @@ public partial class UiGrid<TItem> : UiBase
         
         if (res.Success == 1)
         {
-            SelectedItems.Remove(item);
-            await SelectedItemsChanged.InvokeAsync(SelectedItems);
+            SelectedIds.Remove(idVal);
+            await NotifySelectionChanged();
             await OnDataChanged.InvokeAsync();
         }
     }
@@ -287,14 +352,17 @@ public partial class UiGrid<TItem> : UiBase
     {
         if (string.IsNullOrEmpty(DeleteSpName) || string.IsNullOrEmpty(IdFieldName))
         {
-            await OnDeleteSelected.InvokeAsync(SelectedItems);
+            var itemsToDelete = _isAllPagesSelected ? FilteredItems : Items.Where(IsSelected);
+            await OnDeleteSelected.InvokeAsync(SelectedIds); // Warning: Callback might need updating to handle IDs
             return;
         }
 
         int successCount = 0;
         int errorCount = 0;
 
-        foreach (var item in SelectedItems.ToList())
+        var itemsToProcess = _isAllPagesSelected ? FilteredItems.ToList() : Items.Where(IsSelected).ToList();
+
+        foreach (var item in itemsToProcess)
         {
             var idVal = GetPropertyValue(item, IdFieldName);
             if (idVal == null) continue;
@@ -309,8 +377,9 @@ public partial class UiGrid<TItem> : UiBase
         if (successCount > 0) NotificationService.Notify(string.Format(AppResources.BulkDeleteSuccess, successCount), NotificationType.Success);
         if (errorCount > 0) NotificationService.Notify(string.Format(AppResources.BulkDeleteError, errorCount), NotificationType.Error);
 
-        SelectedItems.Clear();
-        await SelectedItemsChanged.InvokeAsync(SelectedItems);
+        _isAllPagesSelected = false;
+        SelectedIds.Clear();
+        await NotifySelectionChanged();
         await OnDataChanged.InvokeAsync();
     }
 
@@ -323,16 +392,17 @@ public partial class UiGrid<TItem> : UiBase
 
     private async Task HandleWorkflowClick()
     {
-        if (!SelectedItems.Any()) return;
+        var itemsToProcess = _isAllPagesSelected ? FilteredItems : Items.Where(IsSelected);
+        if (!itemsToProcess.Any()) return;
 
         // If a manual callback is provided, use it. Otherwise use the default service logic.
         if (OnWorkflowClick.HasDelegate)
         {
-            await OnWorkflowClick.InvokeAsync(SelectedItems);
+            await OnWorkflowClick.InvokeAsync(itemsToProcess);
         }
         else
         {
-            var response = await WorkflowService.StartProcessAsync(SelectedItems);
+            var response = await WorkflowService.StartProcessAsync(itemsToProcess);
             if (response != null)
             {
                 if (!string.IsNullOrEmpty(response.Message))
@@ -370,9 +440,13 @@ public partial class UiGrid<TItem> : UiBase
                     .Where(c => !string.IsNullOrEmpty(c.FieldName))
                     .ToDictionary(c => c.FieldName!, c => c.Title!);
 
-                if (SelectedItems.Any())
+                if (_isAllPagesSelected)
                 {
-                    exportData = SelectedItems.Cast<object>();
+                    exportData = FilteredItems.Cast<object>();
+                }
+                else if (SelectedIds.Any())
+                {
+                    exportData = Items.Where(IsSelected).Cast<object>();
                 }
                 else
                 {

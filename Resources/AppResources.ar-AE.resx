@@ -207,4 +207,7 @@
   <data name="ExportGridDataOnly" xml:space="preserve"><value>تصدير بيانات الشبكة فقط</value></data>
   <data name="SelectHoliday" xml:space="preserve"><value>اختر العطلة</value></data>
   <data name="SelectGender" xml:space="preserve"><value>اختر الجنس</value></data>
+  <data name="RecordsSelected" xml:space="preserve"><value>{0} سجلات مختارة</value></data>
+  <data name="SelectAllMatchingRecords" xml:space="preserve"><value>اختيار جميع السجلات {0} المتطابقة</value></data>
+  <data name="ClearSelection" xml:space="preserve"><value>إلغاء التحديد</value></data>
 </root>

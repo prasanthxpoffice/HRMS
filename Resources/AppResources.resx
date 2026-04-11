@@ -209,4 +209,7 @@
   <data name="Workflow" xml:space="preserve"><value>Workflow</value></data>
   <data name="Export" xml:space="preserve"><value>Export</value></data>
   <data name="ExportGridDataOnly" xml:space="preserve"><value>Export Grid Data Only</value></data>
+  <data name="RecordsSelected" xml:space="preserve"><value>{0} records selected</value></data>
+  <data name="SelectAllMatchingRecords" xml:space="preserve"><value>Select all {0} matching records</value></data>
+  <data name="ClearSelection" xml:space="preserve"><value>Clear Selection</value></data>
 </root>

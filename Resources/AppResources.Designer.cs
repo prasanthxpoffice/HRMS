@@ -173,5 +173,8 @@ namespace HRMS.Resources {
         public static string Workflow => ResourceManager.GetString("Workflow", resourceCulture);
         public static string Export => ResourceManager.GetString("Export", resourceCulture);
         public static string ExportGridDataOnly => ResourceManager.GetString("ExportGridDataOnly", resourceCulture);
+        public static string RecordsSelected => ResourceManager.GetString("RecordsSelected", resourceCulture);
+        public static string SelectAllMatchingRecords => ResourceManager.GetString("SelectAllMatchingRecords", resourceCulture);
+        public static string ClearSelection => ResourceManager.GetString("ClearSelection", resourceCulture);
     }
 }
