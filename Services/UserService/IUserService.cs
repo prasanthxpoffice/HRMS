@@ -9,8 +9,8 @@ public interface IUserService
     IReadOnlyList<Role> Roles { get; }
     IReadOnlyList<Menu> Menus { get; }
 
-    event Action? OnRoleChanged;
+    event Action<bool>? OnRoleChanged;
 
-    void SetCurrentRole(int roleId);
+    Task SetCurrentRole(int roleId);
     Task LoadUserAsync();
 }

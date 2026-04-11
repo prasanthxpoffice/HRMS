@@ -1,6 +1,7 @@
 using HRMS.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.JSInterop;
 
 namespace HRMS.Services;
 using DB.Constants;
@@ -12,6 +13,7 @@ public class UserService : IUserService
     private readonly IConfiguration _configuration;
     private readonly IUserContext _userContext;
     private readonly LanguageService _languageService;
+    private readonly IJSRuntime _jsRuntime;
     
     private User? _currentUser;
     private Role? _currentRole;
@@ -19,13 +21,14 @@ public class UserService : IUserService
     private List<Menu> _menus = new();
     private bool _isInitialized;
 
-    public UserService(IDataService dataService, IHttpContextAccessor httpContext, IConfiguration configuration, IUserContext userContext, LanguageService languageService)
+    public UserService(IDataService dataService, IHttpContextAccessor httpContext, IConfiguration configuration, IUserContext userContext, LanguageService languageService, IJSRuntime jsRuntime)
     {
         _dataService = dataService;
         _httpContext = httpContext;
         _configuration = configuration;
         _userContext = userContext;
         _languageService = languageService;
+        _jsRuntime = jsRuntime;
     }
 
     public User? CurrentUser => _currentUser;
@@ -33,7 +36,7 @@ public class UserService : IUserService
     public IReadOnlyList<Role> Roles => _roles;
     public IReadOnlyList<Menu> Menus => _menus;
 
-    public event Action? OnRoleChanged;
+    public event Action<bool>? OnRoleChanged;
 
     public async Task LoadUserAsync()
     {
@@ -57,16 +60,28 @@ public class UserService : IUserService
             if (_currentUser != null)
             {
                 _roles = _currentUser.AssignedRoles ?? new();
-                _currentRole = _roles.FirstOrDefault() ?? new Role { RoleId = 0, RoleName = "Default" };
+                
+                // 3. Persistent Role Selection: Check for last selected role cookie
+                int lastRoleId = 0;
+                var roleCookie = _httpContext.HttpContext?.Request.Cookies[".HRMS.LastRole"];
+                if (int.TryParse(roleCookie, out var cookieRoleId))
+                {
+                    lastRoleId = cookieRoleId;
+                }
+
+                _currentRole = _roles.FirstOrDefault(r => r.RoleId == lastRoleId) ?? 
+                               _roles.FirstOrDefault() ?? 
+                               new Role { RoleId = 0, RoleName = "Default" };
 
                 // Update the shared UserContext for all future database calls
                 _userContext.EmployeeId = _currentUser.EmployeeId;
                 _userContext.RoleId = _currentRole.RoleId;
 
-                // 3. Load Menus for the default role
+                // 4. Load Menus for the active role
                 await LoadMenusAsync();
 
-                OnRoleChanged?.Invoke();
+                // Notify UI to refresh (false = initial load, no redirection)
+                OnRoleChanged?.Invoke(false);
             }
         }
         catch
@@ -86,7 +101,7 @@ public class UserService : IUserService
         );
     }
 
-    public async void SetCurrentRole(int roleId)
+    public async Task SetCurrentRole(int roleId)
     {
         var role = _roles.FirstOrDefault(r => r.RoleId == roleId);
         if (role == null || role.RoleId == _currentRole?.RoleId) return;
@@ -96,9 +111,13 @@ public class UserService : IUserService
         // Synchronize the shared UserContext
         _userContext.RoleId = _currentRole.RoleId;
 
+        // Persist the choice in a cookie for page reloads (Language change support)
+        await _jsRuntime.InvokeVoidAsync("cultureHelper.setCookie", ".HRMS.LastRole", roleId.ToString(), 365);
+
         // Refresh Menus for the new role
         await LoadMenusAsync();
 
-        OnRoleChanged?.Invoke();
+        // Notify UI to refresh AND redirect (true = manual switch)
+        OnRoleChanged?.Invoke(true);
     }
 }

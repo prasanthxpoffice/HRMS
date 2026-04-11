@@ -34,12 +34,14 @@
     protected override async Task OnInitializedAsync()
     {
         await UserService.LoadUserAsync();
-        StateHasChanged(); // Force update after first async load
-        UserService.OnRoleChanged += StateHasChanged;
+        StateHasChanged(); 
+        UserService.OnRoleChanged += HandleRoleRefresh;
     }
 
     public void Dispose()
     {
-        UserService.OnRoleChanged -= StateHasChanged;
+        UserService.OnRoleChanged -= HandleRoleRefresh;
     }
+
+    private void HandleRoleRefresh(bool _) => InvokeAsync(StateHasChanged);
 }

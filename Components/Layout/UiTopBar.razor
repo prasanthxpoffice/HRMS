@@ -47,13 +47,15 @@
 @code {
     protected override void OnInitialized()
     {
-        UserService.OnRoleChanged += StateHasChanged;
+        UserService.OnRoleChanged += HandleRoleRefresh;
     }
 
     public void Dispose()
     {
-        UserService.OnRoleChanged -= StateHasChanged;
+        UserService.OnRoleChanged -= HandleRoleRefresh;
     }
+
+    private void HandleRoleRefresh(bool _) => InvokeAsync(StateHasChanged);
 
     private void OnRoleChanged(ChangeEventArgs e)
     {

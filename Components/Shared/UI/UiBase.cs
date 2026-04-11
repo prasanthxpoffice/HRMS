@@ -45,9 +45,12 @@ public class UiBase : ComponentBase, IDisposable
         UserService.OnRoleChanged += HandleRoleChanged;
     }
 
-    private void HandleRoleChanged()
+    private void HandleRoleChanged(bool isManual)
     {
-        Navigation.NavigateTo("/");
+        if (isManual)
+        {
+            Navigation.NavigateTo("/");
+        }
         InvokeAsync(StateHasChanged);
     }
 
