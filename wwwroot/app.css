@@ -120,13 +120,13 @@ html, body {
 /* Sidebar - Elite UAE Sand Gold Surface with Depth */
 .sidebar {
     width: 260px;
-    background: linear-gradient(180deg, var(--uae-sand) 0%, var(--uae-bronze) 100%);
+    background: linear-gradient(165deg, var(--uae-sand) 0%, var(--uae-bronze) 100%);
     color: #ffffff;
     display: flex;
     flex-direction: column;
     z-index: 50;
-    border-inline-end: 1px solid var(--uae-bronze);
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    border-inline-end: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar .top-row {
@@ -157,28 +157,66 @@ html, body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 0.8rem 1.25rem !important;
-    margin: 0.2rem 1rem;
-    border-radius: var(--radius-md);
-    color: rgba(255, 255, 255, 0.85) !important;
+    padding: 0.75rem 1.25rem !important;
+    margin: 0.4rem 1rem;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.8) !important;
     font-weight: 500;
-    transition: var(--transition-fast);
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none !important;
+    position: relative;
+    overflow: hidden;
 }
 
 .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.12);
     color: #ffffff !important;
+    transform: translateX(4px);
+}
+
+[dir="rtl"] .nav-link:hover {
+    transform: translateX(-4px);
 }
 
 .nav-link.active {
-    background: var(--uae-bronze) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
     color: #ffffff !important;
     font-weight: 700;
-    border-inline-start: 4px solid #ffffff;
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    margin-inline-start: 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 4px;
+    background: #ffffff;
+    border-radius: 100px;
+}
+
+/* Sidebar Category Headers */
+.nav-category {
+    padding: 1.5rem 1.5rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-category::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 [dir="rtl"] .nav-link.active {
