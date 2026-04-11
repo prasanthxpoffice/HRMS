@@ -210,4 +210,8 @@
   <data name="RecordsSelected" xml:space="preserve"><value>{0} سجلات مختارة</value></data>
   <data name="SelectAllMatchingRecords" xml:space="preserve"><value>اختيار جميع السجلات {0} المتطابقة</value></data>
   <data name="ClearSelection" xml:space="preserve"><value>إلغاء التحديد</value></data>
+  <data name="LeaveContractPosition" xml:space="preserve"><value>منصب عقد الإجازة</value></data>
+  <data name="LeaveContractPosition_GridTitle" xml:space="preserve"><value>مناصب عقود الإجازات</value></data>
+  <data name="CompanyContractName" xml:space="preserve"><value>عقد الشركة</value></data>
+  <data name="CompanyPositionName" xml:space="preserve"><value>منصب الشركة</value></data>
 </root>

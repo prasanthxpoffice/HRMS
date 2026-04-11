@@ -17,6 +17,8 @@ namespace DB.Constants
                 public const string spHolidayDetailsGet = "admin.spHolidayDetailsGet";
                 public const string spHolidayDetailsSave = "admin.spHolidayDetailsSave";
                 public const string spHolidayDetailsDelete = "admin.spHolidayDetailsDelete";
+
+                public const string spLeaveContractPositionGet = "admin.spLeaveContractPositionGet";
             }
 
             public static class Master

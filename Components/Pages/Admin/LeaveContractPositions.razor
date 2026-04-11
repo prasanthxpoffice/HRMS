@@ -1,0 +1,53 @@
+@inherits UiBase
+@rendermode InteractiveServer
+@inject IDataService DataService
+
+@using HRMS.Models.Admin
+@using HRMS.Models.Shared
+
+<UiGrid @ref="grid"
+        TItem="LeaveContractPosition" 
+        Title="@AppResources.LeaveContractPosition_GridTitle" 
+        Items="Items" 
+        Columns="columns" 
+        ShowAddButton="false" 
+        ShowSelection="true"
+        ShowDeleteButton="false"
+        IdFieldName="LeaveContractPositionId"
+        OnDataChanged="LoadData"
+        ShowExport="true"
+        OnGetExportData="GetExportData"
+        ExportName="LeaveContractPositions"
+        Loading="IsLoading" />
+
+@code {
+    private UiGrid<LeaveContractPosition>? grid;
+    private List<LeaveContractPosition> Items = new();
+
+    private List<UiGridColumn<LeaveContractPosition>> columns => new()
+    {
+        new UiGridColumn<LeaveContractPosition> { FieldName = nameof(LeaveContractPosition.LeaveTypeName), Title = AppResources.LeaveType, FilterType = UiGridFilterType.Dropdown},
+        new UiGridColumn<LeaveContractPosition> { FieldName = nameof(LeaveContractPosition.CompanyName), Title = AppResources.Company, FilterType=UiGridFilterType.Dropdown },
+        new UiGridColumn<LeaveContractPosition> { FieldName = nameof(LeaveContractPosition.ContractName), Title = AppResources.ContractType, FilterType=UiGridFilterType.Dropdown },
+        new UiGridColumn<LeaveContractPosition> { FieldName = nameof(LeaveContractPosition.PositionName), Title = AppResources.Position, FilterType=UiGridFilterType.Dropdown }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private Task LoadData() => LoadAsync(async () =>
+    {
+        Items = await DataService.GetListAsync<LeaveContractPosition>(
+            ConnectionNames.Default,
+            StoredProcedure.HRMSDB.Admin.spLeaveContractPositionGet,
+            new { LeaveContractPositionId = 0 }
+        );
+    });
+
+    private Task<IEnumerable<object>> GetExportData()
+    {
+        return Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+    }
+}

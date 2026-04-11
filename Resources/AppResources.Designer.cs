@@ -176,5 +176,9 @@ namespace HRMS.Resources {
         public static string RecordsSelected => ResourceManager.GetString("RecordsSelected", resourceCulture);
         public static string SelectAllMatchingRecords => ResourceManager.GetString("SelectAllMatchingRecords", resourceCulture);
         public static string ClearSelection => ResourceManager.GetString("ClearSelection", resourceCulture);
+        public static string LeaveContractPosition => ResourceManager.GetString("LeaveContractPosition", resourceCulture);
+        public static string LeaveContractPosition_GridTitle => ResourceManager.GetString("LeaveContractPosition_GridTitle", resourceCulture);
+        public static string CompanyContractName => ResourceManager.GetString("CompanyContractName", resourceCulture);
+        public static string CompanyPositionName => ResourceManager.GetString("CompanyPositionName", resourceCulture);
     }
 }
