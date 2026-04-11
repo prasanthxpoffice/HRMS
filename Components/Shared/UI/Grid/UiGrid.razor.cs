@@ -264,11 +264,7 @@ public partial class UiGrid<TItem> : UiBase
     private async Task SelectAllFiltered(bool value)
     {
         _isAllPagesSelected = value;
-        if (value)
-        {
-            // When selecting all pages, we usually clear manual selections to avoid confusion
-            SelectedIds.Clear();
-        }
+        SelectedIds.Clear();
         await NotifySelectionChanged();
     }
 
