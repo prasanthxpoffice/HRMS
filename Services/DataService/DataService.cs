@@ -5,21 +5,19 @@ namespace HRMS.Services
     public class DataService : IDataService
     {
         private readonly IDatabaseService _db;
-        private readonly IUserService _userService;
         private readonly INotificationService _notification;
         private readonly IResourceService _res;
 
-        public DataService(IDatabaseService db, IUserService userService, INotificationService notification, IResourceService res)
+        public DataService(IDatabaseService db, INotificationService notification, IResourceService res)
         {
             _db = db;
-            _userService = userService;
             _notification = notification;
             _res = res;
         }
 
-        public async Task<List<T>> GetListAsync<T>(string connectionName, string spName, object json, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
+        public async Task<List<T>> GetListAsync<T>(string connectionName, string spName, object json, bool useTransaction = false)
         {
-            var response = await _db.ExecuteQueryAsync<List<T>>(connectionName, spName, json, employeeId, language, roleId, useTransaction: useTransaction);
+            var response = await _db.ExecuteQueryAsync<List<T>>(connectionName, spName, json, useTransaction: useTransaction);
             
             if (response != null)
             {
@@ -36,9 +34,9 @@ namespace HRMS.Services
             return response?.Data ?? new();
         }
 
-        public async Task<DbResponse<object>> PostDataAsync(string connectionName, string spName, object json, bool showNotification = true, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = true)
+        public async Task<DbResponse<object>> PostDataAsync(string connectionName, string spName, object json, bool showNotification = true, bool useTransaction = true)
         {
-            var res = await _db.ExecuteQueryAsync<object>(connectionName, spName, json, employeeId, language, roleId, useTransaction: useTransaction);
+            var res = await _db.ExecuteQueryAsync<object>(connectionName, spName, json, useTransaction: useTransaction);
             
             if (res != null)
             {
@@ -49,12 +47,10 @@ namespace HRMS.Services
                 }
                 else if (res.Success == 0)
                 {
-                    // Validation Error -> Toast
                     _notification.Notify(res.Message, NotificationType.Error);
                 }
                 else if (res.Success == -1)
                 {
-                    // System/DB Error -> Modal
                     _notification.NotifyError(_res.DatabaseError, res.Message);
                 }
             }

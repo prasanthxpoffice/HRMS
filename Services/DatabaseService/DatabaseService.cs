@@ -10,22 +10,22 @@ namespace HRMS.Services
     {
         private readonly IConfiguration _configuration;
         private readonly LanguageService _languageService;
-        private readonly IUserService _userService;
+        private readonly IUserContext _userContext;
         private readonly HRMS.Services.LogService.IErrorLogService _logService;
 
         public DatabaseService(
             IConfiguration configuration, 
             LanguageService languageService, 
-            IUserService userService,
+            IUserContext userContext,
             HRMS.Services.LogService.IErrorLogService logService)
         {
             _configuration = configuration;
             _languageService = languageService;
-            _userService = userService;
+            _userContext = userContext;
             _logService = logService;
         }
 
-        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string connectionName, string procedureName, object? jsonParams = null, int? employeeId = null, string? language = null, int? roleId = null, bool useTransaction = false)
+        public async Task<DbResponse<T>> ExecuteQueryAsync<T>(string connectionName, string procedureName, object? jsonParams = null, bool useTransaction = false)
         {
             string connectionString = _configuration.GetConnectionString(connectionName) ?? "";
             
@@ -34,16 +34,16 @@ namespace HRMS.Services
                 return new DbResponse<T> { Success = -1, Message = "Connection string not configured." };
             }
 
-            var finalEmployeeId = employeeId ?? _userService.CurrentUser?.EmployeeId ?? 1;
-            var finalRoleId = roleId ?? _userService.CurrentRole?.RoleId ?? 0;
+            // Automatically resolve context values
+            var finalEmployeeId = _userContext.EmployeeId;
+            var finalRoleId = _userContext.RoleId;
             var jsonInput = jsonParams != null ? JsonSerializer.Serialize(jsonParams) : "{}";
+            var lang = _languageService.CurrentLanguage;
 
             try
             {
                 using var db = new SqlConnection(connectionString);
                 await db.OpenAsync();
-
-                var lang = language ?? _languageService.CurrentLanguage;
 
                 SqlTransaction? transaction = useTransaction ? (SqlTransaction)db.BeginTransaction() : null;
                 
@@ -63,8 +63,6 @@ namespace HRMS.Services
                     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                     var result = JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = -1 };
 
-                    // Commit only if Success is 1 (Success) or 0 (Validation Error)
-                    // Rollback if Success is -1 (System Error)
                     if (useTransaction && transaction != null)
                     {
                         if (result.Success >= 0) transaction.Commit();
@@ -81,9 +79,7 @@ namespace HRMS.Services
             }
             catch (Exception ex)
             {
-                // Silently log the exact DB crash context to the flat file.
                 _ = _logService.LogErrorAsync(ex, finalEmployeeId, finalRoleId, connectionName, procedureName, jsonInput);
-
                 return new DbResponse<T> { Success = -1, Message = ex.Message };
             }
         }

@@ -1,4 +1,4 @@
-@using HRMS.Services
+@implements IDisposable
 @inject IUserService UserService
 @inject LanguageService Lang
 
@@ -45,6 +45,16 @@
 </div>
 
 @code {
+    protected override void OnInitialized()
+    {
+        UserService.OnRoleChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        UserService.OnRoleChanged -= StateHasChanged;
+    }
+
     private void OnRoleChanged(ChangeEventArgs e)
     {
         if (int.TryParse(e.Value?.ToString(), out var roleId))

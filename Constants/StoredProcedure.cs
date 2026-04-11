@@ -48,5 +48,11 @@ namespace DB.Constants
                 public const string spShiftTypeGet = "master.spShiftTypeGet";
             }
         }
+
+        public static class CentralLogin
+        {
+            public const string spGetUserRoles = "dbo.spGetUserRoles";
+            public const string spGetUserMenus = "dbo.spGetUserMenus";
+        }
     }
 }

@@ -9,6 +9,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment());
 
+builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<LanguageService>();
 builder.Services.AddScoped<IResourceService, ResourceService>();
