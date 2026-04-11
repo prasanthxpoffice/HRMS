@@ -7,6 +7,8 @@
 - `[x]` **Compact UI Overhaul**: Refined the dashboard hero banner for better screen efficiency.
 - `[x]` **Full Localization**: Adhered to "Zero Hardcoding" policy; all UI text is localized in English and Arabic.
 - `[x]` **Aesthetic Alignment**: Solidified the "UAE Federal" institutional theme across the dashboard.
+- `[x]` **Modern Localization**: Migrated to a native, IntelliSense-driven pattern. Fixed 120+ build errors and removed legacy `IResourceService` dependencies.
+- `[x]` **Zero Hardcoding**: Refactored all DataAnnotations to use `nameof(AppResources.Key)` for total compile-time safety.
 
 ## 🚀 Pending / Next Steps
 - `[ ]` **Database Integration**:

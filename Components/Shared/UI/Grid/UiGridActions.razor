@@ -1,12 +1,18 @@
 @inherits UiBase
 
 <div class="d-flex gap-2">
-    <button class="btn btn-sm btn-outline-primary border-0" @onclick="OnEdit" title="@EditTitle">
-        <UiIcon Name="pencil" CssClass="small" />
-    </button>
-    <button class="btn btn-sm btn-outline-danger border-0" @onclick="OnDelete" title="@DeleteTitle">
-        <UiIcon Name="trash" CssClass="small" />
-    </button>
+    @if (OnEdit.HasDelegate)
+    {
+        <button class="btn btn-sm btn-outline-primary border-0" @onclick="OnEdit" title="@EditTitle">
+            <UiIcon Name="pencil" CssClass="small" />
+        </button>
+    }
+    @if (OnDelete.HasDelegate)
+    {
+        <button class="btn btn-sm btn-outline-danger border-0" @onclick="OnDelete" title="@DeleteTitle">
+            <UiIcon Name="trash" CssClass="small" />
+        </button>
+    }
 </div>
 
 @code {

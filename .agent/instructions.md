@@ -11,6 +11,7 @@ These rules are strictly enforced for all AI agents working on the HRMS project 
 ## 2. No Code Pollution
 - Do not add "fake" data, mockup properties, or shorthand wrappers for existing services unless specifically needed for a functional requirement.
 - Maintain the original logic flow of the project as provided by the user.
+- **LOCALIZATION**: Strictly follow the native IntelliSense pattern. Use `@AppResources.Key` in Razor and `nameof(AppResources.Key)` in C#. Manually sync `AppResources.Designer.cs` if new keys are added to `.resx`.
 
 ## 3. Communication
 - Keep responses concise and technical.

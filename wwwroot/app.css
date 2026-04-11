@@ -157,12 +157,12 @@ html, body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1.25rem !important;
-    margin: 0.4rem 1rem;
-    border-radius: 12px;
+    padding: 0.6rem 1.25rem !important;
+    margin: 0.2rem 0.75rem;
+    border-radius: 10px;
     color: rgba(255, 255, 255, 0.8) !important;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     letter-spacing: 0.01em;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none !important;
@@ -171,7 +171,7 @@ html, body {
 }
 
 .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff !important;
     transform: translateX(4px);
 }
@@ -183,8 +183,8 @@ html, body {
 .nav-link.active {
     background: rgba(255, 255, 255, 0.15) !important;
     color: #ffffff !important;
-    font-weight: 700;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(4px);
 }
 
@@ -192,24 +192,24 @@ html, body {
     content: '';
     position: absolute;
     inset-inline-start: 0;
-    top: 20%;
-    bottom: 20%;
-    width: 4px;
+    top: 25%;
+    bottom: 25%;
+    width: 3px;
     background: #ffffff;
     border-radius: 100px;
 }
 
 /* Sidebar Category Headers */
 .nav-category {
-    padding: 1.5rem 1.5rem 0.5rem;
-    font-size: 0.7rem;
+    padding: 1.25rem 1.25rem 0.4rem;
+    font-size: 0.65rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.15em;
+    color: rgba(255, 255, 255, 0.5);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .nav-category::after {
@@ -220,12 +220,16 @@ html, body {
 }
 
 [dir="rtl"] .nav-link.active {
-    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    border-radius: 10px;
 }
 
-.nav-link i, .nav-link .bi {
-    font-size: 1.1rem;
-    margin-inline-end: 0.75rem; /* Logical Property */
+.nav-link i, .nav-link .bi, .nav-link .bi-icon {
+    font-size: 1.15rem;
+    margin-inline-end: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
 }
 
 /* Content Area */
@@ -614,7 +618,6 @@ main {
     background: var(--slate-50) !important;
     color: var(--slate-600) !important;
     font-weight: 500;
-    transition: all 0.2s ease;
     box-shadow: none !important;
 }
 
@@ -622,6 +625,7 @@ main {
     background: var(--slate-200) !important;
     color: var(--slate-900) !important;
     border-color: var(--slate-300) var(--slate-300) var(--border-color) !important;
+    transform: none !important;
 }
 
 .ui-tabs-rect .nav-link.active {

@@ -10,7 +10,9 @@ This file serves as the core memory for the HRMS development team (AI and User).
 ## Technical Architecture
 - **Framework**: Blazor InteractiveServer.
 - **Styling**: Centralized `app.css` using HSL tokens for global theme control.
-- **Localization**: Multi-language support (EN/AR) via `AppResources.resx`.
+- **Localization**: Native, IntelliSense-driven multi-language support (EN/AR) via `AppResources.resx`.
+    - **Standard**: Strictly use `@AppResources.Key` (Razor) and `nameof(AppResources.Key)` (DataAnnotations) for 100% compile-time safety and zero hardcoded strings.
+    - **Legacy Removal**: The old `IResourceService` has been completely deleted to simplify the architecture.
 - **Data Access**: Repository pattern via `IDataService`. Business logic and validation are handled by backend stored procedures for performance and security.
 
 ## Core Modules

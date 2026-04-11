@@ -95,8 +95,7 @@
         new UiGridColumn<CompanyPosition> { Title = AppResources.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<CompanyPosition> { Title = AppResources.Position, FieldName = "PositionName", FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<CompanyPosition> { Title = AppResources.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<CompanyPosition> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
-                                                                                             OnDelete="() => grid.RequestDelete(item)" /> }
+        new UiGridColumn<CompanyPosition> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnDelete="() => grid.RequestDelete(item)" /> }
     };
 
     private async Task Prepare(CompanyPosition? item = null)
