@@ -8,11 +8,11 @@
 
 <UiGrid @ref="grid"
         TItem="CompanyPosition" 
-        Title="@Res.GetString("CompanyPosition_GridTitle")" 
+        Title="@AppResources.CompanyPosition_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.GetString("CompanyPosition_Add")" 
+        AddButtonText="@AppResources.CompanyPosition_Add" 
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
@@ -26,23 +26,23 @@
         ExportName="CompanyPositions"
         Loading="IsLoading" />
  
-<UiModal Show="ShowModal" Title="@(CurrentItem.CompanyPositionId == 0 ? Res.GetString("CompanyPosition_Add") : Res.Edit)" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.CompanyPositionId == 0 ? AppResources.CompanyPosition_Add : AppResources.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="companyPositionForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
             
             <div class="mb-3">
-                <UiSelect Label="@Res.Company" 
+                <UiSelect Label="@AppResources.Company" 
                           Items="Lookups.Companies"
-                          Placeholder="@Res.GetString("SelectCompany")"
+                          Placeholder="@AppResources.SelectCompany"
                           @bind-Value="CurrentItem.CompanyId" />
                 <ValidationMessage For="@(() => CurrentItem.CompanyId)" />
             </div>
 
             <div class="mb-3">
-                <UiSelect Label="@Res.GetString("Position")" 
+                <UiSelect Label="@AppResources.Position" 
                           Items="Lookups.Positions"
-                          Placeholder="@Res.GetString("SelectPosition")"
+                          Placeholder="@AppResources.SelectPosition"
                           @bind-Value="CurrentItem.PositionId" />
                 <ValidationMessage For="@(() => CurrentItem.PositionId)" />
             </div>
@@ -50,8 +50,8 @@
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="companyPositionForm" Loading="IsSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@AppResources.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="companyPositionForm" Loading="IsSaving">@AppResources.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -91,11 +91,11 @@
 
     private List<UiGridColumn<CompanyPosition>> columns => new()
     {
-        new UiGridColumn<CompanyPosition> { Title = Res.Id, FieldName = "CompanyPositionId" },
-        new UiGridColumn<CompanyPosition> { Title = Res.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<CompanyPosition> { Title = Res.GetString("Position"), FieldName = "PositionName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<CompanyPosition> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<CompanyPosition> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<CompanyPosition> { Title = AppResources.Id, FieldName = "CompanyPositionId" },
+        new UiGridColumn<CompanyPosition> { Title = AppResources.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<CompanyPosition> { Title = AppResources.Position, FieldName = "PositionName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<CompanyPosition> { Title = AppResources.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<CompanyPosition> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 

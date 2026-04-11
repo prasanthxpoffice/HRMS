@@ -10,6 +10,7 @@ using HRMS.Models.Export;
 using HRMS.Services.ExportService;
 using Microsoft.JSInterop;
 using HRMS.Services.WorkflowService;
+using HRMS.Resources;
 
 namespace HRMS.Components.Shared.UI.Grid;
 
@@ -305,8 +306,8 @@ public partial class UiGrid<TItem> : UiBase
             else errorCount++;
         }
 
-        if (successCount > 0) NotificationService.Notify(Res.GetString("BulkDeleteSuccess", successCount), NotificationType.Success);
-        if (errorCount > 0) NotificationService.Notify(Res.GetString("BulkDeleteError", errorCount), NotificationType.Error);
+        if (successCount > 0) NotificationService.Notify(string.Format(AppResources.BulkDeleteSuccess, successCount), NotificationType.Success);
+        if (errorCount > 0) NotificationService.Notify(string.Format(AppResources.BulkDeleteError, errorCount), NotificationType.Error);
 
         SelectedItems.Clear();
         await SelectedItemsChanged.InvokeAsync(SelectedItems);
@@ -341,7 +342,7 @@ public partial class UiGrid<TItem> : UiBase
 
                 if (!string.IsNullOrEmpty(response.TransactionId))
                 {
-                    WorkflowService.OpenViewer(response.TransactionId, WorkflowTitle ?? Res.Workflow);
+                    WorkflowService.OpenViewer(response.TransactionId, WorkflowTitle ?? AppResources.Workflow);
                 }
             }
         }
@@ -381,7 +382,7 @@ public partial class UiGrid<TItem> : UiBase
 
             if (exportData == null || !exportData.Any())
             {
-                NotificationService.Notify(Res.NoRecordsFound, NotificationType.Warning);
+                NotificationService.Notify(AppResources.NoRecordsFound, NotificationType.Warning);
                 return;
             }
 
@@ -394,16 +395,16 @@ public partial class UiGrid<TItem> : UiBase
                 _ => ("bin", "application/octet-stream")
             };
  
-            var finalTitle = string.IsNullOrEmpty(Title) ? (Res.GetString("AdminDashboard") ?? "HRMS Report") : Title;
+            var finalTitle = string.IsNullOrEmpty(Title) ? (AppResources.AdminDashboard ?? "HRMS Report") : Title;
             var bytes = await ExportService.ExportAsync(exportData, exportColumns, format, finalTitle, Lang.IsRtl);
             await JS.InvokeVoidAsync("downloadFileFromStream", $"{fileName}.{extension}", bytes, contentType);
             
-            string successMsg = Res.GetString("ExportSuccess") ?? (Lang.IsRtl ? "تم تصدير {0} سجلات بنجاح." : "Successfully exported {0} records.");
+            string successMsg = AppResources.ExportSuccess ?? (Lang.IsRtl ? "تم تصدير {0} سجلات بنجاح." : "Successfully exported {0} records.");
             NotificationService.Notify(successMsg.Replace("{0}", exportData.Count().ToString()), NotificationType.Success); 
         }
         catch (Exception ex)
         {
-            NotificationService.Notify($"{Res.SystemError}: {ex.Message}", NotificationType.Error);
+            NotificationService.Notify($"{AppResources.SystemError}: {ex.Message}", NotificationType.Error);
         }
         finally
         {

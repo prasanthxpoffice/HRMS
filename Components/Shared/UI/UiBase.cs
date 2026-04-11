@@ -6,7 +6,6 @@ namespace HRMS.Components.Shared.UI;
 public class UiBase : ComponentBase, IDisposable
 {
     [Inject] public LanguageService Lang { get; set; } = default!;
-    [Inject] public IResourceService Res { get; set; } = default!;
     [Inject] public INotificationService NotificationService { get; set; } = default!;
     [Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager Navigation { get; set; } = default!;
@@ -42,6 +41,7 @@ public class UiBase : ComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
+        Lang.SyncResources();
         UserService.OnRoleChanged += HandleRoleChanged;
     }
 

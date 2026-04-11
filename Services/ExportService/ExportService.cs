@@ -1,4 +1,5 @@
 using HRMS.Models.Export;
+using HRMS.Resources;
 using MiniExcelLibs;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -11,11 +12,8 @@ namespace HRMS.Services.ExportService;
 
 public class ExportService : IExportService
 {
-    private readonly IResourceService _res;
-
-    public ExportService(IResourceService res)
+    public ExportService()
     {
-        _res = res;
         QuestPDF.Settings.License = LicenseType.Community;
     }
 
@@ -52,7 +50,7 @@ public class ExportService : IExportService
             {
                 foreach (var prop in element.EnumerateObject())
                 {
-                    var translatedTitle = _res.GetString(prop.Name) ?? prop.Name;
+                    var translatedTitle = AppResources.ResourceManager.GetString(prop.Name) ?? prop.Name;
                     finalColumns.Add(prop.Name, translatedTitle);
                 }
             }
@@ -61,7 +59,7 @@ public class ExportService : IExportService
                 var itemType = firstItem.GetType();
                 foreach (var prop in itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
                 {
-                    var translatedTitle = _res.GetString(prop.Name) ?? prop.Name;
+                    var translatedTitle = AppResources.ResourceManager.GetString(prop.Name) ?? prop.Name;
                     finalColumns.Add(prop.Name, translatedTitle);
                 }
             }

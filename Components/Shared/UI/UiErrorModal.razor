@@ -11,7 +11,7 @@
                 <div class="modal-header bg-danger text-white p-3 border-0">
                     <div class="d-flex align-items-center gap-2">
                         <i class="bi bi-exclamation-triangle-fill fs-4"></i>
-                        <h5 class="modal-title h6 fw-bold mb-0">@Res.SystemError</h5>
+                        <h5 class="modal-title h6 fw-bold mb-0">@AppResources.SystemError</h5>
                     </div>
                     <button type="button" class="btn-close btn-close-white small" @onclick="Close"></button>
                 </div>
@@ -26,7 +26,7 @@
                     {
                         <div class="mt-3">
                             <button class="btn btn-outline-secondary btn-sm border-0" @onclick="ToggleDetails">
-                                @(_showDetails ? Res.HideDetails : Res.ViewDetails)
+                                @(_showDetails ? AppResources.HideDetails : AppResources.ViewDetails)
                                 <i class="bi @(_showDetails ? "bi-chevron-up" : "bi-chevron-down") ms-1"></i>
                             </button>
 
@@ -42,7 +42,7 @@
 
                 <div class="modal-footer p-2 bg-light border-0 justify-content-center">
                     <button type="button" class="btn btn-secondary px-4 btn-sm" style="border-radius: 8px;" @onclick="Close">
-                        @Res.Cancel
+                        @AppResources.Cancel
                     </button>
                 </div>
             </div>

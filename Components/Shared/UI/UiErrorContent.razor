@@ -3,12 +3,12 @@
 <div class="alert alert-danger m-4 shadow-sm border-0 d-flex align-items-center gap-3" style="border-radius: 12px;">
     <i class="bi bi-exclamation-octagon fs-2"></i>
     <div>
-        <h6 class="fw-bold mb-1">@Res.UnexpectedError</h6>
-        <p class="mb-2 small opacity-75">@Res.UnexpectedErrorDesc</p>
+        <h6 class="fw-bold mb-1">@AppResources.UnexpectedError</h6>
+        <p class="mb-2 small opacity-75">@AppResources.UnexpectedErrorDesc</p>
         
         <button class="btn btn-link btn-sm p-0 text-danger text-decoration-none d-flex align-items-center gap-1" @onclick="() => _showUiErrorDetails = !_showUiErrorDetails">
             <i class="bi @(_showUiErrorDetails ? "bi-chevron-up" : "bi-chevron-down")"></i>
-            @(_showUiErrorDetails ? Res.HideDetails : Res.ViewDetails)
+            @(_showUiErrorDetails ? AppResources.HideDetails : AppResources.ViewDetails)
         </button>
 
         @if (_showUiErrorDetails)
@@ -19,7 +19,7 @@
         }
     </div>
     <button class="btn btn-danger btn-sm ms-auto px-3" onclick="location.reload()" style="border-radius: 8px;">
-        @Res.Reload
+        @AppResources.Reload
     </button>
 </div>
 

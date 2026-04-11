@@ -25,4 +25,6 @@ public class ResourceService : IResourceService
         var format = GetString(key);
         return args.Length > 0 ? string.Format(format, args) : format;
     }
+
+    public string this[string key] => GetString(key);
 }

@@ -2,30 +2,30 @@
 
 <div class="row g-4 mb-4">
     <div class="col-12 col-sm-6 col-md-3">
-        <UiDashboardCard Label="@Res.GetString("MyLeaveBalance")" Value="18" Icon="bi-calendar-event" Color="primary" Trend="@(Lang.IsRtl ? "أيام" : "Days")" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.MyLeaveBalance" Value="18" Icon="bi-calendar-event" Color="primary" Trend="@AppResources.Days" IsTrendUp="true" />
     </div>
     <div class="col-12 col-sm-6 col-md-3">
-        <UiDashboardCard Label="@Res.GetString("MyAttendance")" Value="98.2%" Icon="bi-activity" Color="success" Trend="@(Lang.IsRtl ? "فوق المعدل" : "Above Avg")" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.MyAttendance" Value="98.2%" Icon="bi-activity" Color="success" Trend="@AppResources.AboveAvg" IsTrendUp="true" />
     </div>
     <div class="col-12 col-sm-6 col-md-3">
-        <UiDashboardCard Label="@Res.GetString("PendingRequests")" Value="2" Icon="bi-hourglass-split" Color="warning" Trend="@(Lang.IsRtl ? "قيد الانتظار" : "Pending")" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.PendingRequests" Value="2" Icon="bi-hourglass-split" Color="warning" Trend="@AppResources.Pending" IsTrendUp="true" />
     </div>
     <div class="col-12 col-sm-6 col-md-3">
-        <UiDashboardCard Label="@Res.GetString("NextHoliday")" Value="@(Lang.IsRtl ? "عيد الأضحى" : "Eid Al Adha")" Icon="bi-flag" Color="info" Trend="@(Lang.IsRtl ? "8 أيام" : "8 Days")" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.NextHoliday" Value="@AppResources.EidAlAdha" Icon="bi-flag" Color="info" Trend="@(string.Format(AppResources.XDays, 8))" IsTrendUp="true" />
     </div>
 </div>
 
 <div class="row g-4">
     <div class="col-12 col-md-7">
         <div class="card-ui p-4 bg-white border-0 shadow-sm h-100">
-            <h5 class="fw-bold mb-4">@Res.GetString("MyAttendanceConsistency")</h5>
+            <h5 class="fw-bold mb-4">@AppResources.MyAttendanceConsistency</h5>
             <UiChart Options="PersonalAttendanceOptions" Height="280" />
         </div>
     </div>
     
     <div class="col-12 col-md-5">
         <div class="card-ui p-4 bg-white border-0 shadow-sm h-100">
-            <h5 class="fw-bold mb-4">@Res.GetString("LeaveUsageBreakdown")</h5>
+            <h5 class="fw-bold mb-4">@AppResources.LeaveUsageBreakdown</h5>
             <UiChart Options="LeaveUsageOptions" Height="280" />
             
             <div class="mt-4 pt-2 border-top">
@@ -34,12 +34,12 @@
                         <UiIcon Name="bi-info-circle" CssClass="text-info" />
                     </div>
                     <div>
-                        <div class="small fw-bold">@Res.GetString("ContractReminder")</div>
-                        <div class="text-muted" style="font-size: 0.75rem;">@Res.GetString("ContractExpiryWarning", 45)</div>
+                        <div class="small fw-bold">@AppResources.ContractReminder</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">@string.Format(AppResources.ContractExpiryWarning, 45)</div>
                     </div>
                 </div>
                 <button class="btn-ui btn-ui-primary w-100 justify-content-center">
-                    @Res.GetString("RequestLeave")
+                    @AppResources.RequestLeave
                 </button>
             </div>
         </div>
@@ -56,7 +56,7 @@
         colors = new[] { "#9c7c4b" },
         stroke = new { curve = "smooth", width = 4 },
         series = new[] {
-            new { name = Lang.IsRtl ? "حضوري" : "My Attendance", data = new[] { 98, 100, 96, 100, 98, 99 } }
+            new { name = AppResources.MyAttendance, data = new[] { 98, 100, 96, 100, 98, 99 } }
         },
         xaxis = new {
             categories = Lang.IsRtl 
@@ -81,12 +81,12 @@
                     value = new { fontSize = "14px" },
                     total = new {
                         show = true,
-                        label = Lang.IsRtl ? "المستنفذ" : "Used",
+                        label = AppResources.Used,
                         formatter = "function(w) { return '12d' }"
                     }
                 }
             }
         },
-        labels = Lang.IsRtl ? new[] { "سنوية", "مرضية", "أخرى" } : new[] { "Annual", "Sick", "Other" }
+        labels = new[] { AppResources.Annual, AppResources.Sick, AppResources.Other }
     };
 }

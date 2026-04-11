@@ -5,11 +5,11 @@
 
 <UiGrid @ref="grid"
         TItem="HRMS.Models.Master.Position" 
-        Title="@Res.GetString("Position_GridTitle")" 
+        Title="@AppResources.Position_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.GetString("Position_Add")" 
+        AddButtonText="@AppResources.Position_Add" 
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
@@ -23,20 +23,20 @@
         ExportName="Position"
         Loading="IsLoading" />
  
-<UiModal Show="ShowModal" Title="@(CurrentItem.PositionId == 0 ? Res.GetString("Position_Add") : Res.Edit)" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.PositionId == 0 ? AppResources.Position_Add : AppResources.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="positionForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
-            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.PositionNameEn" Placeholder="@Res.NameEn" />
+            <UiInput Label="@AppResources.NameEn" @bind-Value="CurrentItem.PositionNameEn" Placeholder="@AppResources.NameEn" />
             <ValidationMessage For="@(() => CurrentItem.PositionNameEn)" />
 
-            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.PositionNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <UiInput Label="@AppResources.NameAr" @bind-Value="CurrentItem.PositionNameAr" Placeholder="@AppResources.NameAr" IsRtl="true" />
             <ValidationMessage For="@(() => CurrentItem.PositionNameAr)" />
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="positionForm" Loading="IsSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@AppResources.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="positionForm" Loading="IsSaving">@AppResources.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -62,11 +62,11 @@
 
     private List<UiGridColumn<HRMS.Models.Master.Position>> columns => new()
     {
-        new UiGridColumn<HRMS.Models.Master.Position> { Title = Res.Id, FieldName = "PositionId" },
-        new UiGridColumn<HRMS.Models.Master.Position> { Title = Res.NameEn, FieldName = "PositionNameEn" },
-        new UiGridColumn<HRMS.Models.Master.Position> { Title = Res.NameAr, FieldName = "PositionNameAr",  FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HRMS.Models.Master.Position> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HRMS.Models.Master.Position> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.Id, FieldName = "PositionId" },
+        new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.NameEn, FieldName = "PositionNameEn" },
+        new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.NameAr, FieldName = "PositionNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 

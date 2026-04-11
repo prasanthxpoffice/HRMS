@@ -12,7 +12,6 @@ builder.Services.AddRazorComponents()
 builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
 builder.Services.AddScoped<LanguageService>();
-builder.Services.AddScoped<IResourceService, ResourceService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDataService, DataService>();

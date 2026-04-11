@@ -5,11 +5,11 @@
 
 <UiGrid @ref="grid"
         TItem="HRMS.Models.Master.Company" 
-        Title="@Res.GetString("Company_GridTitle")" 
+        Title="@AppResources.Company_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.GetString("Company_Add")" 
+        AddButtonText="@AppResources.Company_Add" 
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
@@ -23,20 +23,20 @@
         ExportName="Company"
         Loading="IsLoading" />
  
-<UiModal Show="ShowModal" Title="@(CurrentItem.CompanyId == 0 ? Res.GetString("Company_Add") : Res.Edit)" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.CompanyId == 0 ? AppResources.Company_Add : AppResources.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="companyForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
-            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.CompanyNameEn" Placeholder="@Res.NameEn" />
+            <UiInput Label="@AppResources.NameEn" @bind-Value="CurrentItem.CompanyNameEn" Placeholder="@AppResources.NameEn" />
             <ValidationMessage For="@(() => CurrentItem.CompanyNameEn)" />
 
-            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.CompanyNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <UiInput Label="@AppResources.NameAr" @bind-Value="CurrentItem.CompanyNameAr" Placeholder="@AppResources.NameAr" IsRtl="true" />
             <ValidationMessage For="@(() => CurrentItem.CompanyNameAr)" />
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="companyForm" Loading="IsSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@AppResources.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="companyForm" Loading="IsSaving">@AppResources.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -62,11 +62,11 @@
 
     private List<UiGridColumn<HRMS.Models.Master.Company>> columns => new()
     {
-        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.Id, FieldName = "CompanyId" },
-        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.NameEn, FieldName = "CompanyNameEn" },
-        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.NameAr, FieldName = "CompanyNameAr",  FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HRMS.Models.Master.Company> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.Id, FieldName = "CompanyId" },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.NameEn, FieldName = "CompanyNameEn" },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.NameAr, FieldName = "CompanyNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 

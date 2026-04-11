@@ -2,16 +2,16 @@
 
 <div class="row g-4 mb-4">
     <div class="col-12 col-sm-6 col-xl-3">
-        <UiDashboardCard Label="@Res.GetString("TotalEmployees")" Value="1,248" Icon="bi-people" Color="primary" Trend="12%" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.TotalEmployees" Value="1,248" Icon="bi-people" Color="primary" Trend="12%" IsTrendUp="true" />
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
-        <UiDashboardCard Label="@Res.GetString("PendingRequests")" Value="24" Icon="bi-clock-history" Color="warning" Trend="5" IsTrendUp="false" />
+        <UiDashboardCard Label="@AppResources.PendingRequests" Value="24" Icon="bi-clock-history" Color="warning" Trend="5" IsTrendUp="false" />
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
-        <UiDashboardCard Label="@Res.GetString("ActiveContracts")" Value="892" Icon="bi-file-earmark-text" Color="info" Trend="3%" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.ActiveContracts" Value="892" Icon="bi-file-earmark-text" Color="info" Trend="3%" IsTrendUp="true" />
     </div>
     <div class="col-12 col-sm-6 col-xl-3">
-        <UiDashboardCard Label="@Res.GetString("AttendanceAvg")" Value="96.4%" Icon="bi-check-circle" Color="success" Trend="0.8%" IsTrendUp="true" />
+        <UiDashboardCard Label="@AppResources.AttendanceAvg" Value="96.4%" Icon="bi-check-circle" Color="success" Trend="0.8%" IsTrendUp="true" />
     </div>
 </div>
 
@@ -19,10 +19,10 @@
     <div class="col-12 col-xl-8">
         <div class="card-ui p-4 bg-white border-0 shadow-sm h-100">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="fw-bold mb-0">@Res.GetString("AttendanceTrend")</h5>
+                <h5 class="fw-bold mb-0">@AppResources.AttendanceTrend</h5>
                 <select class="form-select form-select-sm border-0 bg-light w-auto">
-                    <option>@Res.GetString("Last6Months")</option>
-                    <option>@Res.GetString("LastYear")</option>
+                    <option>@AppResources.Last6Months</option>
+                    <option>@AppResources.LastYear</option>
                 </select>
             </div>
             <UiChart Options="AttendanceOptions" Height="300" />
@@ -31,18 +31,18 @@
     
     <div class="col-12 col-xl-4">
         <div class="card-ui p-4 bg-white border-0 shadow-sm h-100">
-            <h5 class="fw-bold mb-4">@Res.GetString("GenderDistribution")</h5>
+            <h5 class="fw-bold mb-4">@AppResources.GenderDistribution</h5>
             <UiChart Options="GenderOptions" Height="300" />
             <div class="mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-2 small">
-                    <span class="text-muted">@Res.GetString("Male")</span>
+                    <span class="text-muted">@AppResources.Male</span>
                     <span class="fw-bold">65%</span>
                 </div>
                 <div class="progress mb-3" style="height: 6px;">
                     <div class="progress-bar" style="width: 65%; background-color: var(--uae-bronze);"></div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2 small">
-                    <span class="text-muted">@Res.GetString("Female")</span>
+                    <span class="text-muted">@AppResources.Female</span>
                     <span class="fw-bold">35%</span>
                 </div>
                 <div class="progress" style="height: 6px;">
@@ -64,8 +64,8 @@
         dataLabels = new { enabled = false },
         stroke = new { curve = "smooth", width = 3 },
         series = new[] {
-            new { name = Lang.IsRtl ? "المتوقع" : "Expected", data = new[] { 94, 95, 94, 96, 95, 97 } },
-            new { name = Lang.IsRtl ? "الفعلي" : "Actual", data = new[] { 92, 93, 95, 94, 96, 98 } }
+            new { name = AppResources.Expected, data = new[] { 94, 95, 94, 96, 95, 97 } },
+            new { name = AppResources.Actual, data = new[] { 92, 93, 95, 94, 96, 98 } }
         },
         xaxis = new {
             categories = Lang.IsRtl 
@@ -85,7 +85,7 @@
             fontFamily = "Inter, sans-serif"
         },
         colors = new[] { "#9c7c4b", "#c5a36b" },
-        labels = Lang.IsRtl ? new[] { "ذكر", "أنثى" } : new[] { "Male", "Female" },
+        labels = new[] { AppResources.Male, AppResources.Female },
         series = new[] { 65, 35 },
         plotOptions = new {
             pie = new {
@@ -95,7 +95,7 @@
                         show = true,
                         total = new {
                             show = true,
-                            label = Res.GetString("All"),
+                            label = AppResources.All,
                             formatter = "function(w) { return '1,248' }"
                         }
                     }

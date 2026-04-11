@@ -5,19 +5,16 @@
 <div class="dashboard-hero mb-4 p-3 p-md-4 rounded-4 shadow-sm border-0 position-relative overflow-hidden" 
      style="background: linear-gradient(135deg, var(--uae-bronze) 0%, var(--uae-sand) 100%); color: white;">
     <div class="position-relative z-1">
-        <div class="small-label text-white text-opacity-75 mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">@Res.WelcomeBack</div>
+        <div class="small-label text-white text-opacity-75 mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">@AppResources.WelcomeBack</div>
         <h2 class="fw-bold mb-1">
-            @(Lang.IsRtl ? "مرحباً ،" : "Welcome, ") @(UserService.CurrentUser?.UserName ?? "Admin")
+            @AppResources.WelcomeUser @(UserService.CurrentUser?.UserName ?? "Admin")
         </h2>
         <p class="mb-0 text-white text-opacity-90 small" style="max-width: 600px;">
-            @(Lang.IsRtl ? "إليك ملخص سريع لنظام إدارة الموارد البشرية لليوم." : "Here is a quick summary of the HRMS system for today.")
+            @AppResources.DashboardSummary
         </p>
     </div>
     
-    <!-- Decorative Pattern -->
-    <div class="position-absolute end-0 top-50 translate-middle-y opacity-10" style="font-size: 8rem; margin-right: -2rem;">
-        <i class="bi bi-grid-3x3-gap"></i>
-    </div>
+ 
 </div>
 
 @if (UserService.CurrentRole?.RoleName == "Administrator")

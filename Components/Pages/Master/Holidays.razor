@@ -5,11 +5,11 @@
 
 <UiGrid @ref="grid"
         TItem="HRMS.Models.Master.Holiday" 
-        Title="@Res.GetString("Holiday_GridTitle")" 
+        Title="@AppResources.Holiday_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.GetString("Holiday_Add")" 
+        AddButtonText="@AppResources.Holiday_Add" 
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
@@ -23,20 +23,20 @@
         ExportName="Holiday"
         Loading="IsLoading" />
  
-<UiModal Show="ShowModal" Title="@(CurrentItem.HolidayId == 0 ? Res.GetString("Holiday_Add") : Res.Edit)" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.HolidayId == 0 ? AppResources.Holiday_Add : AppResources.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="holidayForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
-            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.HolidayNameEn" Placeholder="@Res.NameEn" />
+            <UiInput Label="@AppResources.NameEn" @bind-Value="CurrentItem.HolidayNameEn" Placeholder="@AppResources.NameEn" />
             <ValidationMessage For="@(() => CurrentItem.HolidayNameEn)" />
 
-            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.HolidayNameAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <UiInput Label="@AppResources.NameAr" @bind-Value="CurrentItem.HolidayNameAr" Placeholder="@AppResources.NameAr" IsRtl="true" />
             <ValidationMessage For="@(() => CurrentItem.HolidayNameAr)" />
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="holidayForm" Loading="IsSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@AppResources.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="holidayForm" Loading="IsSaving">@AppResources.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -62,11 +62,11 @@
 
     private List<UiGridColumn<HRMS.Models.Master.Holiday>> columns => new()
     {
-        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.Id, FieldName = "HolidayId" },
-        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.NameEn, FieldName = "HolidayNameEn" },
-        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.NameAr, FieldName = "HolidayNameAr",  FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = AppResources.Id, FieldName = "HolidayId" },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = AppResources.NameEn, FieldName = "HolidayNameEn" },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = AppResources.NameAr, FieldName = "HolidayNameAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = AppResources.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.Holiday> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 

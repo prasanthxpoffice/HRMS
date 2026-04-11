@@ -1,4 +1,5 @@
 using HRMS.Models;
+using HRMS.Resources;
 
 namespace HRMS.Services
 {
@@ -6,13 +7,11 @@ namespace HRMS.Services
     {
         private readonly IDatabaseService _db;
         private readonly INotificationService _notification;
-        private readonly IResourceService _res;
 
-        public DataService(IDatabaseService db, INotificationService notification, IResourceService res)
+        public DataService(IDatabaseService db, INotificationService notification)
         {
             _db = db;
             _notification = notification;
-            _res = res;
         }
 
         public async Task<List<T>> GetListAsync<T>(string connectionName, string spName, object json, bool useTransaction = false)
@@ -23,7 +22,7 @@ namespace HRMS.Services
             {
                 if (response.Success == -1)
                 {
-                    _notification.NotifyError(_res.DatabaseError, response.Message);
+                    _notification.NotifyError(AppResources.DatabaseError, response.Message);
                 }
                 else if (response.Success == 0)
                 {
@@ -51,7 +50,7 @@ namespace HRMS.Services
                 }
                 else if (res.Success == -1)
                 {
-                    _notification.NotifyError(_res.DatabaseError, res.Message);
+                    _notification.NotifyError(AppResources.DatabaseError, res.Message);
                 }
             }
 

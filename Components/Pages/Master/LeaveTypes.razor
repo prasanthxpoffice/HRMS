@@ -5,11 +5,11 @@
 
 <UiGrid @ref="grid"
         TItem="HRMS.Models.Master.LeaveType" 
-        Title="@Res.GetString("LeaveType_GridTitle")" 
+        Title="@AppResources.LeaveType_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.GetString("LeaveType_Add")" 
+        AddButtonText="@AppResources.LeaveType_Add" 
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
@@ -23,20 +23,20 @@
         ExportName="LeaveType"
         Loading="IsLoading" />
  
-<UiModal Show="ShowModal" Title="@(CurrentItem.LeaveTypeId == 0 ? Res.GetString("LeaveType_Add") : Res.Edit)" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.LeaveTypeId == 0 ? AppResources.LeaveType_Add : AppResources.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="leaveTypeForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
-            <UiInput Label="@Res.NameEn" @bind-Value="CurrentItem.LeaveTypeEn" Placeholder="@Res.NameEn" />
+            <UiInput Label="@AppResources.NameEn" @bind-Value="CurrentItem.LeaveTypeEn" Placeholder="@AppResources.NameEn" />
             <ValidationMessage For="@(() => CurrentItem.LeaveTypeEn)" />
 
-            <UiInput Label="@Res.NameAr" @bind-Value="CurrentItem.LeaveTypeAr" Placeholder="@Res.NameAr" IsRtl="true" />
+            <UiInput Label="@AppResources.NameAr" @bind-Value="CurrentItem.LeaveTypeAr" Placeholder="@AppResources.NameAr" IsRtl="true" />
             <ValidationMessage For="@(() => CurrentItem.LeaveTypeAr)" />
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="leaveTypeForm" Loading="IsSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@AppResources.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="leaveTypeForm" Loading="IsSaving">@AppResources.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -62,11 +62,11 @@
 
     private List<UiGridColumn<HRMS.Models.Master.LeaveType>> columns => new()
     {
-        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = Res.Id, FieldName = "LeaveTypeId" },
-        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = Res.NameEn, FieldName = "LeaveTypeEn" },
-        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = Res.NameAr, FieldName = "LeaveTypeAr",  FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = Res.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.Id, FieldName = "LeaveTypeId" },
+        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.NameEn, FieldName = "LeaveTypeEn" },
+        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.NameAr, FieldName = "LeaveTypeAr",  FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.CreatedDate, FieldName = "CreatedDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 

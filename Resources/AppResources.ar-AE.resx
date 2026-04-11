@@ -187,4 +187,24 @@
   <data name="NextHoliday" xml:space="preserve"><value>الإجازة القادمة</value></data>
   <data name="Last6Months" xml:space="preserve"><value>آخر 6 أشهر</value></data>
   <data name="LastYear" xml:space="preserve"><value>آخر سنة</value></data>
+  <data name="WelcomeUser" xml:space="preserve"><value>مرحباً ،</value></data>
+  <data name="DashboardSummary" xml:space="preserve"><value>إليك ملخص سريع لنظام إدارة الموارد البشرية لليوم.</value></data>
+  <data name="Expected" xml:space="preserve"><value>المتوقع</value></data>
+  <data name="Actual" xml:space="preserve"><value>الفعلي</value></data>
+  <data name="Days" xml:space="preserve"><value>أيام</value></data>
+  <data name="AboveAvg" xml:space="preserve"><value>فوق المعدل</value></data>
+  <data name="Pending" xml:space="preserve"><value>قيد الانتظار</value></data>
+  <data name="EidAlAdha" xml:space="preserve"><value>عيد الأضحى</value></data>
+  <data name="XDays" xml:space="preserve"><value>{0} أيام</value></data>
+  <data name="ContractExpiryWarning" xml:space="preserve"><value>ينتهي العقد خلال {0} يوماً.</value></data>
+  <data name="RequestLeave" xml:space="preserve"><value>طلب إجازة</value></data>
+  <data name="Annual" xml:space="preserve"><value>سنوية</value></data>
+  <data name="Sick" xml:space="preserve"><value>مرضية</value></data>
+  <data name="Other" xml:space="preserve"><value>أخرى</value></data>
+  <data name="Used" xml:space="preserve"><value>المستنفذ</value></data>
+  <data name="ContractReminder" xml:space="preserve"><value>تذكير بالعقد</value></data>
+  <data name="Export" xml:space="preserve"><value>تصدير</value></data>
+  <data name="ExportGridDataOnly" xml:space="preserve"><value>تصدير بيانات الشبكة فقط</value></data>
+  <data name="SelectHoliday" xml:space="preserve"><value>اختر العطلة</value></data>
+  <data name="SelectGender" xml:space="preserve"><value>اختر الجنس</value></data>
 </root>

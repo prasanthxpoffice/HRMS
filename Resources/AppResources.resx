@@ -112,6 +112,7 @@
   <data name="Error_TooLong" xml:space="preserve"><value>{0} is too long</value></data>
   <data name="Gender_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
   <data name="Gender_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
+  <data name="DatabaseError" xml:space="preserve"><value>Database Error</value></data>
   <data name="SystemError" xml:space="preserve"><value>System Error</value></data>
   <data name="ViewDetails" xml:space="preserve"><value>View Technical Details</value></data>
   <data name="HideDetails" xml:space="preserve"><value>Hide Details</value></data>
@@ -189,4 +190,23 @@
   <data name="NextHoliday" xml:space="preserve"><value>Next Holiday</value></data>
   <data name="Last6Months" xml:space="preserve"><value>Last 6 Months</value></data>
   <data name="LastYear" xml:space="preserve"><value>Last Year</value></data>
+  <data name="WelcomeUser" xml:space="preserve"><value>Welcome, </value></data>
+  <data name="DashboardSummary" xml:space="preserve"><value>Here is a quick summary of the HRMS system for today.</value></data>
+  <data name="Expected" xml:space="preserve"><value>Expected</value></data>
+  <data name="Actual" xml:space="preserve"><value>Actual</value></data>
+  <data name="Days" xml:space="preserve"><value>Days</value></data>
+  <data name="AboveAvg" xml:space="preserve"><value>Above Avg</value></data>
+  <data name="Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="EidAlAdha" xml:space="preserve"><value>Eid Al Adha</value></data>
+  <data name="XDays" xml:space="preserve"><value>{0} Days</value></data>
+  <data name="ContractExpiryWarning" xml:space="preserve"><value>Contract expires in {0} days.</value></data>
+  <data name="RequestLeave" xml:space="preserve"><value>Request Leave</value></data>
+  <data name="Annual" xml:space="preserve"><value>Annual</value></data>
+  <data name="Sick" xml:space="preserve"><value>Sick</value></data>
+  <data name="Other" xml:space="preserve"><value>Other</value></data>
+  <data name="Used" xml:space="preserve"><value>Used</value></data>
+  <data name="ContractReminder" xml:space="preserve"><value>Contract Reminder</value></data>
+  <data name="Workflow" xml:space="preserve"><value>Workflow</value></data>
+  <data name="Export" xml:space="preserve"><value>Export</value></data>
+  <data name="ExportGridDataOnly" xml:space="preserve"><value>Export Grid Data Only</value></data>
 </root>

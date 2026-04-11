@@ -8,11 +8,11 @@
 
 <UiGrid @ref="grid"
         TItem="HolidayDetail" 
-        Title="@Res.HolidayDetail_GridTitle" 
+        Title="@AppResources.HolidayDetail_GridTitle" 
         Items="Items" 
         Columns="columns" 
         ShowAddButton="true" 
-        AddButtonText="@Res.HolidayDetail_Add" 
+        AddButtonText="@AppResources.HolidayDetail_Add" 
         OnAddClick="() => Prepare()"
         ShowSelection="true"
         ShowDeleteButton="true"
@@ -26,16 +26,16 @@
         ExportName="HolidayCalendar"
         Loading="IsLoading" />
  
-<UiModal Show="ShowModal" Title="@(CurrentItem.HolidayDetailId == 0 ? Res.HolidayDetail_Add : Res.Edit)" OnClose="CloseModal">
+<UiModal Show="ShowModal" Title="@(CurrentItem.HolidayDetailId == 0 ? AppResources.HolidayDetail_Add : AppResources.Edit)" OnClose="CloseModal">
     <Body>
         <EditForm id="holidayDetailForm" Model="CurrentItem" OnValidSubmit="Save">
             <DataAnnotationsValidator />
             
             <div class="row">
                 <div class="col-md-12 mb-3">
-                    <UiSelect Label="@Res.Holiday" 
+                    <UiSelect Label="@AppResources.Holiday" 
                               Items="Lookups.Holidays"
-                              Placeholder="@Res.SelectHoliday"
+                              Placeholder="@AppResources.SelectHoliday"
                               @bind-Value="CurrentItem.HolidayId" />
                     <ValidationMessage For="@(() => CurrentItem.HolidayId)" />
                 </div>
@@ -43,12 +43,12 @@
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="small-label mb-1">@Res.FromDate</label>
+                    <label class="small-label mb-1">@AppResources.FromDate</label>
                     <input type="date" class="input-ui w-100" @bind="CurrentItem.FromDate" />
                     <ValidationMessage For="@(() => CurrentItem.FromDate)" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="small-label mb-1">@Res.ToDate</label>
+                    <label class="small-label mb-1">@AppResources.ToDate</label>
                     <input type="date" class="input-ui w-100" @bind="CurrentItem.ToDate" />
                     <ValidationMessage For="@(() => CurrentItem.ToDate)" />
                 </div>
@@ -56,30 +56,30 @@
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <UiSelect Label="@Res.ShiftType" 
+                    <UiSelect Label="@AppResources.ShiftType" 
                               Items="Lookups.ShiftTypes"
-                              Placeholder="@Res.SelectShiftType"
+                              Placeholder="@AppResources.SelectShiftType"
                               @bind-Value="CurrentItem.ShiftTypeId" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <UiSelect Label="@Res.Gender" 
+                    <UiSelect Label="@AppResources.Gender" 
                               Items="Lookups.Genders"
-                              Placeholder="@Res.SelectGender"
+                              Placeholder="@AppResources.SelectGender"
                               @bind-Value="CurrentItem.GenderId" />
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <UiSelect Label="@Res.Religion" 
+                    <UiSelect Label="@AppResources.Religion" 
                               Items="Lookups.Religions"
-                              Placeholder="@Res.SelectReligion"
+                              Placeholder="@AppResources.SelectReligion"
                               @bind-Value="CurrentItem.ReligionId" />
                 </div>
                 <div class="col-md-6 mb-3">
-                    <UiSelect Label="@Res.Nationality" 
+                    <UiSelect Label="@AppResources.Nationality" 
                               Items="Lookups.Nationalities"
-                              Placeholder="@Res.SelectNationality"
+                              Placeholder="@AppResources.SelectNationality"
                               @bind-Value="CurrentItem.NationalityId" />
                 </div>
             </div>
@@ -87,8 +87,8 @@
         </EditForm>
     </Body>
     <Footer>
-        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@Res.Cancel</UiButton>
-        <UiButton IsSubmit="true" form="holidayDetailForm" Loading="IsSaving">@Res.Save</UiButton>
+        <UiButton Type="light" OnClick="CloseModal" Disabled="IsSaving">@AppResources.Cancel</UiButton>
+        <UiButton IsSubmit="true" form="holidayDetailForm" Loading="IsSaving">@AppResources.Save</UiButton>
     </Footer>
 </UiModal>
 
@@ -141,14 +141,14 @@
 
     private List<UiGridColumn<HolidayDetail>> columns => new()
     {
-        new UiGridColumn<HolidayDetail> { Title = Res.Holiday, FieldName = "HolidayName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HolidayDetail> { Title = Res.FromDate, FieldName = "FromDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HolidayDetail> { Title = Res.ToDate, FieldName = "ToDate", FilterType = UiGridFilterType.Date },
-        new UiGridColumn<HolidayDetail> { Title = Res.ShiftType, FieldName = "ShiftType", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HolidayDetail> { Title = Res.Gender, FieldName = "GenderName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HolidayDetail> { Title = Res.Religion, FieldName = "ReligionName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HolidayDetail> { Title = Res.Nationality, FieldName = "NationalityName", FilterType = UiGridFilterType.Dropdown },
-        new UiGridColumn<HolidayDetail> { Title = Res.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
+        new UiGridColumn<HolidayDetail> { Title = AppResources.Holiday, FieldName = "HolidayName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.FromDate, FieldName = "FromDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.ToDate, FieldName = "ToDate", FilterType = UiGridFilterType.Date },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.ShiftType, FieldName = "ShiftType", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.Gender, FieldName = "GenderName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.Religion, FieldName = "ReligionName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.Nationality, FieldName = "NationalityName", FilterType = UiGridFilterType.Dropdown },
+        new UiGridColumn<HolidayDetail> { Title = AppResources.Actions, Template = (item) => @<UiGridActions OnEdit="() => Prepare(item)" 
                                                                                              OnDelete="() => grid.RequestDelete(item)" /> }
     };
 
