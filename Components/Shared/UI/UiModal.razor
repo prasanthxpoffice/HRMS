@@ -1,11 +1,13 @@
-@using HRMS.Components.Shared.UI
 @inherits UiBase
+@using HRMS.Models.Shared
 
 @if (Show)
 {
     <div class="modal-backdrop fade show"></div>
     <div class="modal fade show d-block" tabindex="-1" role="dialog" dir="@(Lang.IsRtl ? "rtl" : "ltr")">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered @SizeClass @ScrollClass" 
+             style="@AutoStyle"
+             role="document">
             <div class="modal-content card-ui border-0 shadow-lg">
                 <div class="modal-header border-bottom p-3">
                     <h5 class="modal-title h6 fw-bold mb-0">@Title</h5>
@@ -28,7 +30,23 @@
 @code {
     [Parameter] public bool Show { get; set; }
     [Parameter] public string Title { get; set; } = "";
+    [Parameter] public ModalSize Size { get; set; } = ModalSize.Default;
+    [Parameter] public bool Scrollable { get; set; } = true;
     [Parameter] public RenderFragment? Body { get; set; }
     [Parameter] public RenderFragment? Footer { get; set; }
     [Parameter] public EventCallback OnClose { get; set; }
+
+    private string SizeClass => Size switch
+    {
+        ModalSize.Small => "modal-sm",
+        ModalSize.Large => "modal-lg",
+        ModalSize.ExtraLarge => "modal-xl",
+        _ => ""
+    };
+
+    private string ScrollClass => Scrollable ? "modal-dialog-scrollable" : "";
+
+    private string AutoStyle => Size == ModalSize.Auto 
+        ? "width: fit-content; min-width: 450px; max-width: 95vw;" 
+        : "";
 }

@@ -21,6 +21,11 @@ namespace DB.Constants
                 public const string spLeaveContractPositionGet = "admin.spLeaveContractPositionGet";
             }
 
+            public static class Policy
+            {
+                public const string spLeavePolicySave = "policy.spLeavePolicySave";
+            }
+
             public static class Master
             {
                 public const string spGenderGet = "master.spGenderGet";

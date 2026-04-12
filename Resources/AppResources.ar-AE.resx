@@ -215,4 +215,16 @@
   <data name="CompanyContractName" xml:space="preserve"><value>عقد الشركة</value></data>
   <data name="CompanyPositionName" xml:space="preserve"><value>منصب الشركة</value></data>
   <data name="LeavePolicy" xml:space="preserve"><value>سياسة الإجازات</value></data>
+  <data name="PolicyFromDate" xml:space="preserve"><value>تاريخ البدء</value></data>
+  <data name="PolicyToDate" xml:space="preserve"><value>تاريخ الانتهاء</value></data>
+  <data name="IsProbationRequired" xml:space="preserve"><value>مطلوب فترة تجربة</value></data>
+  <data name="IsCreditOnHireAnniversary" xml:space="preserve"><value>استحقاق في ذكرى التعيين</value></data>
+  <data name="IsCreditInAdvance" xml:space="preserve"><value>استحقاق مقدم</value></data>
+  <data name="CreditOnDay" xml:space="preserve"><value>يوم الاستحقاق</value></data>
+  <data name="CreditOnMonth" xml:space="preserve"><value>شهر الاستحقاق</value></data>
+  <data name="FrequencyInDays" xml:space="preserve"><value>التكرار (بالأيام)</value></data>
+  <data name="TotalCredit" xml:space="preserve"><value>إجمالي الاستحقاق</value></data>
+  <data name="SaveSuccess" xml:space="preserve"><value>تم حفظ السياسة بنجاح!</value></data>
+  <data name="PolicyOverlapError" xml:space="preserve"><value>تم اكتشاف تداخل مع سياسة موجودة!</value></data>
+  <data name="MultipleLeaveTypesError" xml:space="preserve"><value>تم اختيار أنواع إجازات متعددة!</value></data>
 </root>

@@ -1,0 +1,145 @@
+@inherits UiBase
+@inject IDataService DataService
+@using HRMS.Models.Policy
+@using HRMS.Models.Master
+@using HRMS.Models.Shared
+@using HRMS.Resources
+@using DB.Constants
+
+<div class="leave-policy-form p-1">
+    <EditForm Model="_policy" OnValidSubmit="HandleSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        
+        <div class="row g-3">
+            <!-- Date Range -->
+            <div class="col-md-6">
+                <label class="small-label mb-1">@AppResources.PolicyFromDate</label>
+                <InputDate @bind-Value="_policy.PolicyFromDate" class="input-ui w-100" />
+            </div>
+            <div class="col-md-6">
+                <label class="small-label mb-1">@AppResources.PolicyToDate</label>
+                <InputDate @bind-Value="_policy.PolicyToDate" class="input-ui w-100" />
+            </div>
+
+            <div class="col-12"><hr class="my-1 opacity-10" /></div>
+
+            <!-- Rules & Options -->
+            <div class="col-md-4">
+                <div class="form-check form-switch card-ui px-3 py-2 border h-100 d-flex align-items-center gap-2 m-0 mt-3" style="padding-left: 2.8rem !important;">
+                    <InputCheckbox @bind-Value="_policy.IsProbationRequired" class="form-check-input ms-0" id="chkProb" />
+                    <label class="form-check-label small mb-0 mt-1 cursor-pointer" for="chkProb">@AppResources.IsProbationRequired</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch card-ui px-3 py-2 border h-100 d-flex align-items-center gap-2 m-0 mt-3" style="padding-left: 2.8rem !important;">
+                    <InputCheckbox @bind-Value="_policy.IsCreditOnHireAnniversary" class="form-check-input ms-0" id="chkAnniv" />
+                    <label class="form-check-label small mb-0 mt-1 cursor-pointer" for="chkAnniv">@AppResources.IsCreditOnHireAnniversary</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check form-switch card-ui px-3 py-2 border h-100 d-flex align-items-center gap-2 m-0 mt-3" style="padding-left: 2.8rem !important;">
+                    <InputCheckbox @bind-Value="_policy.IsCreditInAdvance" class="form-check-input ms-0" id="chkAdvance" />
+                    <label class="form-check-label small mb-0 mt-1 cursor-pointer" for="chkAdvance">@AppResources.IsCreditInAdvance</label>
+                </div>
+            </div>
+
+            <!-- Credits and Frequency -->
+            <div class="col-md-4">
+                <label class="small-label mb-1">@AppResources.TotalCredit</label>
+                <InputNumber @bind-Value="_policy.TotalCredit" class="input-ui w-100" placeholder="0.00" />
+            </div>
+            <div class="col-md-4">
+                <label class="small-label mb-1">@AppResources.FrequencyInDays</label>
+                <InputNumber @bind-Value="_policy.FrequencyInDays" class="input-ui w-100" />
+            </div>
+            <div class="col-md-2">
+                <label class="small-label mb-1">@AppResources.CreditOnDay</label>
+                <InputNumber @bind-Value="_policy.CreditOnDay" class="input-ui w-100" placeholder="Day" />
+            </div>
+            <div class="col-md-2">
+                <label class="small-label mb-1">@AppResources.CreditOnMonth</label>
+                <InputNumber @bind-Value="_policy.CreditOnMonth" class="input-ui w-100" placeholder="Month" />
+            </div>
+
+            <div class="col-12"><hr class="my-1 opacity-10" /></div>
+
+            <!-- Targeting -->
+            <div class="col-md-6">
+                <UiSelect TValue="int?" 
+                          Label="@AppResources.Gender" 
+                          Items="_genderLookup" 
+                          @bind-Value="_policy.GenderId" 
+                          Placeholder="@AppResources.All" />
+            </div>
+            <div class="col-md-6">
+                <UiSelect TValue="int?" 
+                          Label="@AppResources.Religion" 
+                          Items="_religionLookup" 
+                          @bind-Value="_policy.ReligionId" 
+                          Placeholder="@AppResources.All" />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+            <UiButton Type="light" OnClick="Cancel">@AppResources.Cancel</UiButton>
+            <UiButton Type="primary" IsSubmit="true" Loading="IsBusy">@AppResources.Save</UiButton>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter] public string? SelectedIds { get; set; }
+    [Parameter] public EventCallback OnSaved { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private LeavePolicy _policy = new();
+    private List<LookupItem> _genderLookup = new();
+    private List<LookupItem> _religionLookup = new();
+    private bool IsBusy;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _policy.LeaveContractPositionIds = SelectedIds;
+        await LoadMasterData();
+    }
+
+    private async Task LoadMasterData()
+    {
+        var genders = await DataService.GetListAsync<Gender>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spGenderGet, new { });
+        _genderLookup = genders.Select(g => new LookupItem { 
+            Id = g.GenderId.ToString(), 
+            Name = (Lang.IsRtl ? g.GenderNameAr : g.GenderNameEn) ?? ""
+        }).ToList();
+
+        var religions = await DataService.GetListAsync<Religion>(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spReligionGet, new { });
+        _religionLookup = religions.Select(r => new LookupItem { 
+            Id = r.ReligionId.ToString(), 
+            Name = (Lang.IsRtl ? r.ReligionNameAr : r.ReligionNameEn) ?? ""
+        }).ToList();
+    }
+
+    private async Task HandleSubmit()
+    {
+        IsBusy = true;
+        try
+        {
+            var res = await DataService.PostDataAsync(
+                ConnectionNames.Default, 
+                StoredProcedure.HRMSDB.Policy.spLeavePolicySave, 
+                _policy
+            );
+
+            if (res.Success == 1)
+            {
+                await OnSaved.InvokeAsync();
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    private Task Cancel() => OnCancel.InvokeAsync();
+}

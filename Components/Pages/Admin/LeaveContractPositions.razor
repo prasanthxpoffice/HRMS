@@ -27,9 +27,11 @@
     </HeaderContent>
 </UiGrid>
 
-<UiModal Show="_showPolicyModal" Title="@AppResources.LeavePolicy" OnClose="() => _showPolicyModal = false">
+<UiModal Show="_showPolicyModal" Title="@AppResources.LeavePolicy" Size="ModalSize.Large" OnClose="() => _showPolicyModal = false">
     <Body>
-        <HRMS.Components.Pages.Policy.LeavePolicy SelectedIds="@_selectedIdsString" />
+        <HRMS.Components.Pages.Policy.LeavePolicyDialog SelectedIds="@_selectedIdsString" 
+                                                         OnSaved="HandlePolicySaved" 
+                                                         OnCancel="() => _showPolicyModal = false" />
     </Body>
 </UiModal>
 
@@ -74,5 +76,12 @@
             _selectedIdsString = string.Join(",", _selectedIds);
             _showPolicyModal = true;
         }
+    }
+
+    private async Task HandlePolicySaved()
+    {
+        _showPolicyModal = false;
+        _selectedIds.Clear();
+        await LoadData();
     }
 }

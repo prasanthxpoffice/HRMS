@@ -183,10 +183,22 @@ namespace HRMS.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Leave Policy.
         /// </summary>
-        public static string LeavePolicy {
-            get {
-                return ResourceManager.GetString("LeavePolicy", resourceCulture);
-            }
-        }
+        /// <summary>
+        ///   Looks up a localized string similar to Leave Policy.
+        /// </summary>
+        public static string LeavePolicy => ResourceManager.GetString("LeavePolicy", resourceCulture);
+
+        public static string PolicyFromDate => ResourceManager.GetString("PolicyFromDate", resourceCulture);
+        public static string PolicyToDate => ResourceManager.GetString("PolicyToDate", resourceCulture);
+        public static string IsProbationRequired => ResourceManager.GetString("IsProbationRequired", resourceCulture);
+        public static string IsCreditOnHireAnniversary => ResourceManager.GetString("IsCreditOnHireAnniversary", resourceCulture);
+        public static string IsCreditInAdvance => ResourceManager.GetString("IsCreditInAdvance", resourceCulture);
+        public static string CreditOnDay => ResourceManager.GetString("CreditOnDay", resourceCulture);
+        public static string CreditOnMonth => ResourceManager.GetString("CreditOnMonth", resourceCulture);
+        public static string FrequencyInDays => ResourceManager.GetString("FrequencyInDays", resourceCulture);
+        public static string TotalCredit => ResourceManager.GetString("TotalCredit", resourceCulture);
+        public static string SaveSuccess => ResourceManager.GetString("SaveSuccess", resourceCulture);
+        public static string PolicyOverlapError => ResourceManager.GetString("PolicyOverlapError", resourceCulture);
+        public static string MultipleLeaveTypesError => ResourceManager.GetString("MultipleLeaveTypesError", resourceCulture);
     }
 }
