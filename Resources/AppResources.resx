@@ -216,4 +216,5 @@
   <data name="LeaveContractPosition_GridTitle" xml:space="preserve"><value>Leave Contract Positions</value></data>
   <data name="CompanyContractName" xml:space="preserve"><value>Company Contract</value></data>
   <data name="CompanyPositionName" xml:space="preserve"><value>Company Position</value></data>
+  <data name="LeavePolicy" xml:space="preserve"><value>Leave Policy</value></data>
 </root>

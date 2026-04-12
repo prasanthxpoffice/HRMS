@@ -214,4 +214,5 @@
   <data name="LeaveContractPosition_GridTitle" xml:space="preserve"><value>مناصب عقود الإجازات</value></data>
   <data name="CompanyContractName" xml:space="preserve"><value>عقد الشركة</value></data>
   <data name="CompanyPositionName" xml:space="preserve"><value>منصب الشركة</value></data>
+  <data name="LeavePolicy" xml:space="preserve"><value>سياسة الإجازات</value></data>
 </root>

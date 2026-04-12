@@ -13,16 +13,32 @@
         ShowAddButton="false" 
         ShowSelection="true"
         ShowDeleteButton="false"
-        IdFieldName="LeaveContractPositionId"
         OnDataChanged="LoadData"
         ShowExport="true"
         OnGetExportData="GetExportData"
         ExportName="LeaveContractPositions"
-        Loading="IsLoading" />
+        SelectedIds="_selectedIds"
+        IdFieldName="LeaveContractPositionId"
+        Loading="IsLoading">
+    <HeaderContent>
+        <UiButton Type="light" Icon="bi-journal-text" OnClick="OnLeavePolicyClick" CssClass="btn-sm" Disabled="@(!_selectedIds.Any())">
+            @AppResources.LeavePolicy
+        </UiButton>
+    </HeaderContent>
+</UiGrid>
+
+<UiModal Show="_showPolicyModal" Title="@AppResources.LeavePolicy" OnClose="() => _showPolicyModal = false">
+    <Body>
+        <HRMS.Components.Pages.Policy.LeavePolicy SelectedIds="@_selectedIdsString" />
+    </Body>
+</UiModal>
 
 @code {
     private UiGrid<LeaveContractPosition>? grid;
     private List<LeaveContractPosition> Items = new();
+    private HashSet<object> _selectedIds = new();
+    private bool _showPolicyModal;
+    private string _selectedIdsString = "";
 
     private List<UiGridColumn<LeaveContractPosition>> columns => new()
     {
@@ -49,5 +65,14 @@
     private Task<IEnumerable<object>> GetExportData()
     {
         return Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
+    }
+
+    private void OnLeavePolicyClick()
+    {
+        if (_selectedIds.Any())
+        {
+            _selectedIdsString = string.Join(",", _selectedIds);
+            _showPolicyModal = true;
+        }
     }
 }

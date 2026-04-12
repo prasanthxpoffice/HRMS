@@ -180,5 +180,13 @@ namespace HRMS.Resources {
         public static string LeaveContractPosition_GridTitle => ResourceManager.GetString("LeaveContractPosition_GridTitle", resourceCulture);
         public static string CompanyContractName => ResourceManager.GetString("CompanyContractName", resourceCulture);
         public static string CompanyPositionName => ResourceManager.GetString("CompanyPositionName", resourceCulture);
+        /// <summary>
+        ///   Looks up a localized string similar to Leave Policy.
+        /// </summary>
+        public static string LeavePolicy {
+            get {
+                return ResourceManager.GetString("LeavePolicy", resourceCulture);
+            }
+        }
     }
 }
