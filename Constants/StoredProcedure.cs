@@ -28,6 +28,7 @@ namespace DB.Constants
 
             public static class Master
             {
+                public const string spGenericGet = "master.spGenericGet";
                 public const string spGenderGet = "master.spGenderGet";
 
                 public const string spCompanyGet = "master.spCompanyGet";

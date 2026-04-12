@@ -22,6 +22,7 @@ namespace HRMS.Models.Policy
         [JsonPropertyName("isCreditInAdvance")]
         public bool IsCreditInAdvance { get; set; } = false;
 
+        [Range(1, 28)]
         public int? CreditOnDay { get; set; }
 
         public int? CreditOnMonth { get; set; }

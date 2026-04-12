@@ -1,5 +1,6 @@
 @inherits UiBase
 @inject IDataService DataService
+@inject IUserContext UserContext
 @using HRMS.Models.Policy
 @using HRMS.Models.Master
 @using HRMS.Models.Shared
@@ -58,8 +59,11 @@
                 <InputNumber @bind-Value="_policy.CreditOnDay" class="input-ui w-100" placeholder="Day" />
             </div>
             <div class="col-md-2">
-                <label class="small-label mb-1">@AppResources.CreditOnMonth</label>
-                <InputNumber @bind-Value="_policy.CreditOnMonth" class="input-ui w-100" placeholder="Month" />
+                <UiSelect TValue="int?" 
+                          Label="@AppResources.CreditOnMonth" 
+                          Items="_monthLookup" 
+                          @bind-Value="_policy.CreditOnMonth" 
+                          Placeholder="@AppResources.All" />
             </div>
 
             <div class="col-12"><hr class="my-1 opacity-10" /></div>
@@ -96,6 +100,7 @@
     private LeavePolicy _policy = new();
     private List<LookupItem> _genderLookup = new();
     private List<LookupItem> _religionLookup = new();
+    private List<LookupItem> _monthLookup = new();
     private bool IsBusy;
 
     protected override async Task OnInitializedAsync()
@@ -116,6 +121,17 @@
         _religionLookup = religions.Select(r => new LookupItem { 
             Id = r.ReligionId.ToString(), 
             Name = (Lang.IsRtl ? r.ReligionNameAr : r.ReligionNameEn) ?? ""
+        }).ToList();
+
+        var months = await DataService.GetListAsync<GenericItem>(
+            ConnectionNames.Default, 
+            StoredProcedure.HRMSDB.Master.spGenericGet, 
+            new { GenericTag = "Month" }
+        );
+        
+        _monthLookup = months.Select(m => new LookupItem { 
+            Id = m.GenericCode, 
+            Name = (Lang.IsRtl ? m.GenericAr : m.GenericEn) ?? ""
         }).ToList();
     }
 
