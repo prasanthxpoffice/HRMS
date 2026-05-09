@@ -10,6 +10,7 @@ public class UiBase : ComponentBase, IDisposable
     [Inject] public INotificationService NotificationService { get; set; } = default!;
     [Inject] public IUserService UserService { get; set; } = default!;
     [Inject] public NavigationManager Navigation { get; set; } = default!;
+    [Inject] public IDataService DataService { get; set; } = default!;
 
     protected bool IsLoading { get; set; }
     protected bool IsSaving { get; set; }

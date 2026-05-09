@@ -1,9 +1,7 @@
 @inherits UiBase
 @rendermode InteractiveServer
-@inject IDataService DataService
 
 @using HRMS.Models.Admin
-@using HRMS.Models.Master
 @using HRMS.Models.Shared
 
 <UiGrid @ref="grid"
@@ -108,7 +106,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
         await LoadData();
         await LoadLookups();
     }

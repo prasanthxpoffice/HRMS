@@ -1,7 +1,6 @@
 @page "/companies"
 @inherits UiBase
 @rendermode InteractiveServer
-@inject IDataService DataService
 
 <UiGrid @ref="grid"
         TItem="HRMS.Models.Master.Company" 
@@ -50,7 +49,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
         await LoadData();
     }
 

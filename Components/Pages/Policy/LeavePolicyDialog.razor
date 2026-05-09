@@ -1,11 +1,7 @@
 @inherits UiBase
-@inject IDataService DataService
 @inject IUserContext UserContext
 @using HRMS.Models.Policy
-@using HRMS.Models.Master
 @using HRMS.Models.Shared
-@using HRMS.Resources
-@using DB.Constants
 
 <div class="leave-policy-form p-1">
     <EditForm Model="_policy" OnValidSubmit="HandleSubmit">
