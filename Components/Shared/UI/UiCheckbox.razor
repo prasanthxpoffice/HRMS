@@ -1,0 +1,30 @@
+@inherits UiBase
+
+<div class="mb-3 form-check @(Lang.IsRtl ? "form-check-reverse" : "")">
+    <input type="checkbox"
+           class="form-check-input @CssClass"
+           id="@_id"
+           checked="@Value"
+           disabled="@Disabled"
+           @onchange="OnChange" />
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="form-check-label small" for="@_id">@Label</label>
+    }
+</div>
+
+@code {
+    [Parameter] public bool Value { get; set; }
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private readonly string _id = Guid.NewGuid().ToString("N");
+
+    private async Task OnChange(ChangeEventArgs e)
+    {
+        Value = (bool)(e.Value ?? false);
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

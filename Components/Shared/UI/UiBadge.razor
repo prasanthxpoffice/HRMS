@@ -1,0 +1,35 @@
+@inherits UiBase
+
+<span class="badge @(Pill ? "rounded-pill" : "") @BadgeClass @CssClass" style="@Style">
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <UiIcon Name="@Icon" />
+    }
+    @if (!string.IsNullOrEmpty(Text))
+    {
+        @Text
+    }
+    @ChildContent
+</span>
+
+@code {
+    [Parameter] public string Text { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Type { get; set; } = "secondary";
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public bool Pill { get; set; } = true;
+    [Parameter] public string CssClass { get; set; } = "";
+    [Parameter] public string Style { get; set; } = "";
+
+    private string BadgeClass => Type.ToLower() switch
+    {
+        "success"           => "text-bg-success",
+        "danger" or "error" => "text-bg-danger",
+        "warning"           => "text-bg-warning",
+        "info"              => "text-bg-info",
+        "primary"           => "text-bg-primary",
+        "light"             => "text-bg-light",
+        "dark"              => "text-bg-dark",
+        _                   => "text-bg-secondary"
+    };
+}

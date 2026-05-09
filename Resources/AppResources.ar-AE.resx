@@ -83,6 +83,7 @@
   <data name="Delete" xml:space="preserve"><value>حذف</value></data>
   <data name="Save" xml:space="preserve"><value>حفظ</value></data>
   <data name="Cancel" xml:space="preserve"><value>إلغاء</value></data>
+  <data name="Confirm" xml:space="preserve"><value>تأكيد</value></data>
   <data name="AdminDashboard" xml:space="preserve"><value>لوحة التحكم</value></data>
   <data name="WelcomeBack" xml:space="preserve"><value>مرحباً بك مجدداً</value></data>
   <data name="SystemStatus" xml:space="preserve"><value>حالة النظام</value></data>
@@ -229,4 +230,12 @@
   <data name="SaveSuccess" xml:space="preserve"><value>تم حفظ السياسة بنجاح!</value></data>
   <data name="PolicyOverlapError" xml:space="preserve"><value>تم اكتشاف تداخل مع سياسة موجودة!</value></data>
   <data name="MultipleLeaveTypesError" xml:space="preserve"><value>تم اختيار أنواع إجازات متعددة!</value></data>
+  <data name="To" xml:space="preserve"><value>إلى</value></data>
+  <data name="SelectDots" xml:space="preserve"><value>اختر...</value></data>
+  <data name="Day" xml:space="preserve"><value>يوم</value></data>
+  <data name="DayPlural" xml:space="preserve"><value>أيام</value></data>
+  <data name="Error_DateFromPast" xml:space="preserve"><value>لا يمكن اختيار تاريخ البداية في الماضي</value></data>
+  <data name="Error_DateToPast" xml:space="preserve"><value>لا يمكن اختيار تاريخ النهاية في الماضي</value></data>
+  <data name="Error_DateRangeMax" xml:space="preserve"><value>لا يمكن أن تتجاوز الفترة {0} يوم</value></data>
+  <data name="Error_DateRangeRequired" xml:space="preserve"><value>نطاق التاريخ مطلوب</value></data>
 </root>

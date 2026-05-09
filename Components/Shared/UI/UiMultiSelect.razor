@@ -1,0 +1,112 @@
+@inherits UiBase
+@using HRMS.Models.Shared
+
+<div class="mb-3">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">@Label</label>
+    }
+
+    @if (_isOpen)
+    {
+        <div class="position-fixed top-0 start-0 w-100 h-100" style="z-index: 999;" @onclick="Close"></div>
+    }
+
+    <div class="position-relative" style="z-index: 1000;">
+        <div class="input-ui w-100 d-flex flex-wrap gap-1 align-items-center @(Disabled ? "opacity-50" : "")"
+             style="min-height: 38px; cursor: @(Disabled ? "not-allowed" : "pointer"); padding: 4px 10px;"
+             @onclick="Toggle">
+            @if (!SelectedValues.Any())
+            {
+                <span class="text-muted small">@(string.IsNullOrEmpty(Placeholder) ? AppResources.SelectDots : Placeholder)</span>
+            }
+            else
+            {
+                @foreach (var id in SelectedValues)
+                {
+                    var item = Items?.FirstOrDefault(i => i.Id == id);
+                    @if (item != null)
+                    {
+                        <span class="badge rounded-pill d-inline-flex align-items-center gap-1"
+                              style="background-color: var(--primary-tint); color: var(--primary); border: 1px solid hsla(35,34%,55%,0.3); font-weight: 500; font-size: 0.75rem;">
+                            @item.Name
+                            @if (!Disabled)
+                            {
+                                <i class="bi bi-x-lg" style="cursor: pointer; font-size: 0.6rem;"
+                                   @onclick:stopPropagation="true"
+                                   @onclick="() => Deselect(id)"></i>
+                            }
+                        </span>
+                    }
+                }
+            }
+            <i class="bi @(_isOpen ? "bi-chevron-up" : "bi-chevron-down") ms-auto text-muted" style="font-size: 0.75rem;"></i>
+        </div>
+
+        @if (_isOpen && !Disabled)
+        {
+            <div class="position-absolute w-100 bg-white border rounded-3 shadow-lg p-2 mt-1"
+                 style="max-height: 260px; overflow-y: auto; z-index: 1001;"
+                 @onclick:stopPropagation="true">
+                <input type="text"
+                       class="input-ui w-100 mb-2"
+                       style="font-size: 0.82rem;"
+                       placeholder="@AppResources.Search"
+                       @bind="_search"
+                       @bind:event="oninput" />
+                @{
+                    var filtered = (Items ?? Enumerable.Empty<LookupItem>())
+                        .Where(i => string.IsNullOrEmpty(_search) || i.Name.Contains(_search, StringComparison.OrdinalIgnoreCase));
+                }
+                @foreach (var item in filtered)
+                {
+                    var isSelected = SelectedValues.Contains(item.Id);
+                    var itemId = item.Id;
+                    <div class="d-flex align-items-center gap-2 px-2 py-1 rounded-2"
+                         style="cursor: pointer; background-color: @(isSelected ? "var(--primary-tint)" : "transparent");"
+                         @onclick="() => SelectItem(itemId)">
+                        <input type="checkbox"
+                               class="form-check-input flex-shrink-0 mt-0"
+                               checked="@isSelected"
+                               @onclick:stopPropagation="true"
+                               @onchange="() => SelectItem(itemId)" />
+                        <span class="small">@item.Name</span>
+                    </div>
+                }
+                @if (!filtered.Any())
+                {
+                    <div class="text-muted small text-center py-2">@AppResources.NoRecordsFound</div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public List<string> SelectedValues { get; set; } = new();
+    [Parameter] public EventCallback<List<string>> SelectedValuesChanged { get; set; }
+    [Parameter] public IEnumerable<LookupItem>? Items { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Placeholder { get; set; } = "";
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private bool _isOpen;
+    private string _search = "";
+
+    private void Toggle() { if (!Disabled) _isOpen = !_isOpen; }
+    private void Close() { _isOpen = false; _search = ""; }
+
+    private async Task SelectItem(string id)
+    {
+        if (SelectedValues.Contains(id)) SelectedValues.Remove(id);
+        else SelectedValues.Add(id);
+        await SelectedValuesChanged.InvokeAsync(new List<string>(SelectedValues));
+    }
+
+    private async Task Deselect(string id)
+    {
+        SelectedValues.Remove(id);
+        await SelectedValuesChanged.InvokeAsync(new List<string>(SelectedValues));
+    }
+}

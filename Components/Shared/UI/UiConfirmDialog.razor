@@ -1,0 +1,58 @@
+@inherits UiBase
+
+@if (Show)
+{
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" dir="@(Lang.IsRtl ? "rtl" : "ltr")">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content card-ui border-0 shadow-lg">
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3">
+                        <UiIcon Name="@_iconName" CssClass="@_iconClass" style="font-size: 2.5rem;" />
+                    </div>
+                    @if (!string.IsNullOrEmpty(Title))
+                    {
+                        <h6 class="fw-bold mb-2">@Title</h6>
+                    }
+                    <p class="text-muted small mb-0">@Message</p>
+                </div>
+                <div class="modal-footer border-top p-3 bg-light bg-opacity-10 justify-content-center gap-2">
+                    <UiButton Type="light" OnClick="HandleCancel">@(string.IsNullOrEmpty(CancelText) ? AppResources.Cancel : CancelText)</UiButton>
+                    <UiButton Type="@Type" OnClick="HandleConfirm">@(string.IsNullOrEmpty(ConfirmText) ? AppResources.Confirm : ConfirmText)</UiButton>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Show { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string Message { get; set; } = "";
+    [Parameter] public string ConfirmText { get; set; } = "";
+    [Parameter] public string CancelText { get; set; } = "";
+    [Parameter] public string Type { get; set; } = "danger";
+    [Parameter] public EventCallback OnConfirm { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private string _iconName => Type switch
+    {
+        "danger"  => "exclamation-triangle-fill",
+        "warning" => "exclamation-circle-fill",
+        "success" => "check-circle-fill",
+        "info"    => "info-circle-fill",
+        _         => "question-circle-fill"
+    };
+
+    private string _iconClass => Type switch
+    {
+        "danger"  => "text-danger",
+        "warning" => "text-warning",
+        "success" => "text-success",
+        "info"    => "text-info",
+        _         => "text-primary"
+    };
+
+    private async Task HandleConfirm() => await OnConfirm.InvokeAsync();
+    private async Task HandleCancel() => await OnCancel.InvokeAsync();
+}

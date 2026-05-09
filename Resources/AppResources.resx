@@ -83,6 +83,7 @@
   <data name="Delete" xml:space="preserve"><value>Delete</value></data>
   <data name="Save" xml:space="preserve"><value>Save</value></data>
   <data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Confirm" xml:space="preserve"><value>Confirm</value></data>
   <data name="AdminDashboard" xml:space="preserve"><value>Admin Dashboard</value></data>
   <data name="WelcomeBack" xml:space="preserve"><value>Welcome Back</value></data>
   <data name="SystemStatus" xml:space="preserve"><value>System Status</value></data>
@@ -231,4 +232,12 @@
   <data name="SaveSuccess" xml:space="preserve"><value>Policy saved successfully!</value></data>
   <data name="PolicyOverlapError" xml:space="preserve"><value>Overlap detected with an existing policy!</value></data>
   <data name="MultipleLeaveTypesError" xml:space="preserve"><value>Multiple leave types selected!</value></data>
+  <data name="To" xml:space="preserve"><value>to</value></data>
+  <data name="SelectDots" xml:space="preserve"><value>Select...</value></data>
+  <data name="Day" xml:space="preserve"><value>day</value></data>
+  <data name="DayPlural" xml:space="preserve"><value>days</value></data>
+  <data name="Error_DateFromPast" xml:space="preserve"><value>From date cannot be in the past.</value></data>
+  <data name="Error_DateToPast" xml:space="preserve"><value>To date cannot be in the past.</value></data>
+  <data name="Error_DateRangeMax" xml:space="preserve"><value>Range cannot exceed {0} days.</value></data>
+  <data name="Error_DateRangeRequired" xml:space="preserve"><value>Date range is required.</value></data>
 </root>

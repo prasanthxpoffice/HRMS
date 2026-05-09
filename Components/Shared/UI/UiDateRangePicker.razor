@@ -1,0 +1,150 @@
+@inherits UiBase
+
+<div class="mb-3">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">
+            @Label
+            @if (Required)
+            {
+                <span class="text-danger ms-1">*</span>
+            }
+        </label>
+    }
+    <div class="d-flex align-items-center gap-2">
+        <input type="date"
+               class="input-ui flex-fill @(_error ? "border-danger" : "") @CssClass"
+               value="@(From.HasValue ? From.Value.ToString("yyyy-MM-dd") : "")"
+               max="@(MaxDate.HasValue ? MaxDate.Value.ToString("yyyy-MM-dd") : "")"
+               lang="en-GB"
+               disabled="@Disabled"
+               @onchange="OnFromChange" />
+        <span class="text-muted small px-1 flex-shrink-0">@AppResources.To</span>
+        <input type="date"
+               class="input-ui flex-fill @(_error ? "border-danger" : "") @CssClass"
+               value="@(To.HasValue ? To.Value.ToString("yyyy-MM-dd") : "")"
+               min="@(From.HasValue ? From.Value.ToString("yyyy-MM-dd") : "")"
+               max="@(MaxDate.HasValue ? MaxDate.Value.ToString("yyyy-MM-dd") : "")"
+               lang="en-GB"
+               disabled="@Disabled"
+               @onchange="OnToChange" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(_internalError))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i> @_internalError
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i> @ValidationMessage
+        </div>
+    }
+
+    @if (From.HasValue && To.HasValue && !_error)
+    {
+        var days = (int)(To.Value - From.Value).TotalDays + 1;
+        <div class="mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem; color: var(--text-muted);">
+            <i class="bi bi-calendar-check"></i>
+            @days @(days == 1 ? AppResources.Day : AppResources.DayPlural)
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public DateTime? From { get; set; }
+    [Parameter] public EventCallback<DateTime?> FromChanged { get; set; }
+    [Parameter] public DateTime? To { get; set; }
+    [Parameter] public EventCallback<DateTime?> ToChanged { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string ValidationMessage { get; set; } = "";
+    [Parameter] public bool Required { get; set; } = false;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public bool AllowPastDates { get; set; } = true;
+    [Parameter] public int MaxRangeDays { get; set; } = 0;
+    [Parameter] public DateTime? MaxDate { get; set; }
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private string _internalError = "";
+    private bool _error => !string.IsNullOrEmpty(_internalError);
+
+    private async Task OnFromChange(ChangeEventArgs e)
+    {
+        var from = DateTime.TryParse(e.Value?.ToString(), out var dt) ? dt : (DateTime?)null;
+        _internalError = "";
+
+        if (from.HasValue)
+        {
+            if (!AllowPastDates && from.Value.Date < DateTime.Today)
+            {
+                _internalError = AppResources.Error_DateFromPast;
+                from = null;
+            }
+            else if (To.HasValue && from.Value > To.Value)
+            {
+                // Auto-swap
+                var oldTo = To.Value;
+                To = from;
+                from = oldTo;
+                await ToChanged.InvokeAsync(To);
+            }
+        }
+
+        From = from;
+        await FromChanged.InvokeAsync(From);
+        Validate();
+    }
+
+    private async Task OnToChange(ChangeEventArgs e)
+    {
+        var to = DateTime.TryParse(e.Value?.ToString(), out var dt) ? dt : (DateTime?)null;
+        _internalError = "";
+
+        if (to.HasValue)
+        {
+            if (!AllowPastDates && to.Value.Date < DateTime.Today)
+            {
+                _internalError = AppResources.Error_DateToPast;
+                to = null;
+            }
+            else if (From.HasValue && to.Value < From.Value)
+            {
+                // Auto-swap
+                var oldFrom = From.Value;
+                From = to;
+                to = oldFrom;
+                await FromChanged.InvokeAsync(From);
+            }
+        }
+
+        To = to;
+        await ToChanged.InvokeAsync(To);
+        Validate();
+    }
+
+    private void Validate()
+    {
+        if (!string.IsNullOrEmpty(_internalError)) return;
+
+        if (MaxRangeDays > 0 && From.HasValue && To.HasValue)
+        {
+            var days = (int)(To.Value - From.Value).TotalDays + 1;
+            if (days > MaxRangeDays)
+            {
+                _internalError = string.Format(AppResources.Error_DateRangeMax, MaxRangeDays);
+            }
+        }
+    }
+
+    public bool IsValid()
+    {
+        if (Required && (!From.HasValue || !To.HasValue))
+        {
+            _internalError = AppResources.Error_DateRangeRequired;
+            return false;
+        }
+        return string.IsNullOrEmpty(_internalError) && string.IsNullOrEmpty(ValidationMessage);
+    }
+}

@@ -1,0 +1,35 @@
+@inherits UiBase
+
+<div class="mb-3">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">@Label</label>
+    }
+    <textarea class="form-control input-ui @(Lang.IsRtl ? "text-end" : "text-start") @CssClass"
+              rows="@Rows"
+              placeholder="@Placeholder"
+              disabled="@Disabled"
+              maxlength="@(MaxLength > 0 ? MaxLength.ToString() : null)"
+              @oninput="OnInput">@Value</textarea>
+    @if (MaxLength > 0)
+    {
+        <div class="text-end" style="font-size: 0.7rem; color: var(--text-muted);">@Value.Length / @MaxLength</div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Placeholder { get; set; } = "";
+    [Parameter] public int Rows { get; set; } = 3;
+    [Parameter] public int MaxLength { get; set; } = 0;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString() ?? "";
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

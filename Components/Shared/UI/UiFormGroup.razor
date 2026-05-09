@@ -1,0 +1,35 @@
+@inherits UiBase
+
+<div class="mb-3 @CssClass">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">
+            @Label
+            @if (Required)
+            {
+                <span class="text-danger ms-1">*</span>
+            }
+        </label>
+    }
+    @ChildContent
+    @if (!string.IsNullOrEmpty(HelpText))
+    {
+        <div class="form-text text-muted mt-1" style="font-size: 0.78rem;">@HelpText</div>
+    }
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            @ValidationMessage
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string HelpText { get; set; } = "";
+    [Parameter] public string ValidationMessage { get; set; } = "";
+    [Parameter] public bool Required { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+}
