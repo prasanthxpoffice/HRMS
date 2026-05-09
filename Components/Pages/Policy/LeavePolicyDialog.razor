@@ -63,7 +63,7 @@
                           Label="@AppResources.CreditOnMonth" 
                           Items="_monthLookup" 
                           @bind-Value="_policy.CreditOnMonth" 
-                          Placeholder="@AppResources.All" />
+                          Placeholder="--" />
             </div>
 
             <div class="col-12"><hr class="my-1 opacity-10" /></div>
@@ -74,14 +74,14 @@
                           Label="@AppResources.Gender" 
                           Items="_genderLookup" 
                           @bind-Value="_policy.GenderId" 
-                          Placeholder="@AppResources.All" />
+                          Placeholder="--" />
             </div>
             <div class="col-md-6">
                 <UiSelect TValue="int?" 
                           Label="@AppResources.Religion" 
                           Items="_religionLookup" 
                           @bind-Value="_policy.ReligionId" 
-                          Placeholder="@AppResources.All" />
+                          Placeholder="--" />
             </div>
         </div>
 

@@ -28,11 +28,11 @@ namespace HRMS.Models.Policy
         public int? CreditOnMonth { get; set; }
 
         [Required]
-        [Range(0, 9999)]
+        [Range(0.0001, 9999)]
         public decimal FrequencyInDays { get; set; } = 365;
 
         [Required]
-        [Range(0, 999)]
+        [Range(0.0001, 999)]
         public decimal TotalCredit { get; set; }
 
         public int? GenderId { get; set; }
