@@ -2,13 +2,6 @@ namespace HRMS.Services.LogService
 {
     public class ErrorLogService : IErrorLogService
     {
-        private readonly IWebHostEnvironment _env;
-
-        public ErrorLogService(IWebHostEnvironment env)
-        {
-            _env = env;
-        }
-
         public async Task LogErrorAsync(Exception ex, int employeeId, int roleId, string connectionName, string procedureName, string jsonPayload)
         {
             try

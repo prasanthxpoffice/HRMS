@@ -51,8 +51,7 @@
     private string GetToastClass(NotificationType type) => type switch
     {
         NotificationType.Success => "toast-success",
-        NotificationType.Error => "toast-error",
-        NotificationType.Info => "toast-info",
+        NotificationType.Error or NotificationType.SystemError => "toast-error",
         NotificationType.Warning => "toast-warning",
         _ => "toast-info"
     };
@@ -60,10 +59,9 @@
     private string GetIcon(NotificationType type) => type switch
     {
         NotificationType.Success => "check-circle-fill",
-        NotificationType.Error => "exclamation-triangle-fill",
+        NotificationType.Error or NotificationType.SystemError => "exclamation-triangle-fill",
         NotificationType.Warning => "exclamation-circle-fill",
-        NotificationType.Info => "info-circle-fill",
-        _ => "info-circle"
+        _ => "info-circle-fill"
     };
 
     public override void Dispose()
