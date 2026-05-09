@@ -21,6 +21,8 @@ public class UserService : IUserService
     private List<Menu> _menus = new();
     private bool _isInitialized;
 
+    public bool HasAuthenticationError { get; private set; }
+
     public UserService(IDataService dataService, IHttpContextAccessor httpContext, IConfiguration configuration, IUserContext userContext, LanguageService languageService, IJSRuntime jsRuntime)
     {
         _dataService = dataService;
@@ -93,7 +95,8 @@ public class UserService : IUserService
         }
         catch
         {
-            _isInitialized = false; 
+            _isInitialized = false;
+            HasAuthenticationError = true;
         }
     }
 

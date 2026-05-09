@@ -32,7 +32,7 @@ namespace HRMS.Services
             
             if (string.IsNullOrEmpty(connectionString))
             {
-                return new DbResponse<T> { Success = -1, Message = "Connection string not configured." };
+                return new DbResponse<T> { Status = DbStatus.SystemError, Message = "Connection string not configured." };
             }
 
             // Automatically resolve context values
@@ -46,42 +46,42 @@ namespace HRMS.Services
                 using var db = new SqlConnection(connectionString);
                 await db.OpenAsync();
 
-                SqlTransaction? transaction = useTransaction ? (SqlTransaction)db.BeginTransaction() : null;
-                
+                await using SqlTransaction? transaction = useTransaction ? (SqlTransaction)await db.BeginTransactionAsync() : null;
+
                 try
                 {
-                    var jsonResult = await db.QueryFirstOrDefaultAsync<string>(procedureName, 
-                        new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang, RoleID = finalRoleId }, 
+                    var jsonResult = await db.QueryFirstOrDefaultAsync<string>(procedureName,
+                        new { EmployeeId = finalEmployeeId, Json = jsonInput, Language = lang, RoleID = finalRoleId },
                         transaction: transaction,
                         commandType: CommandType.StoredProcedure);
 
                     if (string.IsNullOrEmpty(jsonResult))
                     {
-                        transaction?.Rollback();
-                        return new DbResponse<T> { Success = -1, Message = "No response from database." };
+                        if (transaction != null) await transaction.RollbackAsync();
+                        return new DbResponse<T> { Status = DbStatus.SystemError, Message = "No response from database." };
                     }
 
                     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                    var result = JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Success = -1 };
+                    var result = JsonSerializer.Deserialize<DbResponse<T>>(jsonResult, options) ?? new DbResponse<T> { Status = DbStatus.SystemError };
 
                     if (useTransaction && transaction != null)
                     {
-                        if (result.Success >= 0) transaction.Commit();
-                        else transaction.Rollback();
+                        if (result.Status != DbStatus.SystemError) await transaction.CommitAsync();
+                        else await transaction.RollbackAsync();
                     }
 
                     return result;
                 }
                 catch
                 {
-                    transaction?.Rollback();
+                    if (transaction != null) await transaction.RollbackAsync();
                     throw;
                 }
             }
             catch (Exception ex)
             {
                 _ = _logService.LogErrorAsync(ex, finalEmployeeId, finalRoleId, connectionName, procedureName, jsonInput);
-                return new DbResponse<T> { Success = -1, Message = AppResources.DatabaseErrorMessage };
+                return new DbResponse<T> { Status = DbStatus.SystemError, Message = AppResources.DatabaseErrorMessage };
             }
         }
     }

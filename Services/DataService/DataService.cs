@@ -20,11 +20,11 @@ namespace HRMS.Services
             
             if (response != null)
             {
-                if (response.Success == -1)
+                if (response.Status == DbStatus.SystemError)
                 {
                     _notification.NotifyError(AppResources.DatabaseError, response.Message);
                 }
-                else if (response.Success == 0)
+                else if (response.Status == DbStatus.BusinessError)
                 {
                     _notification.Notify(response.Message, NotificationType.Error);
                 }
@@ -39,22 +39,22 @@ namespace HRMS.Services
             
             if (res != null)
             {
-                if (res.Success == 1)
+                if (res.Status == DbStatus.Success)
                 {
                     if (showNotification && !string.IsNullOrEmpty(res.Message))
                         _notification.Notify(res.Message, NotificationType.Success);
                 }
-                else if (res.Success == 0)
+                else if (res.Status == DbStatus.BusinessError)
                 {
                     _notification.Notify(res.Message, NotificationType.Error);
                 }
-                else if (res.Success == -1)
+                else if (res.Status == DbStatus.SystemError)
                 {
                     _notification.NotifyError(AppResources.DatabaseError, res.Message);
                 }
             }
 
-            return res ?? new DbResponse<object> { Success = -1, Message = "Unknown error" };
+            return res ?? new DbResponse<object> { Status = DbStatus.SystemError, Message = "Unknown error" };
         }
     }
 }

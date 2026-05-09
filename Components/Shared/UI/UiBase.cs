@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using HRMS.Models;
 using HRMS.Services;
 
 namespace HRMS.Components.Shared.UI;
@@ -38,6 +39,20 @@ public class UiBase : ComponentBase, IDisposable
             IsSaving = false;
         }
     }
+
+    protected Task SaveAndReloadAsync(
+        Func<Task<DbResponse<object>>> saveAction,
+        Action closeModal,
+        Func<Task> reloadData)
+        => SaveAsync(async () =>
+        {
+            var res = await saveAction();
+            if (res.Status == DbStatus.Success)
+            {
+                closeModal();
+                await reloadData();
+            }
+        });
 
     protected override void OnInitialized()
     {

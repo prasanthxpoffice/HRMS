@@ -59,7 +59,7 @@
     
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HRMS.Models.Master.LeaveType>> columns => new()
+    private List<UiGridColumn<HRMS.Models.Master.LeaveType>> columns = new()
     {
         new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.Id, FieldName = "LeaveTypeId" },
         new UiGridColumn<HRMS.Models.Master.LeaveType> { Title = AppResources.NameEn, FieldName = "LeaveTypeEn" },
@@ -83,13 +83,9 @@
         ShowModal = true;
     }  
 
-    private async Task Save()
-    {
-        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spLeaveTypeSave, CurrentItem);
-        if (res.Success == 1)
-        {
-            ShowModal = false;
-            await LoadData();
-        }
-    }
+    private Task Save() => SaveAndReloadAsync(
+        () => DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spLeaveTypeSave, CurrentItem),
+        CloseModal,
+        LoadData
+    );
 }

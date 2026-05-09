@@ -42,7 +42,7 @@
     private bool _showPolicyModal;
     private string _selectedIdsString = "";
 
-    private List<UiGridColumn<LeaveContractPosition>> columns => new()
+    private List<UiGridColumn<LeaveContractPosition>> columns = new()
     {
         new UiGridColumn<LeaveContractPosition> { FieldName = nameof(LeaveContractPosition.LeaveTypeName), Title = AppResources.LeaveType, FilterType = UiGridFilterType.Dropdown},
         new UiGridColumn<LeaveContractPosition> { FieldName = nameof(LeaveContractPosition.CompanyName), Title = AppResources.Company, FilterType=UiGridFilterType.Dropdown },

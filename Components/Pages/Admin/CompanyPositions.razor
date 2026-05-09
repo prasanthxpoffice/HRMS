@@ -88,7 +88,7 @@
 
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<CompanyPosition>> columns => new()
+    private List<UiGridColumn<CompanyPosition>> columns = new()
     {
         new UiGridColumn<CompanyPosition> { Title = AppResources.Id, FieldName = "CompanyPositionId" },
         new UiGridColumn<CompanyPosition> { Title = AppResources.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },
@@ -111,13 +111,9 @@
         ShowModal = true;
     }  
 
-    private async Task Save()
-    {
-        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyPositionSave, CurrentItem);
-        if (res.Success == 1)
-        {
-            ShowModal = false;
-            await LoadData();
-        }
-    }
+    private Task Save() => SaveAndReloadAsync(
+        () => DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spCompanyPositionSave, CurrentItem),
+        CloseModal,
+        LoadData
+    );
 }

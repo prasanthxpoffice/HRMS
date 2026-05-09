@@ -35,26 +35,15 @@ public class WorkflowService : IWorkflowService
         NotifyStateChanged();
     }
 
-    public async Task<WorkflowResponse> StartProcessAsync<T>(IEnumerable<T> items)
+    public Task<WorkflowResponse> StartProcessAsync<T>(IEnumerable<T> items)
     {
-        // Dummy implementation as requested
-        await Task.Delay(500); // Simulate network latency
+        // TODO: replace with internal function call to get real TransactionId
+        var transactionId = Guid.NewGuid().ToString()[..8];
 
-        if (items.Count() > 5)
-        {
-            return new WorkflowResponse
-            {
-                Success = true,
-                Message = "Large batch processing initiated. You will be notified via email upon completion.",
-                TransactionId = null
-            };
-        }
-
-        return new WorkflowResponse
+        return Task.FromResult(new WorkflowResponse
         {
             Success = true,
-            Message = null,
-            TransactionId = Guid.NewGuid().ToString().Substring(0, 8)
-        };
+            TransactionId = transactionId
+        });
     }
 }

@@ -336,7 +336,7 @@ public partial class UiGrid<TItem> : UiBase
         var param = new Dictionary<string, object> { { IdFieldName, idVal } };
         var res = await DataService.PostDataAsync(DeleteConnectionName!, DeleteSpName, param);
         
-        if (res.Success == 1)
+        if (res.Status == DbStatus.Success)
         {
             SelectedIds.Remove(idVal);
             await NotifySelectionChanged();
@@ -366,7 +366,7 @@ public partial class UiGrid<TItem> : UiBase
             var param = new Dictionary<string, object> { { IdFieldName, idVal } };
             var res = await DataService.PostDataAsync(DeleteConnectionName!, DeleteSpName, param, showNotification: false);
             
-            if (res.Success == 1) successCount++;
+            if (res.Status == DbStatus.Success) successCount++;
             else errorCount++;
         }
 

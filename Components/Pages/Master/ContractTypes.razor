@@ -59,7 +59,7 @@
     
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HRMS.Models.Master.ContractType>> columns => new()
+    private List<UiGridColumn<HRMS.Models.Master.ContractType>> columns = new()
     {
         new UiGridColumn<HRMS.Models.Master.ContractType> { Title = AppResources.Id, FieldName = "ContractId" },
         new UiGridColumn<HRMS.Models.Master.ContractType> { Title = AppResources.NameEn, FieldName = "ContractNameEn" },
@@ -83,13 +83,9 @@
         ShowModal = true;
     }  
 
-    private async Task Save()
-    {
-        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeSave, CurrentItem);
-        if (res.Success == 1)
-        {
-            ShowModal = false;
-            await LoadData();
-        }
-    }
+    private Task Save() => SaveAndReloadAsync(
+        () => DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spContractTypeSave, CurrentItem),
+        CloseModal,
+        LoadData
+    );
 }

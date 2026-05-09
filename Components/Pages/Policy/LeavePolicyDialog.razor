@@ -87,7 +87,7 @@
 
         <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
             <UiButton Type="light" OnClick="Cancel">@AppResources.Cancel</UiButton>
-            <UiButton Type="primary" IsSubmit="true" Loading="IsBusy">@AppResources.Save</UiButton>
+            <UiButton Type="primary" IsSubmit="true" Loading="IsSaving">@AppResources.Save</UiButton>
         </div>
     </EditForm>
 </div>
@@ -101,7 +101,6 @@
     private List<LookupItem> _genderLookup = new();
     private List<LookupItem> _religionLookup = new();
     private List<LookupItem> _monthLookup = new();
-    private bool IsBusy;
 
     protected override async Task OnInitializedAsync()
     {
@@ -135,27 +134,15 @@
         }).ToList();
     }
 
-    private async Task HandleSubmit()
+    private Task HandleSubmit() => SaveAsync(async () =>
     {
-        IsBusy = true;
-        try
-        {
-            var res = await DataService.PostDataAsync(
-                ConnectionNames.Default, 
-                StoredProcedure.HRMSDB.Policy.spLeavePolicySave, 
-                _policy
-            );
-
-            if (res.Success == 1)
-            {
-                await OnSaved.InvokeAsync();
-            }
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
+        var res = await DataService.PostDataAsync(
+            ConnectionNames.Default,
+            StoredProcedure.HRMSDB.Policy.spLeavePolicySave,
+            _policy
+        );
+        if (res.Status == DbStatus.Success) await OnSaved.InvokeAsync();
+    });
 
     private Task Cancel() => OnCancel.InvokeAsync();
 }

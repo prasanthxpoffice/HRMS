@@ -8,6 +8,7 @@ public interface IUserService
     Role? CurrentRole { get; }
     IReadOnlyList<Role> Roles { get; }
     IReadOnlyList<Menu> Menus { get; }
+    bool HasAuthenticationError { get; }
 
     event Action<bool>? OnRoleChanged;
 

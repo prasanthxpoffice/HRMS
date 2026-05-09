@@ -1,5 +1,6 @@
 @inherits LayoutComponentBase
 @using HRMS.Services
+@using HRMS.Resources
 @implements IDisposable
 @inject LanguageService Lang
 @inject IUserService UserService
@@ -13,14 +14,24 @@
         <UiTopBar />
 
         <div class="content">
-            <ErrorBoundary>
-                <ChildContent>
-                    @Body
-                </ChildContent>
-                <ErrorContent Context="ex">
-                    <UiErrorContent Exception="ex" />
-                </ErrorContent>
-            </ErrorBoundary>
+            @if (UserService.HasAuthenticationError)
+            {
+                <div class="alert alert-danger m-4">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    @AppResources.AuthenticationError
+                </div>
+            }
+            else
+            {
+                <ErrorBoundary>
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent Context="ex">
+                        <UiErrorContent Exception="ex" />
+                    </ErrorContent>
+                </ErrorBoundary>
+            }
         </div>
     </main>
 </div>

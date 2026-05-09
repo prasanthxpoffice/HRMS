@@ -138,7 +138,7 @@
 
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HolidayDetail>> columns => new()
+    private List<UiGridColumn<HolidayDetail>> columns = new()
     {
         new UiGridColumn<HolidayDetail> { Title = AppResources.Holiday, FieldName = "HolidayName", FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<HolidayDetail> { Title = AppResources.FromDate, FieldName = "FromDate", FilterType = UiGridFilterType.Date },
@@ -165,13 +165,9 @@
         ShowModal = true;
     }  
 
-    private async Task Save()
-    {
-        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spHolidayDetailsSave, CurrentItem);
-        if (res.Success == 1)
-        {
-            ShowModal = false;
-            await LoadData();
-        }
-    }
+    private Task Save() => SaveAndReloadAsync(
+        () => DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Admin.spHolidayDetailsSave, CurrentItem),
+        CloseModal,
+        LoadData
+    );
 }

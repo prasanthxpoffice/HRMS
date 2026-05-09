@@ -59,7 +59,7 @@
     
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HRMS.Models.Master.Position>> columns => new()
+    private List<UiGridColumn<HRMS.Models.Master.Position>> columns = new()
     {
         new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.Id, FieldName = "PositionId" },
         new UiGridColumn<HRMS.Models.Master.Position> { Title = AppResources.NameEn, FieldName = "PositionNameEn" },
@@ -83,13 +83,9 @@
         ShowModal = true;
     }  
 
-    private async Task Save()
-    {
-        var res = await DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spPositionSave, CurrentItem);
-        if (res.Success == 1)
-        {
-            ShowModal = false;
-            await LoadData();
-        }
-    }
+    private Task Save() => SaveAndReloadAsync(
+        () => DataService.PostDataAsync(ConnectionNames.Default, StoredProcedure.HRMSDB.Master.spPositionSave, CurrentItem),
+        CloseModal,
+        LoadData
+    );
 }

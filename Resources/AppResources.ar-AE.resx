@@ -118,6 +118,7 @@
   <data name="Reload" xml:space="preserve"><value>تحديث</value></data>
   <data name="DatabaseError" xml:space="preserve"><value>حدث خطأ في قاعدة البيانات</value></data>
   <data name="DatabaseErrorMessage" xml:space="preserve"><value>حدث خطأ في قاعدة البيانات. يرجى التواصل مع الدعم الفني.</value></data>
+  <data name="AuthenticationError" xml:space="preserve"><value>تعذّر تحميل حسابك. يرجى تحديث الصفحة أو التواصل مع الدعم الفني.</value></data>
   <data name="Workflow" xml:space="preserve"><value>سير العمل</value></data>
   <data name="Gender" xml:space="preserve"><value>الجنس</value></data>
   <data name="Company" xml:space="preserve"><value>الشركة</value></data>
