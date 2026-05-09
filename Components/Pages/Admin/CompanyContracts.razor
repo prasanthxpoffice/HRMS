@@ -86,7 +86,7 @@
 
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<CompanyContract>> columns = new()
+    private List<UiGridColumn<CompanyContract>> columns => new()
     {
         new UiGridColumn<CompanyContract> { Title = AppResources.Id, FieldName = "CompanyContractId" },
         new UiGridColumn<CompanyContract> { Title = AppResources.Company, FieldName = "CompanyName", FilterType = UiGridFilterType.Dropdown },

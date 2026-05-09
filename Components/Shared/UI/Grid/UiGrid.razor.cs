@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Globalization;
 using HRMS.Components.Shared.UI;
 using HRMS.Components.Shared.UI.Grid.Models;
-
+using HRMS.Models;
 using HRMS.Models.Export;
 using HRMS.Services.ExportService;
 using Microsoft.JSInterop;
@@ -16,7 +16,6 @@ namespace HRMS.Components.Shared.UI.Grid;
 
 public partial class UiGrid<TItem> : UiBase
 {
-    [Inject] protected IDataService DataService { get; set; } = default!;
     [Inject] public IWorkflowService WorkflowService { get; set; } = default!;
     [Inject] public IExportService ExportService { get; set; } = default!;
     [Inject] public IJSRuntime JS { get; set; } = default!;

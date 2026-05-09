@@ -200,5 +200,7 @@ namespace HRMS.Resources {
         public static string SaveSuccess => ResourceManager.GetString("SaveSuccess", resourceCulture);
         public static string PolicyOverlapError => ResourceManager.GetString("PolicyOverlapError", resourceCulture);
         public static string MultipleLeaveTypesError => ResourceManager.GetString("MultipleLeaveTypesError", resourceCulture);
+        public static string DatabaseErrorMessage => ResourceManager.GetString("DatabaseErrorMessage", resourceCulture);
+        public static string AuthenticationError => ResourceManager.GetString("AuthenticationError", resourceCulture);
     }
 }

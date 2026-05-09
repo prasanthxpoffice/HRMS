@@ -136,7 +136,7 @@
 
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HolidayDetail>> columns = new()
+    private List<UiGridColumn<HolidayDetail>> columns => new()
     {
         new UiGridColumn<HolidayDetail> { Title = AppResources.Holiday, FieldName = "HolidayName", FilterType = UiGridFilterType.Dropdown },
         new UiGridColumn<HolidayDetail> { Title = AppResources.FromDate, FieldName = "FromDate", FilterType = UiGridFilterType.Date },

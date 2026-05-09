@@ -140,8 +140,7 @@ public class ExportService : IExportService
     private byte[] GetXlsxBytes(DataTable table, bool isRtl = false)
     {
         using var ms = new MemoryStream();
-        var config = new MiniExcelLibs.OpenXml.OpenXmlConfiguration { IsRightToLeft = isRtl };
-        ms.SaveAs(table, configuration: config);
+        ms.SaveAs(table);
         return ms.ToArray();
     }
 

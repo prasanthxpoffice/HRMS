@@ -60,7 +60,7 @@
     
     private Task<IEnumerable<object>> GetExportData() => Task.FromResult<IEnumerable<object>>(Items.Cast<object>());
 
-    private List<UiGridColumn<HRMS.Models.Master.Company>> columns = new()
+    private List<UiGridColumn<HRMS.Models.Master.Company>> columns => new()
     {
         new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.Id, FieldName = "CompanyId" },
         new UiGridColumn<HRMS.Models.Master.Company> { Title = AppResources.NameEn, FieldName = "CompanyNameEn" },
