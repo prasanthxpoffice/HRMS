@@ -42,3 +42,7 @@ yarn-error.log*
 # OS-specific
 [Dd]s_[Ss]tore
 [Tt]humbs.db
+
+# Credentials — never commit, share via secure channel
+appsettings.Development.json
+appsettings.Stage.json

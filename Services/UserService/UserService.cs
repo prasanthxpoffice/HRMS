@@ -45,8 +45,15 @@ public class UserService : IUserService
 
         try
         {
-            // 1. Get Windows Identity & App ID (AppId is only needed for Bootstrap Authenticaiton)
-            var windowsId = _httpContext.HttpContext?.User.Identity?.Name ?? System.Environment.UserName;
+            // 1. Get Windows Identity — must be authenticated, never fall back to server account
+            var identity = _httpContext.HttpContext?.User.Identity;
+            if (identity == null || !identity.IsAuthenticated || string.IsNullOrEmpty(identity.Name))
+            {
+                _isInitialized = false;
+                return;
+            }
+
+            var windowsId = identity.Name;
             var appId = _configuration.GetValue<int>("AppId");
 
             // 2. Fetch User from CentralLogin
