@@ -113,6 +113,7 @@
   <data name="Gender_NameEn_Required" xml:space="preserve"><value>English Name is required</value></data>
   <data name="Gender_NameAr_Required" xml:space="preserve"><value>Arabic Name is required</value></data>
   <data name="DatabaseError" xml:space="preserve"><value>Database Error</value></data>
+  <data name="DatabaseErrorMessage" xml:space="preserve"><value>A database error occurred. Please contact support.</value></data>
   <data name="SystemError" xml:space="preserve"><value>System Error</value></data>
   <data name="ViewDetails" xml:space="preserve"><value>View Technical Details</value></data>
   <data name="HideDetails" xml:space="preserve"><value>Hide Details</value></data>

@@ -1,5 +1,6 @@
 using Dapper;
 using HRMS.Models;
+using HRMS.Resources;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Text.Json;
@@ -80,7 +81,7 @@ namespace HRMS.Services
             catch (Exception ex)
             {
                 _ = _logService.LogErrorAsync(ex, finalEmployeeId, finalRoleId, connectionName, procedureName, jsonInput);
-                return new DbResponse<T> { Success = -1, Message = ex.Message };
+                return new DbResponse<T> { Success = -1, Message = AppResources.DatabaseErrorMessage };
             }
         }
     }
