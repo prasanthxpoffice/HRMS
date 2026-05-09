@@ -18,17 +18,8 @@ namespace HRMS.Services
         {
             var response = await _db.ExecuteQueryAsync<List<T>>(connectionName, spName, json, useTransaction: useTransaction);
             
-            if (response != null)
-            {
-                if (response.Status == DbStatus.SystemError)
-                {
-                    _notification.NotifyError(AppResources.DatabaseError, response.Message);
-                }
-                else if (response.Status == DbStatus.BusinessError)
-                {
-                    _notification.Notify(response.Message, NotificationType.Error);
-                }
-            }
+            if (response?.Status == DbStatus.SystemError)
+                _notification.NotifyError(AppResources.DatabaseError, response.Message);
 
             return response?.Data ?? new();
         }

@@ -1,4 +1,5 @@
 using HRMS.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.JSInterop;
@@ -14,6 +15,7 @@ public class UserService : IUserService
     private readonly IUserContext _userContext;
     private readonly LanguageService _languageService;
     private readonly IJSRuntime _jsRuntime;
+    private readonly AuthenticationStateProvider _authStateProvider;
     
     private User? _currentUser;
     private Role? _currentRole;
@@ -23,7 +25,7 @@ public class UserService : IUserService
 
     public bool HasAuthenticationError { get; private set; }
 
-    public UserService(IDataService dataService, IHttpContextAccessor httpContext, IConfiguration configuration, IUserContext userContext, LanguageService languageService, IJSRuntime jsRuntime)
+    public UserService(IDataService dataService, IHttpContextAccessor httpContext, IConfiguration configuration, IUserContext userContext, LanguageService languageService, IJSRuntime jsRuntime, AuthenticationStateProvider authStateProvider)
     {
         _dataService = dataService;
         _httpContext = httpContext;
@@ -31,6 +33,7 @@ public class UserService : IUserService
         _userContext = userContext;
         _languageService = languageService;
         _jsRuntime = jsRuntime;
+        _authStateProvider = authStateProvider;
     }
 
     public User? CurrentUser => _currentUser;
@@ -47,8 +50,9 @@ public class UserService : IUserService
 
         try
         {
-            // 1. Get Windows Identity — must be authenticated, never fall back to server account
-            var identity = _httpContext.HttpContext?.User.Identity;
+            // AuthenticationStateProvider works in both SSR and SignalR circuit (HttpContext is null in circuit)
+            var authState = await _authStateProvider.GetAuthenticationStateAsync();
+            var identity = authState.User.Identity;
             if (identity == null || !identity.IsAuthenticated || string.IsNullOrEmpty(identity.Name))
             {
                 _isInitialized = false;
