@@ -29,6 +29,7 @@ public partial class UiGrid<TItem> : UiBase
     [Parameter] public int PageSize { get; set; } = 10;
     [Parameter] public bool ShowHeader { get; set; } = true;
     [Parameter] public bool Loading { get; set; } = false;
+    [Parameter] public List<string> GroupBy { get; set; } = new();
     #endregion
 
     #region Parameters - Actions
@@ -70,6 +71,87 @@ public partial class UiGrid<TItem> : UiBase
     private TItem? _itemPendingDelete;
     private bool _exportGridDataOnly = true;
     private bool _isAllPagesSelected = false;
+    private HashSet<string> _collapsedGroups = new();
+    #endregion
+
+    #region Column & Row Grouping
+
+    private bool IsGrouped => GroupBy != null && GroupBy.Count > 0;
+    private bool HasColumnGroups => Columns.Any(c => !string.IsNullOrEmpty(c.ColumnGroup));
+
+    private string GetGroupKey(TItem item) =>
+        string.Join(" | ", GroupBy.Select(f => GetPropertyValue(item, f)?.ToString() ?? ""));
+
+    private List<(string Key, List<TItem> Items)> GetGroupedItems() =>
+        FilteredItems
+            .GroupBy(GetGroupKey)
+            .Select(g => (g.Key, g.ToList()))
+            .ToList();
+
+    private List<(string Key, List<TItem> Items)> GetPagedGroupedItems() =>
+        PagedItems
+            .GroupBy(GetGroupKey)
+            .Select(g => (g.Key, g.ToList()))
+            .ToList();
+
+    private void ToggleGroup(string key)
+    {
+        if (_collapsedGroups.Contains(key)) _collapsedGroups.Remove(key);
+        else _collapsedGroups.Add(key);
+    }
+
+    private List<(bool IsGroupHeader, string Label, int ColSpan, UiGridColumn<TItem>? Col)> GetHeaderRow1()
+    {
+        var result = new List<(bool, string, int, UiGridColumn<TItem>?)>();
+        string? currentGroup = null;
+        int i = 0;
+
+        while (i < Columns.Count)
+        {
+            var col = Columns[i];
+            if (string.IsNullOrEmpty(col.ColumnGroup))
+            {
+                result.Add((false, col.Title, 1, col));
+                currentGroup = null;
+                i++;
+            }
+            else
+            {
+                if (col.ColumnGroup != currentGroup)
+                {
+                    currentGroup = col.ColumnGroup;
+                    int span = Columns.Skip(i).TakeWhile(c => c.ColumnGroup == currentGroup).Count();
+                    result.Add((true, col.ColumnGroup, span, null));
+                }
+                i++;
+            }
+        }
+        return result;
+    }
+
+    private string FormatAggregate(IEnumerable<TItem> items, UiGridColumn<TItem> col)
+    {
+        if (col.Aggregate == AggregateType.None || col.Aggregate == AggregateType.Count) return "";
+        if (string.IsNullOrEmpty(col.FieldName)) return "";
+
+        var values = items.Select(i => GetPropertyValue(i, col.FieldName)).Where(v => v != null).ToList();
+        if (!values.Any()) return "";
+
+        try
+        {
+            return col.Aggregate switch
+            {
+                AggregateType.Sum => values.Sum(v => Convert.ToDouble(v)).ToString("N2"),
+                AggregateType.Average => values.Average(v => Convert.ToDouble(v)).ToString("N2"),
+                AggregateType.Min => values.Min()?.ToString() ?? "",
+                AggregateType.Max => values.Max()?.ToString() ?? "",
+                AggregateType.DistinctCount => values.Distinct().Count().ToString(),
+                _ => ""
+            };
+        }
+        catch { return ""; }
+    }
+
     #endregion
 
     #region Data Processing - Filtering & Sorting

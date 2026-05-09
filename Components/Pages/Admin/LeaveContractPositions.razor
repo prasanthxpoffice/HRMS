@@ -8,6 +8,7 @@
         TItem="LeaveContractPosition" 
         Title="@AppResources.LeaveContractPosition_GridTitle" 
         Items="Items" 
+        PageSize=3
         Columns="columns" 
         ShowAddButton="false" 
         ShowSelection="true"
@@ -18,7 +19,8 @@
         ExportName="LeaveContractPositions"
         SelectedIds="_selectedIds"
         IdFieldName="LeaveContractPositionId"
-        Loading="IsLoading">
+        Loading="IsLoading"
+        GroupBy='new() { "LeaveTypeName", "CompanyName", "ContractName" }'>
     <HeaderContent>
         <UiButton Type="light" Icon="bi-journal-text" OnClick="OnLeavePolicyClick" CssClass="btn-sm" Disabled="@(!_selectedIds.Any())">
             @AppResources.LeavePolicy

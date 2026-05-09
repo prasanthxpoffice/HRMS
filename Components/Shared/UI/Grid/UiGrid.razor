@@ -78,33 +78,95 @@
     <div class="table-responsive">
         <table class="table-ui">
             <thead>
-                <tr>
-                    @if (ShowSelection)
-                    {
-                        <th style="width: 40px; text-align: center;">
-                            <input type="checkbox" class="form-check-input" 
-                                   checked="@IsAllSelected" 
-                                   @onchange="ToggleSelectAll" />
-                        </th>
-                    }
-                    @foreach (var col in Columns)
-                    {
-                        <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "ui-grid-cursor-pointer user-select-none" : "")" 
-                            style="@(_sortField == col.FieldName ? "background-color: #f0f7ff;" : "")"
-                            @onclick="() => HandleSort(col)">
-                            <div class="d-flex align-items-center gap-1">
-                                <span>@col.Title</span>
-                                @if (col.Sortable && !string.IsNullOrEmpty(col.FieldName))
-                                {
-                                    <div class="d-flex flex-column lh-1" style="font-size: 0.6rem;">
-                                        <i class="bi bi-caret-up-fill @(_sortField == col.FieldName && !_sortDescending ? "text-primary" : "text-muted opacity-50")"></i>
-                                        <i class="bi bi-caret-down-fill @(_sortField == col.FieldName && _sortDescending ? "text-primary" : "text-muted opacity-50")" style="margin-top: -3px;"></i>
+                @if (HasColumnGroups)
+                {
+                    <tr>
+                        @if (ShowSelection)
+                        {
+                            <th rowspan="2" style="width: 40px; text-align: center;">
+                                <input type="checkbox" class="form-check-input"
+                                       checked="@IsAllSelected"
+                                       @onchange="ToggleSelectAll" />
+                            </th>
+                        }
+                        @foreach (var cell in GetHeaderRow1())
+                        {
+                            @if (cell.IsGroupHeader)
+                            {
+                                <th colspan="@cell.ColSpan" class="text-center" style="border-bottom: 2px solid #c5d5e8;">
+                                    @cell.Label
+                                </th>
+                            }
+                            else
+                            {
+                                <th rowspan="2"
+                                    class="@(cell.Col!.Sortable && !string.IsNullOrEmpty(cell.Col!.FieldName) ? "ui-grid-cursor-pointer user-select-none" : "")"
+                                    style="@(_sortField == cell.Col!.FieldName ? "background-color: #f0f7ff;" : "")"
+                                    @onclick="() => HandleSort(cell.Col!)">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <span>@cell.Col!.Title</span>
+                                        @if (cell.Col!.Sortable && !string.IsNullOrEmpty(cell.Col!.FieldName))
+                                        {
+                                            <div class="d-flex flex-column lh-1" style="font-size: 0.6rem;">
+                                                <i class="bi bi-caret-up-fill @(_sortField == cell.Col!.FieldName && !_sortDescending ? "text-primary" : "text-muted opacity-50")"></i>
+                                                <i class="bi bi-caret-down-fill @(_sortField == cell.Col!.FieldName && _sortDescending ? "text-primary" : "text-muted opacity-50")" style="margin-top: -3px;"></i>
+                                            </div>
+                                        }
                                     </div>
-                                }
-                            </div>
-                        </th>
-                    }
-                </tr>
+                                </th>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        @foreach (var col in Columns.Where(c => !string.IsNullOrEmpty(c.ColumnGroup)))
+                        {
+                            <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "ui-grid-cursor-pointer user-select-none" : "")"
+                                style="@(_sortField == col.FieldName ? "background-color: #f0f7ff;" : "")"
+                                @onclick="() => HandleSort(col)">
+                                <div class="d-flex align-items-center gap-1">
+                                    <span>@col.Title</span>
+                                    @if (col.Sortable && !string.IsNullOrEmpty(col.FieldName))
+                                    {
+                                        <div class="d-flex flex-column lh-1" style="font-size: 0.6rem;">
+                                            <i class="bi bi-caret-up-fill @(_sortField == col.FieldName && !_sortDescending ? "text-primary" : "text-muted opacity-50")"></i>
+                                            <i class="bi bi-caret-down-fill @(_sortField == col.FieldName && _sortDescending ? "text-primary" : "text-muted opacity-50")" style="margin-top: -3px;"></i>
+                                        </div>
+                                    }
+                                </div>
+                            </th>
+                        }
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        @if (ShowSelection)
+                        {
+                            <th style="width: 40px; text-align: center;">
+                                <input type="checkbox" class="form-check-input"
+                                       checked="@IsAllSelected"
+                                       @onchange="ToggleSelectAll" />
+                            </th>
+                        }
+                        @foreach (var col in Columns)
+                        {
+                            <th class="@(col.Sortable && !string.IsNullOrEmpty(col.FieldName) ? "ui-grid-cursor-pointer user-select-none" : "")"
+                                style="@(_sortField == col.FieldName ? "background-color: #f0f7ff;" : "")"
+                                @onclick="() => HandleSort(col)">
+                                <div class="d-flex align-items-center gap-1">
+                                    <span>@col.Title</span>
+                                    @if (col.Sortable && !string.IsNullOrEmpty(col.FieldName))
+                                    {
+                                        <div class="d-flex flex-column lh-1" style="font-size: 0.6rem;">
+                                            <i class="bi bi-caret-up-fill @(_sortField == col.FieldName && !_sortDescending ? "text-primary" : "text-muted opacity-50")"></i>
+                                            <i class="bi bi-caret-down-fill @(_sortField == col.FieldName && _sortDescending ? "text-primary" : "text-muted opacity-50")" style="margin-top: -3px;"></i>
+                                        </div>
+                                    }
+                                </div>
+                            </th>
+                        }
+                    </tr>
+                }
                 <tr class="filter-row">
                     @if (ShowSelection)
                     {
@@ -182,6 +244,95 @@
                         </td>
                     </tr>
                 }
+                else if (IsGrouped)
+                {
+                    var groupedData = GetPagedGroupedItems();
+                    if (!groupedData.Any())
+                    {
+                        <tr>
+                            <td colspan="@(Columns.Count + (ShowSelection ? 1 : 0))" class="text-center py-5">
+                                <span class="text-muted small">@AppResources.NoRecordsFound</span>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var group in groupedData)
+                        {
+                            var groupKey = group.Key;
+                            var isCollapsed = _collapsedGroups.Contains(groupKey);
+                            var keyParts = groupKey.Split(" | ");
+                            <tr style="cursor: pointer; border-top: 2px solid #c8a96e;"
+                                @onclick="() => ToggleGroup(groupKey)">
+                                @if (ShowSelection)
+                                {
+                                    <td style="background-color: #f9f4ec !important;"></td>
+                                }
+                                <td colspan="@Columns.Count" style="background-color: #f9f4ec !important;">
+                                    <div class="d-flex align-items-center gap-1 py-1">
+                                        <i class="bi @(isCollapsed ? "bi-chevron-right" : "bi-chevron-down") me-1" style="font-size: 0.75rem; color: #8b6914;"></i>
+                                        @for (int pi = 0; pi < keyParts.Length; pi++)
+                                        {
+                                            if (pi > 0)
+                                            {
+                                                <i class="bi bi-chevron-right mx-1" style="font-size: 0.6rem; color: #c4a265;"></i>
+                                            }
+                                            <span class="fw-semibold" style="font-size: 0.82rem; color: #5a3e10;">@keyParts[pi]</span>
+                                        }
+                                        <span class="badge rounded-pill ms-2" style="background-color: #8b6914; font-size: 0.7rem;">@group.Items.Count</span>
+                                        @foreach (var aggCol in Columns.Where(c => c.Aggregate != AggregateType.None && c.Aggregate != AggregateType.Count))
+                                        {
+                                            var aggStr = FormatAggregate(group.Items, aggCol);
+                                            @if (!string.IsNullOrEmpty(aggStr))
+                                            {
+                                                <span class="small text-muted ms-3">@aggCol.Title: <strong>@aggStr</strong></span>
+                                            }
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                            @if (!isCollapsed)
+                            {
+                                @foreach (var item in group.Items)
+                                {
+                                    <tr class="@(IsSelected(item) ? "ui-grid-table-selection" : "")">
+                                        @if (ShowSelection)
+                                        {
+                                            <td style="text-align: center;">
+                                                <input type="checkbox" class="form-check-input"
+                                                       checked="@IsSelected(item)"
+                                                       @onchange="() => ToggleSelection(item)" />
+                                            </td>
+                                        }
+                                        @foreach (var col in Columns)
+                                        {
+                                            var isGroupedCol = !string.IsNullOrEmpty(col.FieldName) && GroupBy.Contains(col.FieldName);
+                                            <td style="@(isGroupedCol ? "opacity: 0.4; font-style: italic;" : "")">
+                                                @if (col.Template != null)
+                                                {
+                                                    @col.Template(item)
+                                                }
+                                                else
+                                                {
+                                                    var val = GetPropertyValue(item, col.FieldName);
+                                                    if (col.FilterType == UiGridFilterType.Date && val is DateTime dt)
+                                                    {
+                                                        @dt.ToString("dd/MM/yyyy")
+                                                    }
+                                                    else
+                                                    {
+                                                        @val
+                                                    }
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                            <tr><td colspan="@(Columns.Count + (ShowSelection ? 1 : 0))" style="padding: 0; height: 3px; background-color: #dcc89a;"></td></tr>
+                        }
+                    }
+                }
                 else if (PagedItems != null && PagedItems.Any())
                 {
                     @foreach (var item in PagedItems)
@@ -190,8 +341,8 @@
                             @if (ShowSelection)
                             {
                                 <td style="text-align: center;">
-                                    <input type="checkbox" class="form-check-input" 
-                                           checked="@IsSelected(item)" 
+                                    <input type="checkbox" class="form-check-input"
+                                           checked="@IsSelected(item)"
                                            @onchange="() => ToggleSelection(item)" />
                                 </td>
                             }
@@ -234,9 +385,17 @@
     <div class="px-3 py-2 border-top bg-light bg-opacity-10">
         <div class="row align-items-center g-3">
             <div class="col-12 col-md text-muted small text-center text-md-start">
-                @(string.Format(AppResources.ShowingXToYOfZ, (CurrentPage - 1) * PageSize + 1, Math.Min(CurrentPage * PageSize, TotalItems), TotalItems))
+                @if (IsGrouped)
+                {
+                    var gc = GetGroupedItems().Count;
+                    @($"{string.Format(AppResources.ShowingXToYOfZ, (CurrentPage - 1) * PageSize + 1, Math.Min(CurrentPage * PageSize, TotalItems), TotalItems)} | {gc} {(gc == 1 ? "group" : "groups")}")
+                }
+                else
+                {
+                    @(string.Format(AppResources.ShowingXToYOfZ, (CurrentPage - 1) * PageSize + 1, Math.Min(CurrentPage * PageSize, TotalItems), TotalItems))
+                }
             </div>
-            
+
             <div class="col-12 col-md-auto">
                 <div class="d-flex align-items-center justify-content-center gap-3">
                     <div class="d-flex align-items-center gap-2">
