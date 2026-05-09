@@ -1,0 +1,434 @@
+@page "/dev/ui"
+@inherits UiBase
+@using HRMS.Models.Shared
+
+<div class="container-fluid py-4 px-4" style="max-width: 1100px;">
+
+    <!-- Header -->
+    <div class="mb-4 pb-3" style="border-bottom: 2px solid var(--border);">
+        <h3 class="fw-bold mb-1" style="color: var(--primary);">UI Component Gallery</h3>
+        <p class="text-muted small mb-0">Developer reference — live examples with copy-ready Razor snippets.</p>
+    </div>
+
+    <!-- TOC -->
+    <div class="mb-4 d-flex flex-wrap gap-2">
+        @foreach (var nav in _sections)
+        {
+            <a href="#@nav.Id" class="badge rounded-pill text-decoration-none"
+               style="background: var(--primary-tint); color: var(--primary); border: 1px solid hsla(35,34%,55%,0.3); font-size: 0.78rem; padding: 5px 12px;">
+                @nav.Label
+            </a>
+        }
+    </div>
+
+    <!-- ═══════════════════════════════════ UiInput -->
+    <div id="input" class="gallery-section mb-4">
+        <h5 class="section-title">UiInput</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiInput Label="Full Name" Placeholder="Enter full name" @bind-Value="_demoText" />
+                <UiInput Label="With Icon" Placeholder="Search..." Icon="search" @bind-Value="_demoText" />
+                <UiInput Label="Disabled" Value="Read only value" Disabled="true" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiInput Label=\"Full Name\"\r\n        Placeholder=\"Enter full name\"\r\n        @bind-Value=\"_name\" />\r\n\r\n<UiInput Label=\"With Icon\"\r\n        Placeholder=\"Search...\"\r\n        Icon=\"search\"\r\n        @bind-Value=\"_search\" />\r\n\r\n<UiInput Label=\"Disabled\"\r\n        Value=\"Read only value\"\r\n        Disabled=\"true\" />")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiTextArea -->
+    <div id="textarea" class="gallery-section mb-4">
+        <h5 class="section-title">UiTextArea</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiTextArea Label="Notes" Placeholder="Enter notes..." Rows="3" @bind-Value="_demoText" />
+                <UiTextArea Label="With Character Limit" Placeholder="Max 200 chars..." MaxLength="200" @bind-Value="_demoText" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiTextArea Label=\"Notes\"\r\n           Placeholder=\"Enter notes...\"\r\n           Rows=\"3\"\r\n           @bind-Value=\"_notes\" />\r\n\r\n// Shows character counter when MaxLength is set\r\n<UiTextArea Label=\"With Character Limit\"\r\n           MaxLength=\"200\"\r\n           @bind-Value=\"_notes\" />")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiNumberInput -->
+    <div id="number" class="gallery-section mb-4">
+        <h5 class="section-title">UiNumberInput</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiNumberInput Label="Salary" Placeholder="0.00" Step="0.01" Min="0" @bind-Value="_demoNumber" />
+                <UiNumberInput Label="Leave Days" Step="1" Min="0" Max="30" @bind-Value="_demoNumber" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiNumberInput Label=\"Salary\"\r\n              Placeholder=\"0.00\"\r\n              Step=\"0.01\" Min=\"0\"\r\n              @bind-Value=\"_salary\" />\r\n\r\n<UiNumberInput Label=\"Leave Days (0–30)\"\r\n              Step=\"1\" Min=\"0\" Max=\"30\"\r\n              @bind-Value=\"_leaveDays\" />\r\n\r\n// @code\r\ndecimal? _salary;\r\ndecimal? _leaveDays;")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiSelect -->
+    <div id="select" class="gallery-section mb-4">
+        <h5 class="section-title">UiSelect</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiSelect TValue="string" Label="Gender" Placeholder="Select gender"
+                          Items="_genderOptions" @bind-Value="_demoSelect" />
+                <UiSelect TValue="string" Label="Disabled" Placeholder="Select..."
+                          Items="_genderOptions" Disabled="true" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiSelect TValue=\"string\"\r\n         Label=\"Gender\"\r\n         Placeholder=\"Select gender\"\r\n         Items=\"_genderItems\"\r\n         @bind-Value=\"_selectedGender\" />\r\n\r\n// Items type: IEnumerable<LookupItem>\r\n// LookupItem: Id (string) + Name (string)\r\n\r\n// For int keys:\r\n<UiSelect TValue=\"int?\"\r\n         Items=\"_items\"\r\n         @bind-Value=\"_selectedId\" />")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiMultiSelect -->
+    <div id="multiselect" class="gallery-section mb-4">
+        <h5 class="section-title">UiMultiSelect</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiMultiSelect Label="Skills" Placeholder="Select skills..."
+                               Items="_skillOptions" @bind-SelectedValues="_demoMulti" />
+                @if (_demoMulti.Any())
+                {
+                    <div class="mt-1 text-muted small">Selected: @string.Join(", ", _demoMulti)</div>
+                }
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiMultiSelect Label=\"Skills\"\r\n              Placeholder=\"Select skills...\"\r\n              Items=\"_skillItems\"\r\n              @bind-SelectedValues=\"_selectedSkills\" />\r\n\r\n// @code\r\nList<string> _selectedSkills = new();\r\n\r\n// Items type: IEnumerable<LookupItem>")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiRadioGroup -->
+    <div id="radio" class="gallery-section mb-4">
+        <h5 class="section-title">UiRadioGroup</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiRadioGroup Label="Employment Type" Options="_employmentTypes" @bind-Value="_demoRadio" />
+                <UiRadioGroup Label="Gender (Inline)" Options="_genderOptions" Inline="true" @bind-Value="_demoRadio2" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiRadioGroup Label=\"Employment Type\"\r\n             Options=\"_employmentTypes\"\r\n             @bind-Value=\"_empType\" />\r\n\r\n// Inline — good for 2–4 short options\r\n<UiRadioGroup Label=\"Gender\"\r\n             Options=\"_genderItems\"\r\n             Inline=\"true\"\r\n             @bind-Value=\"_gender\" />\r\n\r\n// @code\r\nstring _empType = \"\";\r\n\r\n// Items type: IEnumerable<LookupItem>")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiCheckbox & UiSwitch -->
+    <div id="checkbox" class="gallery-section mb-4">
+        <h5 class="section-title">UiCheckbox &amp; UiSwitch</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiCheckbox Label="Accept terms and conditions" @bind-Value="_demoCheck" />
+                <UiSwitch Label="Enable notifications" @bind-Value="_demoSwitch" />
+                <UiSwitch Label="Disabled switch" Value="true" Disabled="true" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("// Checkbox — agree/disagree\r\n<UiCheckbox Label=\"Accept terms\"\r\n           @bind-Value=\"_accepted\" />\r\n\r\n// Switch — on/off setting\r\n<UiSwitch Label=\"Enable notifications\"\r\n         @bind-Value=\"_notificationsOn\" />\r\n\r\n// @code\r\nbool _accepted = false;\r\nbool _notificationsOn = true;")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiDatePicker -->
+    <div id="date" class="gallery-section mb-4">
+        <h5 class="section-title">UiDatePicker</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiDatePicker Label="Hire Date" @bind-Value="_demoDate" />
+                <UiDatePicker Label="With Min/Max" Min="DateTime.Today" Max="DateTime.Today.AddYears(1)" @bind-Value="_demoDate" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiDatePicker Label=\"Hire Date\"\r\n             @bind-Value=\"_hireDate\" />\r\n\r\n// With date constraints\r\n<UiDatePicker Label=\"Contract Start\"\r\n             Min=\"DateTime.Today\"\r\n             Max=\"DateTime.Today.AddYears(1)\"\r\n             @bind-Value=\"_startDate\" />\r\n\r\n// @code\r\nDateTime? _hireDate;")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiDateRangePicker -->
+    <div id="daterange" class="gallery-section mb-4">
+        <h5 class="section-title">UiDateRangePicker</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiDateRangePicker @ref="_dateRangeRef"
+                                   Label="Leave Period" Required="true"
+                                   @bind-From="_demoFrom" @bind-To="_demoTo" />
+                <UiDateRangePicker Label="Max 30 Days" MaxRangeDays="30"
+                                   @bind-From="_demoFrom" @bind-To="_demoTo" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiDateRangePicker @ref=\"_picker\"\r\n                  Label=\"Leave Period\"\r\n                  Required=\"true\"\r\n                  @bind-From=\"_from\"\r\n                  @bind-To=\"_to\" />\r\n\r\n// With max range validation\r\n<UiDateRangePicker Label=\"Report Period\"\r\n                  MaxRangeDays=\"30\"\r\n                  @bind-From=\"_from\"\r\n                  @bind-To=\"_to\" />\r\n\r\n// Validate on form submit:\r\nif (!_picker.IsValid()) return;\r\n\r\n// @code\r\nUiDateRangePicker _picker = default!;\r\nDateTime? _from, _to;")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiTimePicker -->
+    <div id="time" class="gallery-section mb-4">
+        <h5 class="section-title">UiTimePicker</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiTimePicker Label="Shift Start" @bind-Value="_demoTime" />
+                <UiTimePicker Label="Shift End (06:00 – 22:00)"
+                              Min="new TimeOnly(6, 0)" Max="new TimeOnly(22, 0)"
+                              @bind-Value="_demoTime" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiTimePicker Label=\"Shift Start\"\r\n             @bind-Value=\"_shiftStart\" />\r\n\r\n// With Min/Max bounds\r\n<UiTimePicker Label=\"Shift End\"\r\n             Min=\"new TimeOnly(6, 0)\"\r\n             Max=\"new TimeOnly(22, 0)\"\r\n             @bind-Value=\"_shiftEnd\" />\r\n\r\n// @code\r\nTimeOnly? _shiftStart;\r\nTimeOnly? _shiftEnd;")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiFileUpload -->
+    <div id="file" class="gallery-section mb-4">
+        <h5 class="section-title">UiFileUpload</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiFileUpload @ref="_fileRef"
+                              Label="Passport Copy" Accept=".pdf,.jpg,.png"
+                              MaxSizeMb="5" Required="true"
+                              @bind-Files="_demoFiles" />
+                <UiFileUpload Label="Multiple Documents" Accept=".pdf,.docx"
+                              Multiple="true" MaxSizeMb="10"
+                              @bind-Files="_demoFiles" />
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("// Single file\r\n<UiFileUpload @ref=\"_upload\"\r\n             Label=\"Passport Copy\"\r\n             Accept=\".pdf,.jpg,.png\"\r\n             MaxSizeMb=\"5\"\r\n             Required=\"true\"\r\n             @bind-Files=\"_files\" />\r\n\r\n// Multiple files\r\n<UiFileUpload Label=\"Attachments\"\r\n             Accept=\".pdf,.docx\"\r\n             Multiple=\"true\"\r\n             @bind-Files=\"_files\" />\r\n\r\n// Validate on submit:\r\nif (!_upload.IsValid()) return;\r\n\r\n// Read uploaded file:\r\nvar file = _files.FirstOrDefault();\r\nvar stream = file.OpenReadStream(5 * 1024 * 1024);\r\n\r\n// @code\r\nUiFileUpload _upload = default!;\r\nIReadOnlyList<IBrowserFile> _files = new List<IBrowserFile>();")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiFormGroup -->
+    <div id="formgroup" class="gallery-section mb-4">
+        <h5 class="section-title">UiFormGroup</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <UiFormGroup Label="Employee ID" Required="true"
+                             HelpText="System-generated, cannot be changed.">
+                    <UiInput Placeholder="EMP-0001" Value="EMP-0042" Disabled="true" />
+                </UiFormGroup>
+                <UiFormGroup Label="Department" Required="true"
+                             ValidationMessage="Department is required.">
+                    <UiSelect TValue="string" Placeholder="Select department" Items="_genderOptions" />
+                </UiFormGroup>
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("// Wraps any input with shared label + help + error\r\n<UiFormGroup Label=\"Employee ID\"\r\n            Required=\"true\"\r\n            HelpText=\"System-generated.\">\r\n    <UiInput Value=\"EMP-0042\" Disabled=\"true\" />\r\n</UiFormGroup>\r\n\r\n<UiFormGroup Label=\"Department\"\r\n            Required=\"true\"\r\n            ValidationMessage=\"@_deptError\">\r\n    <UiSelect TValue=\"string\"\r\n             Placeholder=\"Select...\"\r\n             Items=\"_deptItems\"\r\n             @bind-Value=\"_dept\" />\r\n</UiFormGroup>")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiBadge -->
+    <div id="badge" class="gallery-section mb-4">
+        <h5 class="section-title">UiBadge</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+                    <UiBadge Text="Active"    Type="success"   />
+                    <UiBadge Text="Pending"   Type="warning"   />
+                    <UiBadge Text="Rejected"  Type="danger"    />
+                    <UiBadge Text="Info"      Type="info"      />
+                    <UiBadge Text="Primary"   Type="primary"   />
+                    <UiBadge Text="Secondary" Type="secondary" />
+                </div>
+                <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <UiBadge Text="With Icon" Type="success" Icon="check-circle-fill" />
+                    <UiBadge Text="No Pill"   Type="danger"  Pill="false" />
+                    <UiBadge Text="Dark"      Type="dark"    />
+                </div>
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiBadge Text=\"Active\"   Type=\"success\" />\r\n<UiBadge Text=\"Pending\"  Type=\"warning\" />\r\n<UiBadge Text=\"Rejected\" Type=\"danger\"  />\r\n<UiBadge Text=\"Info\"     Type=\"info\"    />\r\n\r\n// With icon\r\n<UiBadge Text=\"Approved\"\r\n        Type=\"success\"\r\n        Icon=\"check-circle-fill\" />\r\n\r\n// Square shape\r\n<UiBadge Text=\"Draft\" Type=\"secondary\" Pill=\"false\" />\r\n\r\n// Types:\r\n// success | warning | danger | info\r\n// primary | secondary | light | dark")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiButton -->
+    <div id="button" class="gallery-section mb-4">
+        <h5 class="section-title">UiButton</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <UiButton Type="primary">Save</UiButton>
+                    <UiButton Type="danger">Delete</UiButton>
+                    <UiButton Type="success">Approve</UiButton>
+                    <UiButton Type="light">Cancel</UiButton>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <UiButton Type="primary" Icon="plus-lg">Add New</UiButton>
+                    <UiButton Type="primary" Loading="true">Saving...</UiButton>
+                    <UiButton Type="light" Disabled="true">Disabled</UiButton>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiButton Type=\"primary\" OnClick=\"HandleSave\">Save</UiButton>\r\n<UiButton Type=\"danger\"  OnClick=\"HandleDelete\">Delete</UiButton>\r\n<UiButton Type=\"light\"   OnClick=\"HandleCancel\">Cancel</UiButton>\r\n\r\n// With icon\r\n<UiButton Type=\"primary\" Icon=\"plus-lg\">Add New</UiButton>\r\n\r\n// Spinner while saving\r\n<UiButton Type=\"primary\" Loading=\"@_isSaving\">Save</UiButton>\r\n\r\n// Types:\r\n// primary | danger | success | secondary | light | workflow")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiConfirmDialog -->
+    <div id="confirm" class="gallery-section mb-4">
+        <h5 class="section-title">UiConfirmDialog</h5>
+        <div class="row g-4">
+            <div class="col-md-5">
+                <div class="d-flex gap-2 flex-wrap mb-3">
+                    <UiButton Type="danger"  OnClick="ShowDangerConfirm">Delete Dialog</UiButton>
+                    <UiButton Type="success" OnClick="ShowSuccessConfirm">Approve Dialog</UiButton>
+                    <UiButton Type="light"   OnClick="ShowWarningConfirm">Warning Dialog</UiButton>
+                </div>
+                <UiConfirmDialog Show="@_showConfirm"
+                                 Title="@_confirmTitle"
+                                 Message="@_confirmMessage"
+                                 Type="@_confirmType"
+                                 OnConfirm="HandleConfirmed"
+                                 OnCancel="CloseConfirm" />
+                @if (_confirmed)
+                {
+                    <UiBadge Text="Confirmed!" Type="success" Icon="check-circle-fill" />
+                }
+            </div>
+            <div class="col-md-7">
+                <GalleryCode Code='@("<UiButton Type=\"danger\" OnClick=\"OpenDeleteDialog\">Delete</UiButton>\r\n\r\n<UiConfirmDialog Show=\"@_showConfirm\"\r\n                Title=\"Delete Record\"\r\n                Message=\"This cannot be undone.\"\r\n                Type=\"danger\"\r\n                OnConfirm=\"HandleConfirmed\"\r\n                OnCancel=\"() => _showConfirm = false\" />\r\n\r\n// @code\r\nbool _showConfirm;\r\n\r\nvoid OpenDeleteDialog() => _showConfirm = true;\r\n\r\nasync Task HandleConfirmed()\r\n{\r\n    _showConfirm = false;\r\n    await DeleteAsync();\r\n}\r\n\r\n// Types: danger | warning | success | info")' />
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════ UiGrid -->
+    <div id="grid" class="gallery-section mb-4">
+        <h5 class="section-title">UiGrid</h5>
+        <div class="mb-3">
+            <UiGrid TItem="GalleryEmployee"
+                    Items="_employees"
+                    Columns="_empColumns"
+                    PageSize="5" />
+        </div>
+        <GalleryCode Code='@("// Define columns in @code\r\nprivate List<UiGridColumn<Employee>> _columns = new()\r\n{\r\n    new() { FieldName = \"Id\",         Title = \"ID\",     Width = \"80px\" },\r\n    new() { FieldName = \"Name\",       Title = \"Name\",   Sortable = true },\r\n    new() { FieldName = \"Department\", Title = \"Dept\",   FilterType = UiGridFilterType.Dropdown },\r\n    new() { FieldName = \"Status\",     Title = \"Status\", Filterable = true },\r\n};\r\n\r\n// Use in markup\r\n<UiGrid TItem=\"Employee\"\r\n       Items=\"_employees\"\r\n       Columns=\"_columns\"\r\n       PageSize=\"20\" />\r\n\r\n// With row grouping\r\n<UiGrid TItem=\"Employee\"\r\n       Items=\"_employees\"\r\n       Columns=\"_columns\"\r\n       GroupBy='new() { \"Department\" }' />")' />
+    </div>
+
+</div>
+
+<style>
+    .gallery-section {
+        padding: 1.5rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+    }
+    .section-title {
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+</style>
+
+@code {
+    private record SectionLink(string Id, string Label);
+    private readonly List<SectionLink> _sections = new()
+    {
+        new("input",      "UiInput"),
+        new("textarea",   "UiTextArea"),
+        new("number",     "UiNumberInput"),
+        new("select",     "UiSelect"),
+        new("multiselect","UiMultiSelect"),
+        new("radio",      "UiRadioGroup"),
+        new("checkbox",   "UiCheckbox / UiSwitch"),
+        new("date",       "UiDatePicker"),
+        new("daterange",  "UiDateRangePicker"),
+        new("time",       "UiTimePicker"),
+        new("file",       "UiFileUpload"),
+        new("formgroup",  "UiFormGroup"),
+        new("badge",      "UiBadge"),
+        new("button",     "UiButton"),
+        new("confirm",    "UiConfirmDialog"),
+        new("grid",       "UiGrid"),
+    };
+
+    // ── Demo state ─────────────────────────
+    private string _demoText    = "";
+    private decimal? _demoNumber;
+    private string _demoSelect  = "";
+    private string _demoRadio   = "";
+    private string _demoRadio2  = "";
+    private bool   _demoCheck;
+    private bool   _demoSwitch;
+    private DateTime? _demoDate;
+    private DateTime? _demoFrom;
+    private DateTime? _demoTo;
+    private TimeOnly? _demoTime;
+    private List<string> _demoMulti = new();
+    private IReadOnlyList<IBrowserFile> _demoFiles = new List<IBrowserFile>();
+    private UiDateRangePicker _dateRangeRef = default!;
+    private UiFileUpload _fileRef = default!;
+
+    // ── Lookup data ─────────────────────────
+    private readonly List<LookupItem> _genderOptions = new()
+    {
+        new LookupItem { Id = "M", Name = "Male"   },
+        new LookupItem { Id = "F", Name = "Female" },
+    };
+    private readonly List<LookupItem> _skillOptions = new()
+    {
+        new LookupItem { Id = "1", Name = "Communication" },
+        new LookupItem { Id = "2", Name = "Leadership"    },
+        new LookupItem { Id = "3", Name = "Teamwork"      },
+        new LookupItem { Id = "4", Name = "Analytical"    },
+    };
+    private readonly List<LookupItem> _employmentTypes = new()
+    {
+        new LookupItem { Id = "FT", Name = "Full-time" },
+        new LookupItem { Id = "PT", Name = "Part-time" },
+        new LookupItem { Id = "CN", Name = "Contract"  },
+    };
+
+    // ── Confirm dialog ──────────────────────
+    private bool   _showConfirm;
+    private bool   _confirmed;
+    private string _confirmTitle   = "";
+    private string _confirmMessage = "";
+    private string _confirmType    = "danger";
+
+    private void ShowDangerConfirm()  => OpenConfirm("danger",  "Delete Record",      "This action cannot be undone. Are you sure?");
+    private void ShowSuccessConfirm() => OpenConfirm("success", "Approve Request",    "Approve this leave request?");
+    private void ShowWarningConfirm() => OpenConfirm("warning", "Confirm Action",     "Do you want to proceed?");
+    private void CloseConfirm() => _showConfirm = false;
+
+    private void OpenConfirm(string type, string title, string message)
+    {
+        _confirmed      = false;
+        _confirmType    = type;
+        _confirmTitle   = title;
+        _confirmMessage = message;
+        _showConfirm    = true;
+    }
+
+    private void HandleConfirmed()
+    {
+        _showConfirm = false;
+        _confirmed   = true;
+    }
+
+    // ── Grid demo ───────────────────────────
+    public class GalleryEmployee
+    {
+        public string Id         { get; set; } = "";
+        public string Name       { get; set; } = "";
+        public string Department { get; set; } = "";
+        public string Status     { get; set; } = "";
+    }
+
+    private readonly List<GalleryEmployee> _employees = new()
+    {
+        new() { Id = "EMP-001", Name = "Ahmed Al Mansouri", Department = "HR",          Status = "Active"   },
+        new() { Id = "EMP-002", Name = "Sara Al Zaabi",     Department = "Finance",     Status = "Active"   },
+        new() { Id = "EMP-003", Name = "Khalid Al Rashidi", Department = "Engineering", Status = "On Leave" },
+        new() { Id = "EMP-004", Name = "Fatima Al Nuaimi",  Department = "HR",          Status = "Active"   },
+        new() { Id = "EMP-005", Name = "Omar Al Shamsi",    Department = "IT",          Status = "Active"   },
+        new() { Id = "EMP-006", Name = "Maryam Al Hajri",   Department = "Finance",     Status = "On Leave" },
+        new() { Id = "EMP-007", Name = "Yousef Al Kaabi",   Department = "Engineering", Status = "Active"   },
+    };
+
+    private readonly List<UiGridColumn<GalleryEmployee>> _empColumns = new()
+    {
+        new() { FieldName = nameof(GalleryEmployee.Id),         Title = "ID"                    },
+        new() { FieldName = nameof(GalleryEmployee.Name),       Title = "Name",   Sortable = true },
+        new() { FieldName = nameof(GalleryEmployee.Department), Title = "Dept",   Sortable = true, FilterType = UiGridFilterType.Dropdown },
+        new() { FieldName = nameof(GalleryEmployee.Status),     Title = "Status", Sortable = true, FilterType = UiGridFilterType.Dropdown },
+    };
+}

@@ -233,6 +233,11 @@
   <data name="PolicyOverlapError" xml:space="preserve"><value>Overlap detected with an existing policy!</value></data>
   <data name="MultipleLeaveTypesError" xml:space="preserve"><value>Multiple leave types selected!</value></data>
   <data name="To" xml:space="preserve"><value>to</value></data>
+  <data name="Browse" xml:space="preserve"><value>Browse</value></data>
+  <data name="DropFileHere" xml:space="preserve"><value>Drop file here or</value></data>
+  <data name="MaxFileSize" xml:space="preserve"><value>Max {0} MB</value></data>
+  <data name="Error_FileTooLarge" xml:space="preserve"><value>File size exceeds the {0} MB limit.</value></data>
+  <data name="Error_FileRequired" xml:space="preserve"><value>File is required.</value></data>
   <data name="SelectDots" xml:space="preserve"><value>Select...</value></data>
   <data name="Day" xml:space="preserve"><value>day</value></data>
   <data name="DayPlural" xml:space="preserve"><value>days</value></data>

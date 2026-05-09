@@ -204,6 +204,11 @@ namespace HRMS.Resources {
         public static string DatabaseErrorMessage => ResourceManager.GetString("DatabaseErrorMessage", resourceCulture);
         public static string AuthenticationError => ResourceManager.GetString("AuthenticationError", resourceCulture);
         public static string To => ResourceManager.GetString("To", resourceCulture);
+        public static string Browse => ResourceManager.GetString("Browse", resourceCulture);
+        public static string DropFileHere => ResourceManager.GetString("DropFileHere", resourceCulture);
+        public static string MaxFileSize => ResourceManager.GetString("MaxFileSize", resourceCulture);
+        public static string Error_FileTooLarge => ResourceManager.GetString("Error_FileTooLarge", resourceCulture);
+        public static string Error_FileRequired => ResourceManager.GetString("Error_FileRequired", resourceCulture);
         public static string SelectDots => ResourceManager.GetString("SelectDots", resourceCulture);
         public static string Day => ResourceManager.GetString("Day", resourceCulture);
         public static string DayPlural => ResourceManager.GetString("DayPlural", resourceCulture);

@@ -231,6 +231,11 @@
   <data name="PolicyOverlapError" xml:space="preserve"><value>تم اكتشاف تداخل مع سياسة موجودة!</value></data>
   <data name="MultipleLeaveTypesError" xml:space="preserve"><value>تم اختيار أنواع إجازات متعددة!</value></data>
   <data name="To" xml:space="preserve"><value>إلى</value></data>
+  <data name="Browse" xml:space="preserve"><value>استعرض</value></data>
+  <data name="DropFileHere" xml:space="preserve"><value>اسحب الملف هنا أو</value></data>
+  <data name="MaxFileSize" xml:space="preserve"><value>الحد الأقصى {0} ميغابايت</value></data>
+  <data name="Error_FileTooLarge" xml:space="preserve"><value>حجم الملف يتجاوز الحد الأقصى {0} ميغابايت</value></data>
+  <data name="Error_FileRequired" xml:space="preserve"><value>الملف مطلوب</value></data>
   <data name="SelectDots" xml:space="preserve"><value>اختر...</value></data>
   <data name="Day" xml:space="preserve"><value>يوم</value></data>
   <data name="DayPlural" xml:space="preserve"><value>أيام</value></data>

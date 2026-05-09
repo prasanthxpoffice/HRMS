@@ -1,0 +1,48 @@
+@inherits UiBase
+
+<div class="mb-3">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">
+            @Label
+            @if (Required)
+            {
+                <span class="text-danger ms-1">*</span>
+            }
+        </label>
+    }
+    <input type="time"
+           class="input-ui w-100 @CssClass"
+           value="@_formatted"
+           min="@(Min.HasValue ? Min.Value.ToString("HH:mm") : "")"
+           max="@(Max.HasValue ? Max.Value.ToString("HH:mm") : "")"
+           disabled="@Disabled"
+           @onchange="OnChange" />
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i> @ValidationMessage
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public TimeOnly? Value { get; set; }
+    [Parameter] public EventCallback<TimeOnly?> ValueChanged { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string ValidationMessage { get; set; } = "";
+    [Parameter] public TimeOnly? Min { get; set; }
+    [Parameter] public TimeOnly? Max { get; set; }
+    [Parameter] public bool Required { get; set; } = false;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private string _formatted => Value.HasValue ? Value.Value.ToString("HH:mm") : "";
+
+    private async Task OnChange(ChangeEventArgs e)
+    {
+        var result = TimeOnly.TryParse(e.Value?.ToString(), out var t) ? t : (TimeOnly?)null;
+        Value = result;
+        await ValueChanged.InvokeAsync(result);
+    }
+}

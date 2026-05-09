@@ -1,0 +1,61 @@
+@inherits UiBase
+@using HRMS.Models.Shared
+
+<div class="mb-3">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">
+            @Label
+            @if (Required)
+            {
+                <span class="text-danger ms-1">*</span>
+            }
+        </label>
+    }
+
+    <div class="@(Inline ? "d-flex flex-wrap gap-3" : "d-flex flex-column gap-1")">
+        @foreach (var option in Options ?? Enumerable.Empty<LookupItem>())
+        {
+            var optId = $"{_groupId}_{option.Id}";
+            var optVal = option.Id;
+            <div class="form-check @(Inline ? "mb-0" : "") @(Lang.IsRtl ? "form-check-reverse" : "")">
+                <input type="radio"
+                       class="form-check-input"
+                       id="@optId"
+                       name="@_groupId"
+                       value="@option.Id"
+                       checked="@(Value == option.Id)"
+                       disabled="@Disabled"
+                       @onchange="() => OnChange(optVal)" />
+                <label class="form-check-label small" for="@optId">@option.Name</label>
+            </div>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i> @ValidationMessage
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter] public IEnumerable<LookupItem>? Options { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string ValidationMessage { get; set; } = "";
+    [Parameter] public bool Required { get; set; } = false;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public bool Inline { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private readonly string _groupId = Guid.NewGuid().ToString("N");
+
+    private async Task OnChange(string id)
+    {
+        Value = id;
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

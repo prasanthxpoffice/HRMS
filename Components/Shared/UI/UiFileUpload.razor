@@ -1,0 +1,167 @@
+@inherits UiBase
+
+<div class="mb-3">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="small-label mb-1 d-block">
+            @Label
+            @if (Required)
+            {
+                <span class="text-danger ms-1">*</span>
+            }
+        </label>
+    }
+
+    <label for="@_inputId"
+           class="d-block @CssClass"
+           style="border: 2px dashed @(_error ? "#dc3545" : "var(--border)"); border-radius: 10px; padding: 1rem; text-align: center; background: var(--surface-secondary); cursor: @(Disabled ? "not-allowed" : "pointer"); @(Disabled ? "opacity: 0.6;" : "")">
+
+        @if (_files.Any())
+        {
+            <div @onclick:stopPropagation="true">
+                <div class="d-flex flex-column gap-1">
+                    @foreach (var file in _files)
+                    {
+                        var f = file;
+                        <div class="d-flex align-items-center justify-content-between px-2 py-1 rounded-2"
+                             style="background: var(--primary-tint); border: 1px solid hsla(35,34%,55%,0.3);">
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi @GetFileIcon(f.Name)" style="font-size: 1rem; color: var(--primary);"></i>
+                                <span class="small fw-medium">@f.Name</span>
+                                <span class="text-muted" style="font-size: 0.72rem;">(@FormatSize(f.Size))</span>
+                            </div>
+                            @if (!Disabled)
+                            {
+                                <i class="bi bi-x-lg text-danger"
+                                   style="cursor: pointer; font-size: 0.75rem;"
+                                   @onclick="() => RemoveFile(f)"></i>
+                            }
+                        </div>
+                    }
+                </div>
+                @if (Multiple)
+                {
+                    <div class="text-muted mt-2" style="font-size: 0.78rem; cursor: pointer;" @onclick="OpenPicker">
+                        <i class="bi bi-plus-circle me-1"></i>@AppResources.Browse
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="py-1">
+                <i class="bi bi-cloud-upload" style="font-size: 2rem; color: var(--primary); opacity: 0.5;"></i>
+                <div class="mt-1 small text-muted">
+                    @AppResources.DropFileHere
+                    <span style="color: var(--primary); text-decoration: underline; cursor: pointer;">@AppResources.Browse</span>
+                </div>
+                @if (!string.IsNullOrEmpty(Accept))
+                {
+                    <div style="font-size: 0.72rem; margin-top: 0.25rem; color: var(--text-muted);">@Accept.Replace(",", ", ")</div>
+                }
+                @if (MaxSizeMb > 0)
+                {
+                    <div style="font-size: 0.72rem; color: var(--text-muted);">@string.Format(AppResources.MaxFileSize, MaxSizeMb)</div>
+                }
+            </div>
+        }
+
+    </label>
+
+    <InputFile id="@_inputId"
+               style="display: none;"
+               accept="@Accept"
+               multiple="@Multiple"
+               disabled="@Disabled"
+               OnChange="OnFilesChanged" />
+
+    @if (!string.IsNullOrEmpty(_internalError))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i> @_internalError
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="text-danger mt-1 d-flex align-items-center gap-1" style="font-size: 0.78rem;">
+            <i class="bi bi-exclamation-circle-fill"></i> @ValidationMessage
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public IReadOnlyList<IBrowserFile> Files { get; set; } = new List<IBrowserFile>();
+    [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> FilesChanged { get; set; }
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string ValidationMessage { get; set; } = "";
+    [Parameter] public string Accept { get; set; } = "";
+    [Parameter] public int MaxSizeMb { get; set; } = 10;
+    [Parameter] public bool Multiple { get; set; } = false;
+    [Parameter] public bool Required { get; set; } = false;
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public string CssClass { get; set; } = "";
+
+    private readonly string _inputId = $"fileupload_{Guid.NewGuid():N}";
+    private List<IBrowserFile> _files = new();
+    private string _internalError = "";
+    private bool _error => !string.IsNullOrEmpty(_internalError);
+
+    private async Task OnFilesChanged(InputFileChangeEventArgs e)
+    {
+        _internalError = "";
+        var incoming = Multiple ? e.GetMultipleFiles(100) : new[] { e.File };
+
+        foreach (var file in incoming)
+        {
+            if (MaxSizeMb > 0 && file.Size > MaxSizeMb * 1024L * 1024L)
+            {
+                _internalError = string.Format(AppResources.Error_FileTooLarge, MaxSizeMb);
+                return;
+            }
+        }
+
+        if (Multiple)
+            _files.AddRange(incoming);
+        else
+            _files = incoming.ToList();
+
+        await FilesChanged.InvokeAsync(new List<IBrowserFile>(_files));
+    }
+
+    private async Task RemoveFile(IBrowserFile file)
+    {
+        _files.Remove(file);
+        _internalError = "";
+        await FilesChanged.InvokeAsync(new List<IBrowserFile>(_files));
+    }
+
+    private void OpenPicker() { }
+
+    public bool IsValid()
+    {
+        if (Required && !_files.Any())
+        {
+            _internalError = AppResources.Error_FileRequired;
+            return false;
+        }
+        return string.IsNullOrEmpty(_internalError) && string.IsNullOrEmpty(ValidationMessage);
+    }
+
+    private static string FormatSize(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1_048_576) return $"{bytes / 1024.0:F1} KB";
+        return $"{bytes / 1_048_576.0:F1} MB";
+    }
+
+    private static string GetFileIcon(string name) =>
+        Path.GetExtension(name).ToLowerInvariant() switch
+        {
+            ".pdf" => "bi-file-earmark-pdf",
+            ".jpg" or ".jpeg" or ".png" or ".gif" or ".webp" => "bi-file-earmark-image",
+            ".doc" or ".docx" => "bi-file-earmark-word",
+            ".xls" or ".xlsx" => "bi-file-earmark-excel",
+            ".zip" or ".rar" => "bi-file-earmark-zip",
+            _ => "bi-file-earmark"
+        };
+}
